@@ -11,13 +11,24 @@
             </p>
         </b>
 
-        <img :class="$style.icon" alt="password icon" src="@/assets/login/password.svg" />
+        <!-- <div :class="$style.groupParent">
+            <img :class="$style.groupChild" alt="" src="Group 38.svg" />
+            <div :class="$style.groupItem" />
+        </div> -->
 
-        <div :class="$style.divider" />
+        <div :class="$style.dividerwrapper">
+            <svg :class="$style.icon" xmlns="http://www.w3.org/2000/svg">
+                <g>
+                    <circle v-for="(circleColor, index) in circles" :key="index" :cx="15.5 + index * 43" cy="15.5"
+                        r="15.5" :fill="circleColor" />
+                </g>
+            </svg>
+            <div :class="$style.divider"></div>
+        </div>
 
         <div :class="$style.keypad">
             <div v-for="(row, rowIndex) in keypadRows" :key="rowIndex" :class="$style.keypadRow">
-                <div v-for="(key, keyIndex) in row" :key="keyIndex" :class="$style.key">
+                <div v-for="(key, keyIndex) in row" :key="keyIndex" :class="$style.key" @click="handleKeyPress(key)">
                     <!-- 0을 제외한 숫자 렌더링 -->
                     <div v-if="key !== null && key !== 'delete'" :class="$style.numberRect"></div>
                     <div v-if="key !== null && key !== 'delete'" :class="$style.number">{{ key }}</div>
@@ -41,12 +52,32 @@ export default defineComponent({
     name: 'Frame',
     data() {
         return {
+            enteredPassword: [] as number[], // 입력된 비밀번호를 저장하는 배열
+            maxPasswordLength: 6, // 최대 비밀번호 자리수
             keypadRows: [
                 [1, 2, 3],
                 [4, 5, 6],
                 [7, 8, 9],
-                [null, 0, 'delete'] // deleteIcon 위치 추가
+                [null, 0, 'delete']
             ]
+        }
+    },
+    computed: {
+        circles() {
+            // 비밀번호 자리수에 맞춰 색상을 결정
+            return Array.from({ length: this.maxPasswordLength }, (_, index) => {
+                return this.enteredPassword.length > index ? '#C54966' : '#D9D9D9'
+            });
+        }
+    },
+    methods: {
+        handleKeyPress(key: number | string | null) {
+            if (typeof key === 'number' && this.enteredPassword.length < this.maxPasswordLength) {
+                this.enteredPassword.push(key);
+                console.log(this.enteredPassword);
+            } else if (key === 'delete' && this.enteredPassword.length > 0) {
+                this.enteredPassword.pop();
+            }
         }
     }
 })
@@ -85,21 +116,30 @@ body {
     color: #c54966;
 }
 
+.dividerwrapper {
+    position: absolute;
+    top: calc(50% - 149px);
+    left: calc(50% - 137.5px);
+    width: 276px;
+    height: 59px;
+}
+
 .icon {
     position: absolute;
-    top: 257px;
-    left: 65px;
+    top: calc(50% - 29.5px);
+    left: calc(50% - 123px);
     width: 246px;
     height: 31px;
 }
 
 .divider {
     position: absolute;
-    top: 315.5px;
-    left: 49.5px;
+    top: calc(50% + 29px);
+    left: calc(50% - 138.5px);
     border-top: 1px solid #000;
     box-sizing: border-box;
     width: 277px;
+    height: 1px;
 }
 
 .keypad {
