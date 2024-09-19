@@ -10,7 +10,7 @@ import { defineComponent } from 'vue';
 import backIcon from '@/assets/mypages/backIcon.svg';
 
 export default defineComponent({
-    name: 'Header',
+    name: 'BackHeader',
     data() {
         return {
             backIcon,

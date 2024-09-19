@@ -1,6 +1,6 @@
 <template>
     <div :class="$style.div">
-        <Header />
+        <BackHeader />
         <MainContent :tickets="tickets" />
         <Footer />
     </div>
@@ -8,15 +8,15 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import Header from '@/components/mypages/Header.vue';
+import BackHeader from '@/components/BackHeader.vue';
 import MainContent from '@/components/mypages/MainContent.vue';
-import Footer from '@/components/mypages/Footer.vue';
+import Footer from '@/components/Footer.vue';
 import image200 from '@/assets/mypages/image 200.png'; // 이미지 파일 import
 
 export default defineComponent({
     name: 'MyTicketList',
     components: {
-        Header,
+        BackHeader,
         MainContent,
         Footer
     },

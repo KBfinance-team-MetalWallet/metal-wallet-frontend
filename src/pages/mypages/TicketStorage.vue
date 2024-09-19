@@ -1,14 +1,7 @@
 <template>
     <div :class="$style.div">
-        <Icon icon="solar:wallet-outline" :class="$style.solarwalletOutlineIcon" />
-        <b :class="$style.b">강철지갑</b>
-        <div :class="$style.groupParent">
-            <div :class="$style.parent">
-                <b :class="$style.b1">전자지갑</b>
-                <b :class="$style.b2">티켓 보관함</b>
-            </div>
-            <img :class="$style.groupChild" :src="line7Image" alt="Line 7" />
-        </div>
+        <MainHeader />
+        <MyPageTabs />
         <div :class="$style.child" />
         <div :class="$style.group">
             <div :class="$style.b1">나의 예매 내역</div>
@@ -47,23 +40,7 @@
                 </div>
             </div>
         </div>
-        <div :class="$style.div4">
-            <div :class="$style.item" />
-            <div :class="$style.groupContainer">
-                <div :class="$style.container">
-                    <div :class="$style.div5">홈</div>
-                    <img :class="$style.iconexlineTwoTonehome" alt="" :src="homeIcon" />
-                </div>
-                <div :class="$style.groupDiv">
-                    <div :class="$style.div6">티켓</div>
-                    <img :class="$style.iconexlineTwoTonecoupon3" alt="" :src="couponIcon" />
-                </div>
-                <div :class="$style.parent1">
-                    <div :class="$style.div6">마이</div>
-                    <img :class="$style.iconexlineTwoTonehome" alt="" :src="userIcon" />
-                </div>
-            </div>
-        </div>
+        <Footer />
     </div>
 </template>
 <script lang="ts">
@@ -77,10 +54,17 @@ import homeIcon from '@/assets/Iconex/Line Two Tone/Home.svg';
 import couponIcon from '@/assets/Iconex/Line Two Tone/Coupon 3.svg';
 import userIcon from '@/assets/Iconex/Line Two Tone/User.svg';
 
+import Footer from '@/components/Footer.vue';
+import MainHeader from '../../components/MainHeader.vue';
+import MyPageTabs from '../../components/mypages/MyPageTabs.vue';
+
 export default defineComponent({
     name: "TicketStorage",
     components: {
+        MainHeader,
+        MyPageTabs,
         Icon,
+        Footer
     },
     data() {
         return {
