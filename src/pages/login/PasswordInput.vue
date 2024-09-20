@@ -11,11 +11,6 @@
             </p>
         </b>
 
-        <!-- <div :class="$style.groupParent">
-            <img :class="$style.groupChild" alt="" src="Group 38.svg" />
-            <div :class="$style.groupItem" />
-        </div> -->
-
         <div :class="$style.dividerwrapper">
             <svg :class="$style.icon" xmlns="http://www.w3.org/2000/svg">
                 <g>

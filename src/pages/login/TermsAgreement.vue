@@ -1,7 +1,6 @@
 <template>
     <div :class="$style.div">
-        <img :class="$style.solarwalletOutlineIcon" alt="" src="@/assets/strealwalletIcon.svg" />
-        <b :class="$style.b">강철지갑</b>
+        <MainHeader />
         <div :class="$style.button">
             <b :class="$style.b1">다음단계</b>
         </div>
@@ -76,10 +75,14 @@
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue'
+import MainHeader from '../../components/MainHeader.vue';
 
 
 export default defineComponent({
-    name: "Frame"
+    name: "TermAgreement",
+    components: {
+        MainHeader
+    }
 })</script>
 <style module>
 .solarwalletOutlineIcon {
