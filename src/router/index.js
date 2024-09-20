@@ -1,11 +1,15 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 // 로그인 관련 페이지
-import SignupForm from "@/components/login/SignupForm.vue";
-import PasswordInput from "@/components/login/PasswordInput.vue";
-import TermsAgreement from "@/components/login/TermsAgreement.vue";
+import SignupForm from "@/pages/login/SignupForm.vue";
+import PasswordInput from "@/pages/login/PasswordInput.vue";
+import TermsAgreement from "@/pages/login/TermsAgreement.vue";
 import WelcomeSignup from "@/components/login/WelcomeSignup.vue";
 import LoginAlert from "@/components/login/LoginAlert.vue";
+
+import MyPage from "@/pages/mypages/MyPage.vue";
+import TicketStorage from "@/pages/mypages/TicketStorage.vue";
+import MyTicketList from "@/pages/mypages/MyTicketList.vue";
 
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
@@ -43,6 +47,28 @@ const router = createRouter({
 					path: "alert",
 					name: "alert",
 					component: LoginAlert,
+				},
+			],
+		},
+		{
+			path: "/mypage",
+			name: "MyPage",
+			redirect: "/mypage/mypage",
+			children: [
+				{
+					path: "mypage",
+					name: "MyPage",
+					component: MyPage,
+				},
+				{
+					path: "ticket-storage",
+					name: "ticketstorage",
+					component: TicketStorage,
+				},
+				{
+					path: "my-ticket-list",
+					name: "myticketlist",
+					component: MyTicketList,
 				},
 			],
 		},
