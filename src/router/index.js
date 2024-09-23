@@ -6,6 +6,7 @@ import PasswordInput from "@/pages/login/PasswordInput.vue";
 import TermsAgreement from "@/pages/login/TermsAgreement.vue";
 import WelcomeSignup from "@/components/login/WelcomeSignup.vue";
 import LoginAlert from "@/components/login/LoginAlert.vue";
+import LoginForm from "../pages/login/LoginForm.vue";
 
 import MyPage from "@/pages/mypages/MyPage.vue";
 import TicketStorage from "@/pages/mypages/TicketStorage.vue";
@@ -21,8 +22,13 @@ const router = createRouter({
 		{
 			path: "/login",
 			name: "login",
-			redirect: "/login/signup",
+			redirect: "/login/login",
 			children: [
+				{
+					path: "login",
+					name: "login",
+					component: LoginForm
+				},
 				{
 					path: "signup",
 					name: "signup",
