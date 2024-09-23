@@ -12,6 +12,18 @@
             <div :class="$style.horizontalborder1">
                 <b :class="$style.label">이름</b>
             </div>
+            <div :class="$style.horizontalborderWrapper">
+                <div :class="$style.horizontalborder1">
+                    <b :class="$style.label">비밀번호</b>
+                    <div :class="$style.input1"></div>
+                </div>
+            </div>
+            <div :class="$style.horizontalborderWrapper">
+                <div :class="$style.horizontalborder1">
+                    <b :class="$style.label">비밀번호 확인</b>
+                    <div :class="$style.input1"></div>
+                </div>
+            </div>
             <div :class="$style.horizontalborder2">
                 <b :class="$style.label">휴대폰</b>
                 <div :class="$style.input">
