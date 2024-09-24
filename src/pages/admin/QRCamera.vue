@@ -5,8 +5,7 @@
 
     <div :class="$style.bgVisor" />
     <div :class="$style.visorAreIcon" />
-    <img :class="$style.vectorStrokeIcon" alt="" src="@/assets/admin/CancelIcon.svg" />
-    <img :class="$style.vectorStrokeIcon1" alt="" src="@/assets/admin/CancelIcon.svg" />
+    <img :class="$style.vectorStrokeIcon" alt="" src="@/assets/admin/CancelIcon.svg" @click="goToAdminPage" />
     <img :class="$style.cameraStroke90" alt="" src="@/assets/admin/CameraStroke.svg" />
     <img :class="$style.cameraStroke180" alt="" src="@/assets/admin/CameraStroke.svg" />
     <img :class="$style.cameraStroke270" alt="" src="@/assets/admin/CameraStroke.svg" />
@@ -16,6 +15,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 import jsQR from 'jsqr';
 
 export default defineComponent({
@@ -25,6 +25,8 @@ export default defineComponent({
     const canvasElement = ref<HTMLCanvasElement | null>(null);
     const canvasContext = ref<CanvasRenderingContext2D | null>(null);
 
+    const router = useRouter();
+
     const startCamera = async () => {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
@@ -33,13 +35,12 @@ export default defineComponent({
           videoElement.value.srcObject = stream;
           videoElement.value.play();
 
-          // 비디오 메타데이터가 로드되면 캔버스 크기를 설정하고 QR 코드 스캔을 시작합니다.
           videoElement.value.addEventListener('loadedmetadata', () => {
             if (canvasElement.value) {
               canvasElement.value.width = videoElement.value!.videoWidth;
               canvasElement.value.height = videoElement.value!.videoHeight;
             }
-            scanQRCode(); // QR 코드 스캔 시작
+            scanQRCode();
           });
         }
       } catch (err) {
@@ -72,11 +73,13 @@ export default defineComponent({
         }
       }
 
-      // 계속해서 QR 코드를 읽기 위한 반복 호출
       requestAnimationFrame(scanQRCode);
     };
 
-    // 컴포넌트가 마운트될 때 startCamera 호출
+    const goToAdminPage = () => {
+      router.push("/admin/admin");  // /admin/admin으로 라우팅
+    };
+
     onMounted(() => {
       startCamera();
     });
@@ -84,6 +87,7 @@ export default defineComponent({
     return {
       videoElement,
       canvasElement,
+      goToAdminPage,  // goToAdminPage 메서드를 반환
     };
   },
 });
@@ -121,10 +125,8 @@ export default defineComponent({
   position: absolute;
   height: 2.71%;
   width: 5.87%;
-  top: 5.67%;
-  right: 87.47%;
-  bottom: 91.63%;
-  left: 6.67%;
+  top: 38px;
+  left: 22px;
   max-width: 100%;
   overflow: hidden;
   max-height: 100%;
