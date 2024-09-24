@@ -6,7 +6,7 @@
                 <span :class="$style.highlight">를</span>
             </p>
             <p :class="$style.text">
-                <span :class="$style.highlight">입력</span>
+                <span :class="$style.highlight">{{ firstInput ? '입력' : '다시 한번 입력' }}</span>
                 <span>해주세요.</span>
             </p>
         </b>
@@ -41,7 +41,9 @@
 </template>
 
 <script lang="ts">
+import axios from 'axios';
 import { defineComponent } from 'vue'
+import { useUserStore } from '../../stores/userStore';  
 
 export default defineComponent({
     name: 'Frame',
@@ -49,6 +51,8 @@ export default defineComponent({
         return {
             enteredPassword: [] as number[], // 입력된 비밀번호를 저장하는 배열
             maxPasswordLength: 6, // 최대 비밀번호 자리수
+            firstInput: true, // 첫 번째 입력 여부
+            firstPin: '', // 첫 번째 PIN 저장
             keypadRows: [
                 [1, 2, 3],
                 [4, 5, 6],
@@ -69,9 +73,49 @@ export default defineComponent({
         handleKeyPress(key: number | string | null) {
             if (typeof key === 'number' && this.enteredPassword.length < this.maxPasswordLength) {
                 this.enteredPassword.push(key);
-                console.log(this.enteredPassword);
+
+                // PIN 번호가 6자리가 모두 입력되었을 때
+                if (this.enteredPassword.length === this.maxPasswordLength) {
+                    if(this.firstInput) {
+                        // 첫 번째 입력 시 PIN 저장
+                        this.firstPin = this.enteredPassword.join('');
+                        this.firstInput = false; // 두 번째 입력 대기 상태로 변경
+                        this.enteredPassword = []; // 이전 비밀번호 초기화
+                    } else {
+                        // 두 번째 입력
+                        const secondPin = this.enteredPassword.join('');
+                        if (this.firstPin === secondPin) {
+                            this.register(); // PIN이 일치할 시 API 호출
+                        } else {
+                            alert("두 비밀번호가 일치하지 않습니다.");
+                            this.enteredPassword = []; // 입력 초기화
+                        }
+                    }
+                }
             } else if (key === 'delete' && this.enteredPassword.length > 0) {
                 this.enteredPassword.pop();
+            }
+        },
+        async register() {
+            // Pinia에서 사용자 정보 가져오기
+            const userStore = useUserStore();
+            const { name, password, email, phone } = userStore; // Pinia 스토어에서 값 가져오기
+            const pinNumber = this.firstPin;
+
+            // API 호출
+            const formData = {
+                name,
+                password,
+                email,
+                phone,
+                pinNumber // PIN 번호를 포함하여 데이터 전송
+            };
+
+            try {
+                const response = await axios.post('http://localhost:8080/api/members/register', formData);
+                console.log('Registration successful:', response.data);
+            } catch (error) {
+                console.error('Error registering member:', error.response ? error.response.data : error.message);
             }
         }
     }
