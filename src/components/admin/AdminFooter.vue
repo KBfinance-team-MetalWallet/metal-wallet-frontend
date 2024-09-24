@@ -2,22 +2,43 @@
   <div :class="$style.div">
     <div :class="$style.child" />
     <div :class="$style.groupParent">
-      <div :class="$style.parent">
+      <div :class="$style.parent" @click="navigateToAdmin">
         <div :class="$style.div1">입장관리</div>
-        <img :class="$style.iconexlineTwoTonehome" alt="" src="@/assets/Iconex/Line Two Tone/Home.svg" />
+        <img :class="$style.iconexlineTwoTonehome" alt="" :src="homeIcon" />
       </div>
       <div :class="$style.group">
         <div :class="$style.div1">티켓 내역</div>
-        <img :class="$style.iconexlineTwoTonecoupon3" alt="" src="@/assets/Iconex/Line Two Tone/Coupon 3.svg" />
+        <img :class="$style.iconexlineTwoTonecoupon3" alt="" :src="couponIcon" />
       </div>
     </div>
   </div>
 </template>
+
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { useRouter } from 'vue-router';
+import homeIcon from "@/assets/Iconex/Line Two Tone/Home.svg";
+import couponIcon from '@/assets/Iconex/Line Two Tone/Coupon 3.svg';
 
 export default defineComponent({
   name: "adminFooter",
+  data() {
+    return {
+      homeIcon,
+      couponIcon
+    };
+  },
+  setup() {
+    const router = useRouter();
+
+    const navigateToAdmin = () => {
+      router.push({ name: 'Admin' });
+    };
+
+    return {
+      navigateToAdmin,
+    };
+  },
 })
 </script>
 <style module>
