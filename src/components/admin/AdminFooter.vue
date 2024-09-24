@@ -2,44 +2,48 @@
   <div :class="$style.div">
     <div :class="$style.child" />
     <div :class="$style.groupParent">
-      <div :class="$style.parent" @click="navigateToAdmin">
+      <div :class="$style.parent" @click="selectTab('home')"
+        :style="{ color: selectedTab === 'home' ? '#C54966' : '#2B3F6C' }">
         <div :class="$style.div1">입장관리</div>
-        <img :class="$style.iconexlineTwoTonehome" alt="" :src="homeIcon" />
+        <img :class="$style.iconexlineTwoTonehome" alt="" :src="homeIcon"
+          :style="{ filter: selectedTab === 'home' ? 'invert(34%) sepia(70%) saturate(4413%) hue-rotate(330deg) brightness(91%) contrast(94%)' : 'none' }" />
       </div>
-      <div :class="$style.group">
+      <div :class="$style.group" @click="selectTab('ticket')"
+        :style="{ color: selectedTab === 'ticket' ? '#C54966' : '#2B3F6C' }">
         <div :class="$style.div1">티켓 내역</div>
-        <img :class="$style.iconexlineTwoTonecoupon3" alt="" :src="couponIcon" />
+        <img :class="$style.iconexlineTwoTonecoupon3" alt="" :src="couponIcon"
+          :style="{ filter: selectedTab === 'ticket' ? 'invert(34%) sepia(70%) saturate(4413%) hue-rotate(330deg) brightness(91%) contrast(94%)' : 'none' }" />
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent } from 'vue';
 import { useRouter } from 'vue-router';
-import homeIcon from "@/assets/Iconex/Line Two Tone/Home.svg";
+import homeIcon from '@/assets/Iconex/Line Two Tone/Home.svg';
 import couponIcon from '@/assets/Iconex/Line Two Tone/Coupon 3.svg';
 
 export default defineComponent({
-  name: "adminFooter",
+  name: 'AdminFooter',
   data() {
     return {
       homeIcon,
-      couponIcon
+      couponIcon,
+      selectedTab: '', // 클릭된 탭의 상태를 저장
     };
   },
-  setup() {
-    const router = useRouter();
-
-    const navigateToAdmin = () => {
-      router.push({ name: 'Admin' });
-    };
-
-    return {
-      navigateToAdmin,
-    };
+  methods: {
+    selectTab(tab: string) {
+      this.selectedTab = tab; // 선택된 탭을 업데이트
+      if (tab === 'home') {
+        this.$router.push({ name: 'Admin' });
+      } else if (tab === 'ticket') {
+        this.$router.push({ name: 'AdminTicketList' });
+      }
+    },
   },
-})
+});
 </script>
 <style module>
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap');
