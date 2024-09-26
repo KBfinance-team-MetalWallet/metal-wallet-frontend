@@ -1,13 +1,12 @@
 <template>
 	<div :class="$style.div">
 		<MainHeader />
-
 		<!-- 포스터 영역 -->
 		<div :class="$style.ticketposter">
 			<div :class="$style.ticketposterChild" />
 			<div :class="$style.ticketposterlayer">
-				<!-- SlideCard 컴포넌트에서 updateCurrentCard 이벤트를 수신하여 currentCard 값을 업데이트 -->
-				<SlideCard
+				<!-- Ticket 포스터 -->
+				<TicketCard
 					:cards="cards"
 					:currentCard="currentCard"
 					@update:currentCard="updateCurrentCard"
@@ -23,53 +22,61 @@
 				</p>
 				<p :class="$style.showDate">{{ cards[currentCard].date }}</p>
 				<p :class="$style.seatInfo">{{ cards[currentCard].seat }}</p>
-				<p>Current Card Index: {{ currentCard }}</p>
 			</div>
 		</div>
-
 		<Footer />
 	</div>
 </template>
 
 <script lang="js">
-	import Footer from "@/components/Footer.vue";
+									import Footer from "@/components/Footer.vue";
 	import MainHeader from "@/components/MainHeader.vue";
-	import SlideCard from "@/components/SlideCard.vue";
+	import TicketCard from "@/components/ticket/TicketCard.vue";
 	import { useTicketStore } from "@/stores/tickets";
 	import { defineComponent, onMounted, toRefs } from "vue";
 
-	export default defineComponent({
-	  name: "TicketEntry",
-	  components: {
-	    MainHeader,
-	    Footer,
-	    SlideCard,
-	  },
-	  setup() {
-	    const ticketStore = useTicketStore();
-	    const { cards, currentCard, fetchCards } = toRefs(ticketStore); // Pinia 스토어에서 cards와 currentCard를 반응형으로 가져옴
+							export default defineComponent({
+							name: "Ticket",
+							components: {
+							MainHeader,
+							Footer,
+							TicketCard,
+							},
+							setup() {
+							const ticketStore = useTicketStore();
+							const { cards, currentCard, fetchCards, prevCard } = toRefs(ticketStore); // Pinia 스토어에서 cards와 currentCard를 반응형으로 가져옴
 
-	    // 컴포넌트가 마운트되면 카드 데이터를 가져옵니다.
-	    onMounted(() => {
-	      ticketStore.fetchCards(); // 카드 데이터를 API에서 가져옴
-	    });
+							// 컴포넌트가 마운트되면 카드 데이터를 가져옵니다.
+							onMounted(() => {
+							ticketStore.fetchCards(); // 카드 데이터를 API에서 가져옴
+							});
 
-	    // 슬라이드 카드를 업데이트할 때 호출
-	    const updateCurrentCard = (newIndex) => {
-	      ticketStore.currentCard = newIndex; // Pinia 스토어의 currentCard 값을 업데이트
-	    };
 
-	    return {
-	      cards,
-	      currentCard,
-	      updateCurrentCard,
-	    };
-	  },
-	});
+							// 슬라이드 카드를 업데이트할 때 호출
+							const updateCurrentCard = (newIndex) => {
+							ticketStore.currentCard = newIndex; // Pinia 스토어의 currentCard 값을 업데이트
+							};
+
+							return {
+							cards,
+							currentCard,
+							updateCurrentCard,
+							};
+							},
+							});
 </script>
 
 <style module>
 	@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap");
+
+	.changeBtn {
+		margin-top: 40px;
+		width: 70px !important;
+		height: 50px !important;
+		text-align: center;
+		border: none;
+		background-color: #e0e0e0;
+	}
 
 	.solarwalletOutlineIcon {
 		position: absolute;
@@ -144,6 +151,7 @@
 	}
 	.MyTicketsInfo {
 		border: 2px dotted rgb(255, 81, 0);
+		background-color: white;
 		display: flex;
 		flex-direction: column;
 		justify-content: start;

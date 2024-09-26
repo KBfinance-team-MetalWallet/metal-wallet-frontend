@@ -4,9 +4,10 @@ import { defineStore } from "pinia";
 export const useTicketStore = defineStore("tickets", {
 	state: () => ({
 		currentCard: 0, // 현재 선택된 카드의 인덱스
-		// TODO: 초기 정적 데이터 (여기에 받아야 하는 데이터 정의하면 됨.)
+		// TODO: 초기 정적 데이터 (test data)
 		cards: [
 			{
+				ticketId: "1L",
 				imageUrl: "/src/assets/ticket/PosterImg1.png", // TODO: url 도 수정해야함.
 				isUsed: false,
 				musicalTitle: "뮤지컬 <접변>-대구",
@@ -14,15 +15,17 @@ export const useTicketStore = defineStore("tickets", {
 				seat: "1층 R석 13열",
 			},
 			{
+				ticketId: "2L",
 				imageUrl: "/src/assets/ticket/PosterImg2.png",
-				isUsed: true,
+				isUsed: false,
 				musicalTitle: "뮤지컬 <홀리 이노센트>-서울",
 				date: "2024.02.15(금) 20:00",
 				seat: "1층 VIP석 24열",
 			},
 			{
+				ticketId: "3L",
 				imageUrl: "/src/assets/ticket/PosterImg3.png",
-				isUsed: false,
+				isUsed: true,
 				musicalTitle: "뮤지컬 <레미제라블>-인천",
 				date: "2024.03.22(토) 18:00",
 				seat: "1층 S석 5열",
@@ -33,6 +36,7 @@ export const useTicketStore = defineStore("tickets", {
 		// API에서 뮤지컬 정보를 비동기적으로 가져옵니다.
 		async fetchCards() {
 			try {
+				// TODO: API 수정 필요
 				const response = await axios.get("https://api.example.com/musicals");
 				this.cards = response.data.map((item) => ({
 					imageUrl: item.imageUrl,
