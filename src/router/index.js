@@ -12,6 +12,10 @@ import MyPage from "@/pages/mypages/MyPage.vue";
 import TicketStorage from "@/pages/mypages/TicketStorage.vue";
 import MyTicketList from "@/pages/mypages/MyTicketList.vue";
 
+import Admin from "@/pages/admin/Admin.vue";
+import Camera from "@/pages/admin/QRCamera.vue";
+import AdminTicketList from "@/pages/admin/AdminTicketList.vue";
+
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
 	routes: [
@@ -75,6 +79,28 @@ const router = createRouter({
 					path: "my-ticket-list",
 					name: "myticketlist",
 					component: MyTicketList,
+				},
+			],
+		},
+		{
+			path: "/admin",
+			name: "Admin",
+			redirect: "/admin/admin",
+			children: [
+				{
+					path: "admin",
+					name: "Admin",
+					component: Admin,
+				},
+				{
+					path: "camera",
+					name: "Camera",
+					component: Camera,
+				},
+				{
+					path: "ticketList",
+					name: "AdminTicketList",
+					component: AdminTicketList,
 				},
 			],
 		},
