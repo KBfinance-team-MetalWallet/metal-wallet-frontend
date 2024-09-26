@@ -1,11 +1,11 @@
 <template>
-	<!-- wrapper -->
+	<!-- 카드 전체를 감싸는 wrapper -->
 	<div
 		class="card-wrapper"
 		@touchstart="handleTouchStart"
 		@touchend="handleTouchEnd"
 	>
-		<!-- 카드 루프 -->
+		<!-- 카드들을 루프 돌면서 렌더링 -->
 		<div
 			v-for="(card, index) in cards"
 			:key="index"
@@ -15,20 +15,19 @@
 		>
 			<!-- 개별 카드 -->
 			<div :class="['card', { 'is-flipped': isFlipped && isTopCard(index) }]">
-				<!-- 앞면 -->
+				<!-- 카드 앞면 -->
 				<div class="front">
 					<!-- 포스터 이미지 -->
-					<!-- TODO: 투명도를 주면 뒤 포스터가 보임 / :style="{ opacity: card.isUsed ? 0.7 : 1 }" -->
-
+					<!-- TODO: :style="{ opacity: card.isUsed ? 0.7 : 1 }" -->
 					<img :src="card.imageUrl" :alt="'Card Image ' + index" />
-					<!-- 사용했다면 USED 이미지 생성 -->
+					<!-- 사용된 카드 표시 -->
 					<img
 						v-if="card.isUsed"
 						class="usedMark"
 						src="@/assets/ticket/used_image.png"
 					/>
 				</div>
-				<!-- 뒷면 -->
+				<!-- 카드 뒷면 -->
 				<div class="back qr-side">
 					<!-- 카운트다운 타이머 -->
 					<p class="QRCount">
@@ -37,16 +36,21 @@
 							class="refresh_cycle"
 							src="@/assets/ticket/refresh_cycle.svg"
 							alt="refresh_cycle SVG"
+							@click.stop="resetCountdown"
 						/>
 					</p>
 
-					<!-- QR-Frame -->
+					<!-- QR 코드 프레임 -->
 					<img
 						src="@/assets/qr/QRFrame.png"
 						:alt="'QR Frame ' + index"
 						class="QRFrameImg"
 					/>
+
+					<!-- QR 코드 이미지 또는 만료 메시지 -->
+					<img v-if="qrCodeDataUrl" :src="qrCodeDataUrl" class="QRImg" />
 					<!-- QR 코드가 없을 때 만료 메시지 표시 -->
+					<div v-else class="qr-expired-message">QR 코드가 만료되었습니다.</div>
 				</div>
 			</div>
 		</div>
@@ -61,7 +65,7 @@
 		name: "TicketCard",
 		props: {
 			cards: Array, // 부모 컴포넌트에서 전달된 카드 배열
-			currentCard: Number, // 부모 컴포넌트에서 전달된 현재 카드
+			currentCard: Number, // 부모 컴포넌트에서 전달된 현재 카드 인덱스
 		},
 		emits: ["update:currentCard"], // 부모에게 currentCard 업데이트 이벤트 방출
 
@@ -70,12 +74,14 @@
 			const touchStartX = ref(0);
 			const touchEndX = ref(0);
 			const isFlipped = ref(false);
+			const qrCodeDataUrl = ref(""); // QR 코드의 데이터 URL을 저장
 
 			// 카운트다운 타이머 변수
-			const countdown = ref(40); // Countdown starts from 40 seconds
-			let timer = null; // To store the interval ID
+			const countdown = ref(40); // 카운트다운 시작 시간 (40초)
+			const tokenDuration = 40; // 토큰의 유효 기간 (40초)
+			let timer = null; // 타이머 ID 저장 변수
 
-			// 카운트다운 시간 형식 변경mm:ss
+			// 카운트다운 시간을 mm:ss 형식으로 변환하는 계산 속성
 			const formattedCountdown = computed(() => {
 				const minutes = String(Math.floor(countdown.value / 60)).padStart(
 					2,
@@ -85,9 +91,9 @@
 				return `${minutes}:${seconds}`;
 			});
 
-			// 카운트다운 종료 시 로컬 스토리지에서 QR 토큰 삭제 및 QR 코드 무효화
+			// 카운트다운 타이머 시작 함수
 			const startCountdown = () => {
-				// 중복 타이머 실행 방지
+				// 이미 타이머가 실행 중이면 중복 실행 방지
 				if (timer) return;
 
 				timer = setInterval(() => {
@@ -96,25 +102,45 @@
 					} else {
 						clearInterval(timer);
 						timer = null;
+						clearQrToken(); // QR 토큰 삭제
+						invalidateQrCode(); // QR 코드 무효화 처리
 					}
 				}, 1000);
 			};
 
-			// Clear the countdown timer
+			// 카운트다운 타이머 초기화 함수
 			const clearCountdown = () => {
 				if (timer) {
 					clearInterval(timer);
 					timer = null;
 				}
-				countdown.value = 40; // Reset countdown
+				countdown.value = tokenDuration; // 카운트다운 시간 초기화
 			};
 
-			// 카드 이동 로직
+			// **새로 추가된 resetCountdown 함수**
+			const resetCountdown = () => {
+				clearCountdown(); // 기존 타이머 초기화
+				startCountdown(); // 타이머 재시작
+				// QR 토큰은 유지되므로 추가 작업은 필요 없습니다.
+			};
+
+			// QR 토큰 삭제 함수
+			const clearQrToken = () => {
+				localStorage.removeItem("qrToken");
+			};
+
+			// QR 코드 무효화 함수
+			const invalidateQrCode = () => {
+				qrCodeDataUrl.value = ""; // QR 코드 데이터 초기화
+				// 추가로 UI 업데이트를 통해 QR 코드가 만료되었음을 표시할 수 있습니다.
+			};
+
+			// 터치 시작 시 X 좌표 저장
 			const handleTouchStart = (event) => {
 				touchStartX.value = event.touches[0].clientX;
 			};
 
-			// 카드 이동 시 카운트다운 초기화
+			// 터치 종료 시 카드 이동 처리 및 타이머, 토큰 초기화
 			const handleTouchEnd = (event) => {
 				touchEndX.value = event.changedTouches[0].clientX;
 				const diffX = touchEndX.value - touchStartX.value;
@@ -122,23 +148,62 @@
 					ticketStore.prevCard();
 					isFlipped.value = false;
 					clearCountdown();
+					clearQrToken(); // QR 토큰 삭제
+					invalidateQrCode(); // QR 코드 무효화
 				} else if (diffX < -50) {
 					ticketStore.nextCard();
 					isFlipped.value = false;
 					clearCountdown();
+					clearQrToken(); // QR 토큰 삭제
+					invalidateQrCode(); // QR 코드 무효화
 				}
 			};
 
-			// 카드 회전 로직 (flip)
-			const flipCard = (isUsed) => {
-				if (isUsed) return;
+			// 카드 뒤집기 함수
+			const flipCard = async (isUsed) => {
+				if (isUsed) return; // 사용된 티켓이면 뒤집기 불가
 				isFlipped.value = !isFlipped.value;
 
 				if (isFlipped.value) {
-					startCountdown();
+					await fetchQrToken(); // QR 토큰 받아오기
+					startCountdown(); // 카운트다운 시작
 				} else {
-					clearCountdown();
+					clearCountdown(); // 카운트다운 초기화
+					clearQrToken(); // QR 토큰 삭제
+					invalidateQrCode(); // QR 코드 무효화
 				}
+			};
+
+			// QR 토큰 받아오는 함수 (목업 데이터 사용)
+			const fetchQrToken = async () => {
+				try {
+					// 서버 없이 목업 데이터를 사용하여 QR 토큰 생성
+					const mockQrToken = `MOCK_TOKEN_${Date.now()}`; // 현재 시간 기반 임시 토큰
+
+					// 로컬 스토리지에 QR 토큰 저장
+					localStorage.setItem("qrToken", mockQrToken);
+
+					// QR 코드 업데이트
+					updateQrCode(mockQrToken);
+				} catch (error) {
+					console.error("Error fetching QR token:", error);
+					// 에러 처리: 사용자에게 알림 또는 기본 동작 수행
+				}
+			};
+
+			// QR 코드 업데이트 함수
+			const updateQrCode = (qrToken) => {
+				// QR 코드를 생성하는 로직 구현
+				// 실제로는 QR 코드 생성 라이브러리를 사용하여 데이터 URL을 생성해야 합니다.
+
+				// 여기서는 목업 처리를 위해 임의의 이미지 URL을 사용합니다.
+				qrCodeDataUrl.value = "https://via.placeholder.com/150";
+
+				// 실제 QR 코드 생성 예시 (qrcode 라이브러리 사용 시):
+				// import QRCode from 'qrcode';
+				// QRCode.toDataURL(qrToken).then(url => {
+				//   qrCodeDataUrl.value = url;
+				// });
 			};
 
 			// 현재 가장 위에 있는 카드인지 확인하는 함수
@@ -149,6 +214,7 @@
 				return offset === 2; // offset이 2인 카드가 z-index가 가장 높음
 			};
 
+			// 카드의 스타일을 동적으로 계산하는 함수
 			const cardStyle = (index) => {
 				const offset =
 					(index - ticketStore.currentCard + ticketStore.cards.length) %
@@ -161,9 +227,10 @@
 				return { zIndex, opacity, transform };
 			};
 
-			// Clean up when component is unmounted
+			// 컴포넌트 언마운트 시 타이머 및 토큰 정리
 			onUnmounted(() => {
 				clearCountdown();
+				clearQrToken();
 			});
 
 			return {
@@ -175,12 +242,15 @@
 				ticketStore,
 				isTopCard,
 				formattedCountdown,
+				qrCodeDataUrl,
+				resetCountdown, // 반환 객체에 추가
 			};
 		},
 	});
 </script>
 
 <style scoped>
+	/* 카드 전체를 감싸는 wrapper 스타일 */
 	.card-wrapper {
 		display: flex;
 		justify-content: center;
@@ -194,6 +264,7 @@
 		cursor: pointer;
 	}
 
+	/* 개별 카드 컨테이너 스타일 */
 	.card-container {
 		position: absolute;
 		width: 200px;
@@ -202,6 +273,7 @@
 		transition: all 0.5s ease;
 	}
 
+	/* 카드 스타일 */
 	.card {
 		width: 100%;
 		height: 100%;
@@ -210,10 +282,12 @@
 		transition: transform 0.8s;
 	}
 
+	/* 카드가 뒤집혔을 때의 스타일 */
 	.card.is-flipped {
 		transform: rotateY(180deg);
 	}
 
+	/* 카드 앞면 스타일 */
 	.front {
 		position: absolute;
 		width: 100%;
@@ -224,6 +298,7 @@
 		z-index: 2;
 	}
 
+	/* 카드 뒷면 스타일 */
 	.back {
 		display: flex;
 		flex-direction: column;
@@ -239,7 +314,7 @@
 		transform: rotateY(180deg);
 	}
 
-	/* usedImg */
+	/* 사용된 카드 표시 스타일 */
 	.usedMark {
 		position: absolute;
 		left: 0;
@@ -261,25 +336,37 @@
 		font-size: 24px;
 		font-weight: bold;
 	}
+
+	/* 리프레시 아이콘 스타일 */
 	.refresh_cycle {
 		position: absolute;
 		left: 80px;
 		top: 10px;
 		width: 20px;
 	}
+
+	/* QR 코드 이미지 스타일 */
 	.QRImg {
 		position: absolute;
-		left: 0;
+		width: 150px;
+		height: 150px;
+		margin-top: 50px;
 	}
 
-	.qr-side {
+	/* QR 코드 만료 메시지 스타일 */
+	.qr-expired-message {
+		/* margin-top: 50px; */
+		color: red;
+		font-weight: bold;
 	}
 
+	/* QR 코드 프레임 이미지 스타일 */
 	.QRFrameImg {
 		border: 1px dotted grey;
 		width: 100%;
 	}
 
+	/* 이미지 스타일 */
 	img {
 		width: 100%;
 		height: auto;
