@@ -14,7 +14,9 @@ import MyTicketList from "@/pages/mypages/MyTicketList.vue";
 
 import Admin from "@/pages/admin/Admin.vue";
 import Camera from "@/pages/admin/QRCamera.vue";
-import AdminTicketList from "@/pages/admin/AdminTicketList.vue";
+import AdminTicketList from "@/pages/admin/AdminTicketList.vue"
+
+import SessionComplete from "../pages/SessionComplete.vue";
 
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
@@ -101,6 +103,18 @@ const router = createRouter({
 					path: "ticketList",
 					name: "AdminTicketList",
 					component: AdminTicketList,
+				},
+			],
+		},
+		{
+			path: "/",
+			name: "User",
+			redirect: "/user",
+			children: [
+				{
+					path: "session-complete",
+					name: "SessionComplete",
+					component: SessionComplete,
 				},
 			],
 		},
