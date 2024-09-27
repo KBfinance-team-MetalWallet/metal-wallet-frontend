@@ -5,7 +5,7 @@
             <div :class="$style.horizontalborderWrapper">
                 <div :class="$style.horizontalborder1">
                     <b :class="$style.label">이메일</b>
-                    <input v-model="emailPrefix" type="email" :class="$style.input" placeholder="이메일을 입력해주세요."/>
+                    <input v-model="emailPrefix" type="email" :class="$style.input" placeholder="이메일을 입력해주세요." />
                     <select v-model="selectedEmailDomain" :class="$style.select" @change="updateEmail">
                         <option value="">직접입력</option>
                         <option v-for="emailDomain in predefinedEmails" :key="emailDomain" :value="emailDomain">
@@ -17,11 +17,13 @@
             <div :class="$style.horizontalborderWrapper">
                 <div :class="$style.horizontalborder1">
                     <b :class="$style.label">비밀번호</b>
-                    <input v-model="formData.password" type="password" :class="$style.input1" placeholder="비밀번호를 입력해주세요."/>
+                    <input v-model="formData.password" type="password" :class="$style.input1"
+                        placeholder="비밀번호를 입력해주세요." />
                 </div>
             </div>
         </div>
-        <div :class="$style.button1" :style="{ backgroundColor: isFormValid ? '#C54966' : '#CCCCCC'}" :disabled="!isFormValid" @click="login">
+        <div :class="$style.button1" :style="{ backgroundColor: isFormValid ? '#C54966' : '#CCCCCC' }"
+            :disabled="!isFormValid" @click="login">
             <b :class="$style.b1">로그인</b>
         </div>
     </div>
@@ -62,14 +64,14 @@ export default defineComponent({
     },
     methods: {
         updateEmail() {
-            if(this.selectedEmailDomain) {
+            if (this.selectedEmailDomain) {
                 this.formData.email = `${this.emailPrefix}${this.selectedEmailDomain}`;
             } else {
                 this.formData.email = this.emailPrefix;
             }
         },
         async login() {
-            if(!this.isFormValid) {
+            if (!this.isFormValid) {
                 alert('이메일과 비밀번호를 입력해주세요.');
                 return;
             }

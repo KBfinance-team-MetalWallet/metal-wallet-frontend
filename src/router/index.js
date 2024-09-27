@@ -14,7 +14,11 @@ import MyTicketList from "@/pages/mypages/MyTicketList.vue";
 
 import Admin from "@/pages/admin/Admin.vue";
 import Camera from "@/pages/admin/QRCamera.vue";
+import AdminTicketList from "@/pages/admin/AdminTicketList.vue"
+
+import SessionComplete from "../pages/SessionComplete.vue";
 import AdminTicketList from "@/pages/admin/AdminTicketList.vue";
+import SeatSelectionPage from "@/pages/booking/SeatSelectionPage.vue";
 
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
@@ -31,7 +35,7 @@ const router = createRouter({
 				{
 					path: "login",
 					name: "login",
-					component: LoginForm
+					component: LoginForm,
 				},
 				{
 					path: "signup",
@@ -101,6 +105,26 @@ const router = createRouter({
 					path: "ticketList",
 					name: "AdminTicketList",
 					component: AdminTicketList,
+				},
+			],
+		},
+		{
+			path: "/",
+			name: "User",
+			redirect: "/user",
+			children: [
+				{
+					path: "session-complete",
+					name: "SessionComplete",
+					component: SessionComplete,
+			path: "/booking",
+			name: "Booking",
+			redirect: "/booking/seats",
+			children: [
+				{
+					path: "seats",
+					name: "seats",
+					component: SeatSelectionPage,
 				},
 			],
 		},
