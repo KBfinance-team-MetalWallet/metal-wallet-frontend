@@ -88,15 +88,25 @@ export default defineComponent({
     // 스캔된 QR 코드 데이터를 서버로 전송하는 함수
     const sendScannedData = async (scannedData: string) => {
       try {
-        const response = await axios.post('/api/qr/scan', { scannedData });
+        // JSON 데이터를 생성: scannedData는 qrBytes로 전달
+        const requestData = {
+          token: "someEncryptedToken", // 실제 토큰 데이터를 여기에 추가하세요
+          qrBytes: scannedData, // 스캔된 QR 코드 데이터
+          second: 30 // 임의의 값으로 설정, 필요에 따라 수정
+        };
+
+        // PUT 요청으로 '/tickets/use' 엔드포인트로 데이터 전송
+        const response = await axios.put('/tickets/use', requestData);
+
         console.log('서버 응답:', response.data);
 
-        if (response.data.valid) {
-          // 티켓이 유효하면 다음 페이지로 이동
-          router.push("/next-page"); // 원하는 경로로 대체하세요
+        if (response.data) {
+          // 서버 응답에 따라 유효한 티켓일 경우 처리
+          alert("티켓이 확인되었습니다.");
+          router.push("/admin/admin"); // 유효한 티켓이면 다음 페이지로 이동
         } else {
           alert("유효하지 않은 티켓입니다. 다시 시도해주세요.");
-          scanning.value = true; // 스캔 재개
+          scanning.value = true; // 유효하지 않으면 스캔을 재개
         }
       } catch (error) {
         console.error('서버 요청 중 오류 발생:', error);
