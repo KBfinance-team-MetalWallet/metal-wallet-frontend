@@ -6,7 +6,7 @@ import PasswordInput from "@/pages/login/PasswordInput.vue";
 import TermsAgreement from "@/pages/login/TermsAgreement.vue";
 import WelcomeSignup from "@/components/login/WelcomeSignup.vue";
 import LoginAlert from "@/components/login/LoginAlert.vue";
-import LoginForm from "../pages/login/LoginForm.vue";
+import LoginForm from "@/pages/login/LoginForm.vue";
 
 import MyPage from "@/pages/mypages/MyPage.vue";
 import TicketStorage from "@/pages/mypages/TicketStorage.vue";
@@ -15,6 +15,8 @@ import MyTicketList from "@/pages/mypages/MyTicketList.vue";
 import Admin from "@/pages/admin/Admin.vue";
 import Camera from "@/pages/admin/QRCamera.vue";
 import AdminTicketList from "@/pages/admin/AdminTicketList.vue";
+
+import SessionComplete from "@/pages/SessionComplete.vue";
 import SeatSelectionPage from "@/pages/booking/SeatSelectionPage.vue";
 
 const router = createRouter({
@@ -102,6 +104,18 @@ const router = createRouter({
 					path: "ticketList",
 					name: "AdminTicketList",
 					component: AdminTicketList,
+				},
+			],
+		},
+		{
+			path: "/",
+			name: "User",
+			redirect: "/user",
+			children: [
+				{
+					path: "session-complete",
+					name: "SessionComplete",
+					component: SessionComplete,
 				},
 			],
 		},
