@@ -16,6 +16,9 @@ import Admin from "@/pages/admin/Admin.vue";
 import Camera from "@/pages/admin/QRCamera.vue";
 import AdminTicketList from "@/pages/admin/AdminTicketList.vue";
 
+import SessionComplete from "../pages/SessionComplete.vue";
+import AdminTicketList from "@/pages/admin/AdminTicketList.vue";
+
 import SessionComplete from "@/pages/SessionComplete.vue";
 import SeatSelectionPage from "@/pages/booking/SeatSelectionPage.vue";
 
