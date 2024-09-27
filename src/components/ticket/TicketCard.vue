@@ -77,8 +77,10 @@
 		},
 		emits: ["update:currentCard"], // 부모에게 currentCard 업데이트 이벤트 방출
 
-		setup() {
+		setup(props) {
 			const ticketStore = useTicketStore();
+			const cards = props.cards; // props에서 cards를 가져옴
+			const currentCard = props.currentCard; // 필요 시 사용
 			const touchStartX = ref(0);
 			const touchEndX = ref(0);
 			const isFlipped = ref(false);
