@@ -10,7 +10,7 @@
 			v-for="(card, index) in cards"
 			:key="index"
 			:style="cardStyle(index)"
-			@click="isTopCard(index) ? flipCard(card.isUsed) : null"
+			@click="isTopCard(index) ? flipCard(card.isUsed, card) : null"
 			class="card-container"
 		>
 			<!-- 개별 카드 -->
@@ -19,6 +19,14 @@
 				<div class="front">
 					<!-- 포스터 이미지 -->
 					<img :src="card.imageUrl" :alt="'Card Image ' + index" />
+					<p
+						:class="
+							card.isUsed
+								? ['Opacity', 'PosterOpacity_false']
+								: ['Opacity', 'PosterOpacity_true']
+						"
+					></p>
+
 					<!-- 사용된 카드 표시 -->
 					<img
 						v-if="card.isUsed"
@@ -35,7 +43,7 @@
 							class="refresh_cycle"
 							src="@/assets/ticket/refresh_cycle.svg"
 							alt="refresh_cycle SVG"
-							@click.stop="resetCountdown"
+							@click.stop="cycleResetCountdown"
 						/>
 					</p>
 
@@ -45,8 +53,8 @@
 					<div v-if="isQrCodeExpired" class="qr-expired-message">
 						<img
 							class="cycle_end_refresh"
-							src="@/assets/ticket/refresh_cycle.svg"
-							alt="refresh_cycle SVG"
+							src="@/assets/ticket/refresh_end_cycle.svg"
+							alt="refresh_end_cycle SVG"
 							@click.stop="refreshAfterExpiry"
 						/>
 					</div>
@@ -58,7 +66,8 @@
 
 <script>
 	import { useTicketStore } from "@/stores/tickets";
-	import { computed, defineComponent, onUnmounted, ref } from "vue";
+	import axios from "axios"; // 이 줄을 추가하세요
+	import { computed, defineComponent, ref } from "vue";
 
 	export default defineComponent({
 		name: "TicketCard",
@@ -78,7 +87,7 @@
 			let canReset = ref(true); // 2초간 재호출을 막는 플래그
 
 			// 카운트다운 타이머 변수
-			const tokenDuration = 5; // 토큰의 유효 기간 (40초)
+			const tokenDuration = 40; // 토큰의 유효 기간 (40초)
 			const countdown = ref(tokenDuration); // 카운트다운 시작 시간 (40초)
 			let timer = null; // 타이머 ID 저장 변수
 
@@ -128,7 +137,7 @@
 				}, 2000); // 2초 동안 다시 클릭할 수 없게 함
 			};
 
-			const resetCountdown = () => {
+			const cycleResetCountdown = () => {
 				if (!canReset.value) return; // 2초 안에 호출 방지
 
 				if (!localStorage.getItem("qrToken")) {
@@ -182,48 +191,66 @@
 			};
 
 			// 카드 뒤집기 함수
-			const flipCard = async (isUsed) => {
-				if (!canReset.value) return; // 2초 안에 화면 회전 방지
+			const flipCard = async (isUsed, card) => {
+				if (!canReset.value) return;
 
-				if (isUsed) return; // 사용된 티켓이면 뒤집기 불가
+				if (isUsed) return;
 				isFlipped.value = !isFlipped.value;
 
 				if (isFlipped.value) {
-					await fetchQrToken(); // QR 토큰 받아오기
-					startCountdown(); // 카운트다운 시작
+					await fetchQrToken(card); // card 객체를 전달하여 티켓 ID 사용
+					startCountdown();
 				} else {
-					clearCountdown(); // 카운트다운 초기화
-					clearQrToken(); // QR 토큰 삭제
-					isQrCodeExpired.value = false; // 만료 상태 초기화
+					clearCountdown();
+					clearQrToken();
+					isQrCodeExpired.value = false;
 
-					// 3초 후 QR 코드 이미지 제거
 					setTimeout(() => {
-						qrCodeDataUrl.value = ""; // QR 코드 이미지 제거
+						qrCodeDataUrl.value = "";
 					}, 3000);
 				}
-				// 화면 회전 제한을 위한 설정
+
 				canReset.value = false;
 				setTimeout(() => {
-					canReset.value = true; // 2초 후 다시 화면 회전 가능
-				}, 2000); // 2초 텀을 줌
+					canReset.value = true;
+				}, 2000);
 			};
 
-			// QR 토큰 받아오는 함수 (목업 데이터 사용)
-			const fetchQrToken = async () => {
+			// QR 토큰 받아오는 함수
+			const fetchQrToken = async (card) => {
 				try {
-					// 서버 없이 목업 데이터를 사용하여 QR 토큰 생성
-					const mockQrToken = `MOCK_TOKEN_${Date.now()}`; // 현재 시간 기반 임시 토큰
+					const ticketId = card.id; // 티켓 ID를 card 객체에서 가져옴
+					const token = localStorage.getItem("jwtToken"); // JWT 토큰 가져오기
+					console.log(token, "token 가져오기 성공");
+					const response = await axios.post(
+						`http://localhost:8080/api/tickets/${ticketId}/qr`,
+						{},
+						{
+							headers: {
+								"Content-Type": "application/json",
+								Authorization: `Bearer ${token}`,
+							},
+						}
+					);
 
-					// 로컬 스토리지에 QR 토큰 저장
-					localStorage.setItem("qrToken", mockQrToken);
+					const { qrBytes, token: qrToken, second } = response.data;
 
-					// QR 코드 업데이트
-					updateQrCode(mockQrToken);
+					// qrBytes (byte array)를 Uint8Array로 변환
+					const byteArray = new Uint8Array(qrBytes);
+					const blob = new Blob([byteArray], { type: "image/png" });
+					const url = URL.createObjectURL(blob);
+
+					// QR 코드 데이터 URL 업데이트
+					qrCodeDataUrl.value = url;
+
+					// 로컬 스토리지에 QR 토큰 저장 (필요하다면)
+					localStorage.setItem("qrToken", qrToken);
+
+					// 카운트다운 시간을 서버에서 받은 값으로 설정
+					countdown.value = second;
 				} catch (error) {
 					console.error("Error fetching QR token:", error);
 					throw new Error("QR 토큰 발급에 실패했습니다.");
-
-					// 에러 처리: 사용자에게 알림 또는 기본 동작 수행
 				}
 			};
 
@@ -303,7 +330,7 @@
 				isTopCard,
 				formattedCountdown,
 				qrCodeDataUrl,
-				resetCountdown,
+				cycleResetCountdown,
 				isQrCodeExpired, // 추가된 상태 반환
 				refreshAfterExpiry, // 추가된 함수 반환
 			};
@@ -357,7 +384,7 @@
 		backface-visibility: hidden;
 		top: 0;
 		left: 0;
-		z-index: 2;
+		/* z-index: 2; */
 	}
 
 	/* 카드 뒷면 스타일 */
@@ -383,23 +410,45 @@
 	.usedMark {
 		position: absolute;
 		left: 0;
-		color: white;
+		/* color: red; */
 		height: 100%;
 		padding: 5px;
 		border-radius: 20px;
 		object-fit: cover;
+		/* z-index: 10; */
 	}
 
 	/* 카운트다운 스타일 */
 	.QRCount {
 		position: absolute;
-		top: 8%;
+		top: 16%;
 		left: 50%;
 		transform: translateX(-50%);
 		z-index: 2;
 		color: black;
 		font-size: 24px;
 		font-weight: bold;
+	}
+
+	.Opacity {
+		position: absolute;
+		width: 200px;
+		height: 317px;
+		bottom: -17px;
+		border-radius: 24px;
+		/* border: 1px solid red; */
+	}
+
+	.PosterOpacity_false {
+		background-color: black;
+		opacity: 0.7;
+	}
+
+	.PosterOpacity_true {
+		display: none;
+		opacity: 0.7;
+		z-index: 3;
+		/* background-color: red; */
 	}
 
 	/* 리프레시 아이콘 스타일 */
@@ -409,12 +458,12 @@
 		top: 10px;
 		width: 20px;
 	}
+
 	.cycle_end_refresh {
 		position: absolute;
-		bottom: -720px;
+		bottom: -70px;
 		right: -52px;
 		width: 100px;
-		color: red;
 		z-index: 3;
 	}
 

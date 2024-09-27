@@ -12,6 +12,7 @@ import MyPage from "@/pages/mypages/MyPage.vue";
 import MyTicketList from "@/pages/mypages/MyTicketList.vue";
 import TicketStorage from "@/pages/mypages/TicketStorage.vue";
 import Ticket from "@/pages/Ticket.vue";
+
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
 	routes: [
@@ -24,6 +25,7 @@ const router = createRouter({
 			name: "ticket",
 			component: Ticket,
 		},
+
 		{
 			path: "/login",
 			name: "login",

@@ -1,5 +1,5 @@
 <template>
-	<div :class="$style.div">
+	<div :class="$style.ticketWrapper">
 		<MainHeader />
 		<!-- 포스터 영역 -->
 		<div :class="$style.ticketposter">
@@ -29,41 +29,41 @@
 </template>
 
 <script lang="js">
-									import Footer from "@/components/Footer.vue";
+																												import Footer from "@/components/Footer.vue";
 	import MainHeader from "@/components/MainHeader.vue";
 	import TicketCard from "@/components/ticket/TicketCard.vue";
 	import { useTicketStore } from "@/stores/tickets";
 	import { defineComponent, onMounted, toRefs } from "vue";
 
-							export default defineComponent({
-							name: "Ticket",
-							components: {
-							MainHeader,
-							Footer,
-							TicketCard,
-							},
-							setup() {
-							const ticketStore = useTicketStore();
-							const { cards, currentCard, fetchCards, prevCard } = toRefs(ticketStore); // Pinia 스토어에서 cards와 currentCard를 반응형으로 가져옴
+																										export default defineComponent({
+																										name: "Ticket",
+																										components: {
+																										MainHeader,
+																										Footer,
+																										TicketCard,
+																										},
+																										setup() {
+																										const ticketStore = useTicketStore();
+																										const { cards, currentCard, fetchCards, prevCard } = toRefs(ticketStore); // Pinia 스토어에서 cards와 currentCard를 반응형으로 가져옴
 
-							// 컴포넌트가 마운트되면 카드 데이터를 가져옵니다.
-							onMounted(() => {
-							ticketStore.fetchCards(); // 카드 데이터를 API에서 가져옴
-							});
+																										// 컴포넌트가 마운트되면 카드 데이터를 가져옵니다.
+																										onMounted(() => {
+																										ticketStore.fetchCards(); // 카드 데이터를 API에서 가져옴
+																										});
 
 
-							// 슬라이드 카드를 업데이트할 때 호출
-							const updateCurrentCard = (newIndex) => {
-							ticketStore.currentCard = newIndex; // Pinia 스토어의 currentCard 값을 업데이트
-							};
+																										// 슬라이드 카드를 업데이트할 때 호출
+																										const updateCurrentCard = (newIndex) => {
+																										ticketStore.currentCard = newIndex; // Pinia 스토어의 currentCard 값을 업데이트
+																										};
 
-							return {
-							cards,
-							currentCard,
-							updateCurrentCard,
-							};
-							},
-							});
+																										return {
+																										cards,
+																										currentCard,
+																										updateCurrentCard,
+																										};
+																										},
+																										});
 </script>
 
 <style module>
@@ -86,11 +86,7 @@
 		height: 24px;
 		overflow: hidden;
 	}
-	.b {
-		position: absolute;
-		top: 14px;
-		left: 43px;
-	}
+
 	.ticketposterChild {
 		position: absolute;
 		top: 326px;
@@ -137,7 +133,7 @@
 		text-align: center;
 		padding: 20px 30px;
 	}
-	.div {
+	.ticketWrapper {
 		display: flex;
 		justify-content: center;
 		width: 100%;
@@ -174,5 +170,9 @@
 		font-size: 16px;
 		color: #000;
 		font-weight: 500;
+	}
+	/* 카드지갑 아이콘 색상 변경 문제로 인해 직접 적용 */
+	svg {
+		color: black;
 	}
 </style>
