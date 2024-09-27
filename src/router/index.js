@@ -117,6 +117,10 @@ const router = createRouter({
 					path: "session-complete",
 					name: "SessionComplete",
 					component: SessionComplete,
+				}
+			]
+		},
+		{
 			path: "/booking",
 			name: "Booking",
 			redirect: "/booking/seats",
