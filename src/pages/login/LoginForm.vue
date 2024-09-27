@@ -29,10 +29,10 @@
     </div>
 </template>
 <script lang="ts">
-import { defineComponent } from 'vue'
-import MainHeader from '../../components/MainHeader.vue';
+import { useRouter } from 'vue-router';
+import { defineComponent } from 'vue';
+import MainHeader from '@/components/MainHeader.vue';
 import axios from 'axios';
-
 
 export default defineComponent({
     name: "SignupForm",
@@ -75,6 +75,7 @@ export default defineComponent({
                 alert('이메일과 비밀번호를 입력해주세요.');
                 return;
             }
+
             try {
                 const response = await axios.post('http://localhost:8080/api/members/login', this.formData);
                 console.log('Login successful:', response.data);
@@ -85,8 +86,18 @@ export default defineComponent({
                 } else {
                     console.error('Access token not found in response');
                 }
+
+                // 사용자의 이메일이 admin@gmail.com인 경우 /admin/admin으로 리다이렉트
+                if (this.formData.email === 'admin@gmail.com') {
+                    this.$router.push('/admin/admin');
+                } else {
+                    // 일반 사용자는 로그인 성공 후 다른 페이지로 리다이렉트
+                    this.$router.push('/home'); // TODO : home 구현 필요.
+                }
+
             } catch (error) {
                 console.error('Error login member:', error.response.data);
+                alert('로그인 중 오류가 발생했습니다. 다시 시도해주세요.');
             }
         }
     },
@@ -98,7 +109,7 @@ export default defineComponent({
             );
         }
     }
-})
+});
 </script>
 <style module>
 .solarwalletOutlineIcon {
