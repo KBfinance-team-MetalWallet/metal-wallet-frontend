@@ -67,7 +67,7 @@
 <script>
 	import { useTicketStore } from "@/stores/tickets";
 	import axios from "axios"; // 이 줄을 추가하세요
-	import { computed, defineComponent, ref } from "vue";
+	import { computed, defineComponent, onUnmounted, ref } from "vue";
 
 	export default defineComponent({
 		name: "TicketCard",
@@ -85,9 +85,10 @@
 			const qrCodeDataUrl = ref(""); // QR 코드의 데이터 URL을 저장
 			const isQrCodeExpired = ref(false); // QR 코드 만료 상태
 			let canReset = ref(true); // 2초간 재호출을 막는 플래그
-
+			const responseDataSecond = ref(0);
+			console.log(responseDataSecond.value);
 			// 카운트다운 타이머 변수
-			const tokenDuration = 40; // 토큰의 유효 기간 (40초)
+			const tokenDuration = responseDataSecond.value; // 토큰의 유효 기간 (40초)
 			const countdown = ref(tokenDuration); // 카운트다운 시작 시간 (40초)
 			let timer = null; // 타이머 ID 저장 변수
 
@@ -139,12 +140,12 @@
 
 			const cycleResetCountdown = () => {
 				if (!canReset.value) return; // 2초 안에 호출 방지
-
 				if (!localStorage.getItem("qrToken")) {
 					return; // QR 토큰이 없으면 타이머를 리셋하지 않음
 				}
 
 				clearCountdown(); // 기존 타이머 초기화
+				countdown.value = responseDataSecond.value;
 				startCountdown(); // 타이머 재시작
 				// QR 토큰은 유지되므로 추가 작업은 필요 없습니다.
 				canReset.value = false; // 호출 방지 설정
@@ -219,9 +220,21 @@
 			// QR 토큰 받아오는 함수
 			const fetchQrToken = async (card) => {
 				try {
+					console.log("featchQrToken 함수 시작");
+					if (!card || !card.id) {
+						console.error("Card 정보가 유효하지 않습니다: ", card);
+						return; // Card 정보가 유효하지 않으면 함수 종료
+					}
+
 					const ticketId = card.id; // 티켓 ID를 card 객체에서 가져옴
-					const token = localStorage.getItem("jwtToken"); // JWT 토큰 가져오기
+					const token = localStorage.getItem("accessToken"); // JWT 토큰 가져오기
+					if (!token) {
+						console.error("JWT 토큰이 없습니다.");
+						return; // 토큰이 없으면 함수 종료
+					}
+
 					console.log(token, "token 가져오기 성공");
+
 					const response = await axios.post(
 						`http://localhost:8080/api/tickets/${ticketId}/qr`,
 						{},
@@ -233,23 +246,30 @@
 						}
 					);
 
+					console.log("서버 응답 받음:", response.data);
+
 					const { qrBytes, token: qrToken, second } = response.data;
+					responseDataSecond.value = second;
 
 					// qrBytes (byte array)를 Uint8Array로 변환
 					const byteArray = new Uint8Array(qrBytes);
 					const blob = new Blob([byteArray], { type: "image/png" });
 					const url = URL.createObjectURL(blob);
+					console.log("QR Code Data URL:", qrCodeDataUrl.value);
 
 					// QR 코드 데이터 URL 업데이트
-					qrCodeDataUrl.value = url;
+					qrCodeDataUrl.value = `data:image/png;base64,${qrBytes}`;
+					console.log("QR 코드 URL 업데이트 완료", qrCodeDataUrl.value);
 
-					// 로컬 스토리지에 QR 토큰 저장 (필요하다면)
+					// 로컬 스토리지에 QR 토큰 저장
 					localStorage.setItem("qrToken", qrToken);
-
-					// 카운트다운 시간을 서버에서 받은 값으로 설정
 					countdown.value = second;
 				} catch (error) {
-					console.error("Error fetching QR token:", error);
+					console.error("QR 토큰 발급 중 오류 발생:", error.message);
+					console.error(
+						"상세 오류 정보:",
+						error.response ? error.response.data : error
+					);
 					throw new Error("QR 토큰 발급에 실패했습니다.");
 				}
 			};
@@ -270,21 +290,39 @@
 			};
 
 			const refreshAfterExpiry = async () => {
+				console.log("QR 코드 만료 후 새로운 QR 토큰 요청 시도");
+
 				// 2초 안에 다시 클릭할 수 없도록 제어
-				if (!canReset.value) return;
+				if (!canReset.value) {
+					console.log("2초 내 재시도 방지: 호출 차단");
+					return;
+				}
 
 				// 새로운 QR 토큰 발급
 				try {
-					await fetchQrToken(); // 새로운 QR 토큰 발급 및 UI 업데이트
+					console.log("현재 카드 인덱스:", ticketStore.currentCard); // 현재 카드 인덱스 로그
+					const topCard = cards[ticketStore.currentCard]; // 현재 카드 가져오기
+					console.log("현재 카드 정보:", topCard); // topCard 정보 로그
+
+					// topCard가 제대로 설정되지 않았다면 문제 발생 지점
+					if (!topCard) {
+						console.error("topCard 정보가 유효하지 않습니다.");
+						return;
+					}
+
+					await fetchQrToken(topCard); // 새로운 QR 토큰 발급 및 UI 업데이트
+					console.log("새로운 QR 토큰 발급 성공");
 				} catch (error) {
-					console.error("Error fetching new QR token:", error);
+					console.error("새로운 QR 토큰 발급 오류:", error);
 					return; // 에러 발생 시 함수 종료
 				}
 
 				// 타이머 초기화 및 재시작
 				clearCountdown(); // 기존 타이머 초기화
+				countdown.value = responseDataSecond.value;
 				startCountdown(); // 타이머 재시작
 				isQrCodeExpired.value = false; // 만료 상태 해제
+				console.log("타이머 재시작 및 QR 코드 만료 상태 해제");
 
 				// 클릭 방지를 위한 플래그 설정
 				canReset.value = false;
