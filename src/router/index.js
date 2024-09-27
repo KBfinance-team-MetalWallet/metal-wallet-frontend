@@ -13,6 +13,14 @@ import MyTicketList from "@/pages/mypages/MyTicketList.vue";
 import TicketStorage from "@/pages/mypages/TicketStorage.vue";
 import Ticket from "@/pages/Ticket.vue";
 
+import Admin from "@/pages/admin/Admin.vue";
+import Camera from "@/pages/admin/QRCamera.vue";
+import AdminTicketList from "@/pages/admin/AdminTicketList.vue"
+
+import SessionComplete from "../pages/SessionComplete.vue";
+import AdminTicketList from "@/pages/admin/AdminTicketList.vue";
+import SeatSelectionPage from "@/pages/booking/SeatSelectionPage.vue";
+
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
 	routes: [
@@ -82,6 +90,52 @@ const router = createRouter({
 					path: "my-ticket-list",
 					name: "myticketlist",
 					component: MyTicketList,
+				},
+			],
+		},
+		{
+			path: "/admin",
+			name: "Admin",
+			redirect: "/admin/admin",
+			children: [
+				{
+					path: "admin",
+					name: "Admin",
+					component: Admin,
+				},
+				{
+					path: "camera",
+					name: "Camera",
+					component: Camera,
+				},
+				{
+					path: "ticketList",
+					name: "AdminTicketList",
+					component: AdminTicketList,
+				},
+			],
+		},
+		{
+			path: "/",
+			name: "User",
+			redirect: "/user",
+			children: [
+				{
+					path: "session-complete",
+					name: "SessionComplete",
+					component: SessionComplete,
+				}
+			]
+		},
+		{
+			path: "/booking",
+			name: "Booking",
+			redirect: "/booking/seats",
+			children: [
+				{
+					path: "seats",
+					name: "seats",
+					component: SeatSelectionPage,
 				},
 			],
 		},

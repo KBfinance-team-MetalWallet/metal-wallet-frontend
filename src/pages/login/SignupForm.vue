@@ -3,45 +3,43 @@
         <MainHeader />
         <div :class="$style.groupParent">
             <div :class="$style.horizontalborderWrapper">
-                <div :class="$style.horizontalborder">
+                <div :class="$style.horizontalborder1">
                     <b :class="$style.label">이메일</b>
-                    <div :class="$style.div1">직접입력</div>
-                    <img :class="$style.icon" alt="" src="@/assets/login/dropdownIcon.svg" />
+                    <input v-model="emailPrefix" type="email" :class="$style.input" placeholder="이메일을 입력해주세요."/>
+                    <select v-model="selectedEmailDomain" :class="$style.select" @change="updateEmail">
+                        <option value="">직접입력</option>
+                        <option v-for="emailDomain in predefinedEmails" :key="emailDomain" :value="emailDomain">
+                            {{ emailDomain }}
+                        </option>
+                    </select>
                 </div>
             </div>
             <div :class="$style.horizontalborder1">
                 <b :class="$style.label">이름</b>
+                <input v-model="formData.name" type="text" :class="$style.input1" placeholder="이름을 입력해주세요."/>
             </div>
             <div :class="$style.horizontalborderWrapper">
                 <div :class="$style.horizontalborder1">
                     <b :class="$style.label">비밀번호</b>
-                    <div :class="$style.input1"></div>
+                    <input v-model="formData.password" type="password" :class="$style.input1" placeholder="비밀번호를 입력해주세요."/>
                 </div>
             </div>
             <div :class="$style.horizontalborderWrapper">
                 <div :class="$style.horizontalborder1">
                     <b :class="$style.label">비밀번호 확인</b>
-                    <div :class="$style.input1"></div>
+                    <input v-model="formData.confirmPassword" type="password" :class="$style.input1" placeholder="비밀번호를 다시 입력해주세요."/>
                 </div>
             </div>
             <div :class="$style.horizontalborder2">
                 <b :class="$style.label">휴대폰</b>
-                <div :class="$style.input">
-                    <div :class="$style.container">
-                        <div :class="$style.div2">010 1234 5678</div>
-                    </div>
-                </div>
+                <input v-model="formData.phone" type="tel" :class="$style.input" placeholder="010 1234 5678"/>
                 <div :class="$style.button">
                     <div :class="$style.div3">인증번호받기</div>
                 </div>
             </div>
             <div :class="$style.horizontalborder1">
                 <b :class="$style.label">인증 번호</b>
-                <div :class="$style.input1">
-                    <div :class="$style.container1">
-                        <div :class="$style.div2">인증번호를 입력하세요.</div>
-                    </div>
-                </div>
+                <input v-model="formData.verificationCode" :class="$style.input1" placeholder="인증 번호를 입력해주세요."/>
             </div>
         </div>
         <div :class="$style.smsParent">
@@ -55,7 +53,7 @@
             <p :class="$style.p">만 14세 미만 회원은 법정대리인(부모님) 동의를 받은 경우</p>
             <p :class="$style.p">만 회원가입이 가능합니다.</p>
         </div>
-        <div :class="$style.button1">
+        <div :class="$style.button1" :style="{ backgroundColor: isFormValid ? '#C54966' : '#CCCCCC'}" :disabled="!isFormValid" @click="handleRegister">
             <b :class="$style.b1">가입완료</b>
         </div>
         <div :class="$style.parent">
@@ -71,13 +69,82 @@
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue'
+import axios from 'axios';
 import MainHeader from '../../components/MainHeader.vue';
+import {useUserStore} from '../../stores/userStore';
 
 
 export default defineComponent({
     name: "SignupForm",
     components: {
         MainHeader,
+    },
+    data() {
+        return {
+            emailPrefix: '',
+            selectedEmailDomain: '',
+            formData: {
+                email: '',
+                password: '',
+                confirmPassword: '',
+                name: '',
+                phone: '',
+                verificationCode: ''
+            },
+            predefinedEmails: [
+                '@gmail.com',
+                '@naver.com',
+                '@daum.net'
+            ]
+        }
+    },
+    watch: {
+        emailPrefix() {
+            this.updateEmail();
+        },
+        selectedEmailDomain() {
+            this.updateEmail();
+        }
+    },
+    methods: {
+        updateEmail() {
+            if(this.selectedEmailDomain) {
+                this.formData.email = `${this.emailPrefix}${this.selectedEmailDomain}`;
+            } else {
+                this.formData.email = this.emailPrefix;
+            }
+        },
+        async handleRegister() {
+            if(this.formData.password !== this.formData.confirmPassword) {
+                alert('비밀번호가 일치하지 않습니다.');
+                return;
+            }
+
+            if(!this.isFormValid) {
+                alert('양식을 완전히 작성해야 가입할 수 있습니다.');
+                return;
+            }
+
+            // Pinia에 데이터 저장
+            const userStore = useUserStore();
+            userStore.setUserData(this.formData.name, this.formData.password, this.formData.email, this.formData.phone);
+
+            // PasswordInput.vue로 리디렉션
+            this.$router.push('/login/password');
+        }
+    },
+    computed: {
+        isFormValid() {
+            return (
+                this.formData.email &&
+                this.formData.name &&
+                this.formData.password &&
+                this.formData.confirmPassword &&
+                this.formData.password === this.formData.confirmPassword &&
+                this.formData.phone &&
+                this.formData.verificationCode
+            );
+        }
     }
 })</script>
 <style module>
@@ -168,14 +235,22 @@ export default defineComponent({
 
 .input {
     position: absolute;
-    width: calc(100% - 148.9px);
+    width: calc(100% - 240px);
     top: 10px;
-    right: 104.99px;
-    left: 43.91px;
+    right: 127px;
+    left: 113px;
     height: 30px;
     overflow: hidden;
-    font-size: 15px;
-    color: #ccc;
+    font-size: 14px;
+    color: #000;
+    background-color: transparent;
+    border: none;
+    outline: none;
+}
+.input::placeholder {
+    font-size: 12px;
+    color: #999;
+    opacity: 1; /* 투명도 */
 }
 
 .div3 {
@@ -217,14 +292,23 @@ export default defineComponent({
 
 .input1 {
     position: absolute;
-    width: calc(100% - 148.9px);
+    width: calc(100% - 123px);
     top: 10px;
-    right: -0.1px;
-    left: 149px;
+    right: 10px;
+    left: 113px;
     height: 30px;
     overflow: hidden;
-    font-size: 15px;
-    color: #ccc;
+    font-size: 14px;
+    color: #000;
+    background-color: transparent;
+    border: none;
+    outline: none;
+}
+
+.input1::placeholder {
+    font-size: 12px;
+    color: #999;
+    opacity: 1; /* 투명도 */
 }
 
 .groupParent {
@@ -355,5 +439,18 @@ export default defineComponent({
     font-size: 16px;
     color: #000;
     font-family: Roboto;
+}
+
+.select {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    height: 30px;
+    overflow: hidden;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    outline: none;
+    font-size: 15px;
 }
 </style>

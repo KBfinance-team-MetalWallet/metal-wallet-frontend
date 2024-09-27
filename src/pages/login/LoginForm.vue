@@ -3,20 +3,27 @@
         <MainHeader />
         <div :class="$style.groupParent">
             <div :class="$style.horizontalborderWrapper">
-                <div :class="$style.horizontalborder">
+                <div :class="$style.horizontalborder1">
                     <b :class="$style.label">이메일</b>
-                    <div :class="$style.div1">직접입력</div>
-                    <img :class="$style.icon" alt="" src="@/assets/login/dropdownIcon.svg" />
+                    <input v-model="emailPrefix" type="email" :class="$style.input" placeholder="이메일을 입력해주세요." />
+                    <select v-model="selectedEmailDomain" :class="$style.select" @change="updateEmail">
+                        <option value="">직접입력</option>
+                        <option v-for="emailDomain in predefinedEmails" :key="emailDomain" :value="emailDomain">
+                            {{ emailDomain }}
+                        </option>
+                    </select>
                 </div>
             </div>
             <div :class="$style.horizontalborderWrapper">
                 <div :class="$style.horizontalborder1">
                     <b :class="$style.label">비밀번호</b>
-                    <div :class="$style.input1"></div>
+                    <input v-model="formData.password" type="password" :class="$style.input1"
+                        placeholder="비밀번호를 입력해주세요." />
                 </div>
             </div>
         </div>
-        <div :class="$style.button1">
+        <div :class="$style.button1" :style="{ backgroundColor: isFormValid ? '#C54966' : '#CCCCCC' }"
+            :disabled="!isFormValid" @click="login">
             <b :class="$style.b1">로그인</b>
         </div>
     </div>
@@ -24,14 +31,75 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import MainHeader from '../../components/MainHeader.vue';
+import axios from 'axios';
 
 
 export default defineComponent({
     name: "SignupForm",
     components: {
         MainHeader,
+    },
+    data() {
+        return {
+            emailPrefix: '',
+            selectedEmailDomain: '',
+            formData: {
+                email: '',
+                password: ''
+            },
+            predefinedEmails: [
+                '@gmail.com',
+                '@naver.com',
+                '@daum.net'
+            ]
+        }
+    },
+    watch: {
+        emailPrefix() {
+            this.updateEmail();
+        },
+        selectedEmailDomain() {
+            this.updateEmail();
+        }
+    },
+    methods: {
+        updateEmail() {
+            if (this.selectedEmailDomain) {
+                this.formData.email = `${this.emailPrefix}${this.selectedEmailDomain}`;
+            } else {
+                this.formData.email = this.emailPrefix;
+            }
+        },
+        async login() {
+            if (!this.isFormValid) {
+                alert('이메일과 비밀번호를 입력해주세요.');
+                return;
+            }
+            try {
+                const response = await axios.post('http://localhost:8080/api/members/login', this.formData);
+                console.log('Login successful:', response.data);
+
+                // accessToken 로컬스토리지에 저장
+                if (response.data.accessToken) {
+                    localStorage.setItem('accessToken', response.data.accessToken);
+                } else {
+                    console.error('Access token not found in response');
+                }
+            } catch (error) {
+                console.error('Error login member:', error.response.data);
+            }
+        }
+    },
+    computed: {
+        isFormValid() {
+            return (
+                this.formData.email &&
+                this.formData.password
+            );
+        }
     }
-})</script>
+})
+</script>
 <style module>
 .solarwalletOutlineIcon {
     position: absolute;
@@ -120,14 +188,23 @@ export default defineComponent({
 
 .input {
     position: absolute;
-    width: calc(100% - 148.9px);
+    width: calc(100% - 240px);
     top: 10px;
-    right: 104.99px;
-    left: 43.91px;
+    right: 127px;
+    left: 113px;
     height: 30px;
     overflow: hidden;
-    font-size: 15px;
-    color: #ccc;
+    font-size: 14px;
+    color: #000;
+    background-color: transparent;
+    border: none;
+    outline: none;
+}
+
+.input::placeholder {
+    font-size: 12px;
+    color: #999;
+    opacity: 1;
 }
 
 .div3 {
@@ -169,14 +246,23 @@ export default defineComponent({
 
 .input1 {
     position: absolute;
-    width: calc(100% - 148.9px);
+    width: calc(100% - 123px);
     top: 10px;
-    right: -0.1px;
-    left: 149px;
+    right: 10px;
+    left: 113px;
     height: 30px;
     overflow: hidden;
-    font-size: 15px;
-    color: #ccc;
+    font-size: 14px;
+    color: #000;
+    background-color: transparent;
+    border: none;
+    outline: none;
+}
+
+.input1::placeholder {
+    font-size: 12px;
+    color: #999;
+    opacity: 1;
 }
 
 .groupParent {
@@ -307,5 +393,18 @@ export default defineComponent({
     font-size: 16px;
     color: #000;
     font-family: Roboto;
+}
+
+.select {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    height: 30px;
+    overflow: hidden;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    outline: none;
+    font-size: 15px;
 }
 </style>
