@@ -1,7 +1,6 @@
 <template>
   <div :class="$style.div">
-    <img :class="$style.solarwalletOutlineIcon" alt="" src="solar:wallet-outline.svg" />
-    <b :class="$style.b">강철지갑</b>
+    <MainHeader />
     <div :class="$style.image163" />
     <img :class="$style.imageIcon" alt="" src="@/assets/mascord.png" />
     <div :class="$style.child" />
@@ -19,10 +18,13 @@
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue'
-
+import MainHeader from '../components/MainHeader.vue';
 
 export default defineComponent({
   name: "SessionComplete",
+  components: {
+    MainHeader,
+  },
   methods: {
     goBack() {
       this.$router.back(); // 이전 페이지로 리다이렉트
@@ -68,8 +70,8 @@ export default defineComponent({
 .child {
   position: absolute;
   top: 401px;
-  left: 50%; /* 가로 기준 가운데 정렬 */
-  transform: translateX(-50%); /* 가운데로 정렬되도록 이동 */
+  left: 50%;
+  transform: translateX(-50%);
   border-radius: 50px;
   border: 5px solid #000;
   box-sizing: border-box;
@@ -89,13 +91,13 @@ export default defineComponent({
 .b1 {
   position: absolute;
   top: 463px;
-  left: 50%; /* 가로 기준 가운데 정렬 */
-  transform: translateX(-50%); /* 가운데로 정렬되도록 이동 */
+  left: 50%;
+  transform: translateX(-50%);
   display: inline-block;
   color: #000;
   text-align: center;
   width: 237px;
-  font-size: 18px; /* 글자 크기를 기존보다 조금 줄임 */
+  font-size: 18px;
 }
 
 .groupChild {
@@ -110,19 +112,17 @@ export default defineComponent({
   background-color: #c54966;
 }
 
-.b2 {
-  position: absolute;
-  top: calc(50% - 11.5px);
-  left: calc(50% - 37px);
-}
-
 .rectangleParent {
   position: absolute;
   height: 100%;
   width: 95%;
   top: 0%;
-  left: 50%; /* 가로 기준 가운데 정렬 */
-  transform: translateX(-50%); /* 가운데로 정렬되도록 이동 */
+  left: 50%;
+  transform: translateX(-50%);
+
+  display: flex;
+  justify-content: center; /* 수평 중앙 정렬 */
+  align-items: center; /* 수직 중앙 정렬 */
 }
 
 
@@ -142,24 +142,20 @@ export default defineComponent({
   height: 812px;
   overflow: hidden;
   text-align: left;
-  font-size: 20px;
   color: #6e6e6e;
   font-family: Roboto;
-  
-  /* Flexbox를 사용한 가운데 정렬 */
   display: flex;
-  flex-direction: column; /* 하위 요소들을 수직으로 쌓음 */
-  justify-content: center; /* 세로 가운데 정렬 */
-  align-items: center; /* 가로 가운데 정렬 */
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .div_7ni70_185 {
-  /* Flexbox를 사용하여 하위 요소들을 가로 및 세로 가운데 정렬 */
   display: flex;
-  flex-direction: column; /* 하위 요소들을 수직으로 배치 */
-  justify-content: center; /* 세로 가운데 정렬 */
-  align-items: center; /* 가로 가운데 정렬 */
-  width: 100%; /* 부모 요소에 맞춰 가로 폭을 채움 */
-  height: 100%; /* 필요 시 세로 높이도 설정 */
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
 }
 </style>
