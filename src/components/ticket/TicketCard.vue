@@ -379,6 +379,9 @@
 </script>
 
 <style scoped>
+	:focus {
+		outline: none;
+	}
 	/* 카드 전체를 감싸는 wrapper 스타일 */
 	.card-wrapper {
 		display: flex;
