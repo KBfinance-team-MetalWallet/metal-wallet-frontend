@@ -12,6 +12,7 @@ import Home from "@/pages/Home.vue";
 import MyPage from "@/pages/mypages/MyPage.vue";
 import MyTicketList from "@/pages/mypages/MyTicketList.vue";
 import TicketStorage from "@/pages/mypages/TicketStorage.vue";
+import Test from "@/pages/Test.vue";
 import Ticket from "@/pages/ticket/Ticket.vue";
 
 import SeatSelectionPage from "@/pages/booking/SeatSelectionPage.vue";
@@ -29,6 +30,11 @@ const router = createRouter({
 			path: "/ticket",
 			name: "ticket",
 			component: Ticket,
+		},
+		{
+			path: "/test",
+			name: "test",
+			component: Test,
 		},
 
 		{
