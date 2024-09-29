@@ -8,10 +8,11 @@ import SignupForm from "@/pages/login/SignupForm.vue";
 import TermsAgreement from "@/pages/login/TermsAgreement.vue";
 import LoginForm from "../pages/login/LoginForm.vue";
 
+import Home from "@/pages/Home.vue";
 import MyPage from "@/pages/mypages/MyPage.vue";
 import MyTicketList from "@/pages/mypages/MyTicketList.vue";
 import TicketStorage from "@/pages/mypages/TicketStorage.vue";
-import Ticket from "@/pages/Ticket.vue";
+import Ticket from "@/pages/ticket/Ticket.vue";
 
 import SeatSelectionPage from "@/pages/booking/SeatSelectionPage.vue";
 import SessionComplete from "../pages/SessionComplete.vue";
@@ -22,6 +23,7 @@ const router = createRouter({
 		{
 			path: "/",
 			name: "home",
+			component: Home,
 		},
 		{
 			path: "/ticket",
