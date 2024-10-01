@@ -2,16 +2,16 @@
     <div :class="$style.div">
         <MainHeader />
         <MyPageTabs />
-          <div :class="$style.child" />
-          <div :class="$style.container">
-                <div :class="$style.b1">전자지갑 결제내역</div>
-                <div :class="$style.div2">&gt;</div>
-          </div>
-          <div :class="$style.groupDiv">
-                <div :class="$style.div3">공인인증서 관리 / 발급</div>
-                <div :class="$style.div2">&gt;</div>
-          </div>
-          <div :class="$style.cardParent">
+        <div :class="$style.child" />
+        <div :class="$style.container">
+            <div :class="$style.b1">전자지갑 결제내역</div>
+            <div :class="$style.div2">&gt;</div>
+        </div>
+        <div :class="$style.groupDiv">
+            <div :class="$style.div3">공인인증서 관리 / 발급</div>
+            <div :class="$style.div2">&gt;</div>
+        </div>
+        <!-- <div :class="$style.cardParent">
                 <div :class="$style.card">
                       <div :class="$style.cardFrame">
                             <div :class="$style.div5">출금계좌 : 420220-01-123456</div>
@@ -34,97 +34,109 @@
                             <img :class="$style.imageIcon" :src="imageIcon" alt="Bank Logo" />
                       <div :class="$style.div7">토스</div>
                 </div>
-          </div>
-            <img :class="$style.item" :src="group122Image" alt="Group Image" />
+          </div> -->
+        <div :class="$style.Flipcard">
+            <FlipAccount />
+        </div>
 
-            <Footer />
+        <Footer />
     </div>
-  </template>
-  <script lang="ts">
-  import { defineComponent } from 'vue';
-  import { Icon } from '@iconify/vue';
-  // Import images
-  import line7Image from '@/assets/mypages/Line 7.svg';
-  import imageIcon from '@/assets/mypages/tossImage.jpg';
-  import group122Image from '@/assets/mypages/Group 122.png';
-  import homeIcon from '@/assets/Iconex/Line Two Tone/Home.svg';
-  import couponIcon from '@/assets/Iconex/Line Two Tone/Coupon 3.svg';
-  import userIcon from '@/assets/Iconex/Line Two Tone/User.svg';
-  
-    import Footer from '@/components/Footer.vue';
+</template>
+<script lang="js">
+import { defineComponent } from 'vue';
+
+import { Icon } from '@iconify/vue';
+// Import images
+import line7Image from '@/assets/mypages/Line 7.svg';
+import imageIcon from '@/assets/mypages/tossImage.jpg';
+import group122Image from '@/assets/mypages/Group 122.png';
+import homeIcon from '@/assets/Iconex/Line Two Tone/Home.svg';
+import couponIcon from '@/assets/Iconex/Line Two Tone/Coupon 3.svg';
+import userIcon from '@/assets/Iconex/Line Two Tone/User.svg';
+
+import FlipAccount from "@/components/home/FlipAccount.vue";
+import Footer from '@/components/Footer.vue';
 import MainHeader from '../../components/MainHeader.vue';
 import MyPageTabs from '../../components/mypages/MyPageTabs.vue';
-  
-  export default defineComponent({
-      name: "MyPage",
-      components: {
+
+export default defineComponent({
+    name: "MyPage",
+    components: {
         MainHeader,
-          MyPageTabs,
-          Icon,
-          Footer
-      },
-      data() {
-          return {
-              line7Image,
-              imageIcon,
-              group122Image,
-              homeIcon,
-              couponIcon,
-              userIcon,
-          };
-      },
-  });
-  </script>
-  <style module>
-  @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
-  @import url('https://fonts.googleapis.com/css2?family=Readex+Pro:wght@500&display=swap');
-  
-  body {
-      margin: 0;
-      padding: 0;
-      line-height: normal;
-  }
-  .solarwalletOutlineIcon {
+        MyPageTabs,
+        Icon,
+        Footer,
+        FlipAccount
+    },
+    data() {
+        return {
+            line7Image,
+            imageIcon,
+            group122Image,
+            homeIcon,
+            couponIcon,
+            userIcon,
+        };
+    },
+});
+</script>
+<style module>
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Readex+Pro:wght@500&display=swap');
+
+body {
+    margin: 0;
+    padding: 0;
+    line-height: normal;
+}
+
+.solarwalletOutlineIcon {
     position: absolute;
     top: 11px;
     left: 14px;
     width: 24px;
     height: 24px;
     overflow: hidden;
-  }
-  .b {
+}
+
+.b {
     position: absolute;
     top: 14px;
     left: 43px;
     color: #6e6e6e;
-  }
-  .b1 {
+}
+
+.b1 {
     position: absolute;
     top: 0px;
     left: 0px;
-  }
-  .parent {
+}
+
+.parent {
     position: absolute;
     top: 0px;
     left: 11px;
     width: 237px;
     height: 19px;
-  }
-  .groupChild {
+}
+
+.groupChild {
     position: absolute;
     top: 25.5px;
     left: 0px;
     max-height: 100%;
     width: 80px;
-  }
-  .groupParent {
+}
+
+.groupParent {
     position: absolute;
     top: 78px;
     left: 59px;
     width: 242px;
     height: 25.5px;
-  }
-  .child {
+}
+
+.child {
     position: absolute;
     top: 352.5px;
     left: -0.5px;
@@ -132,42 +144,48 @@ import MyPageTabs from '../../components/mypages/MyPageTabs.vue';
     box-sizing: border-box;
     width: 376px;
     height: 1px;
-  }
-  .div2 {
+}
+
+.div2 {
     position: absolute;
     top: 0px;
     left: 317px;
-  }
-  .container {
+}
+
+.container {
     position: absolute;
     top: 387px;
     left: 23px;
     width: 326px;
     height: 19px;
     color: #000;
-  }
-  .div3 {
+}
+
+.div3 {
     position: absolute;
     top: 5px;
     left: 0px;
-  }
-  .groupDiv {
+}
+
+.groupDiv {
     position: absolute;
     top: 429px;
     left: 23px;
     width: 326px;
     height: 24px;
     color: #000;
-  }
-  .div5 {
+}
+
+.div5 {
     position: absolute;
     top: 100px;
     left: 22px;
     letter-spacing: 0.1px;
     line-height: 120%;
     font-weight: 500;
-  }
-  .div6 {
+}
+
+.div6 {
     position: absolute;
     top: 50px;
     left: 22px;
@@ -176,24 +194,27 @@ import MyPageTabs from '../../components/mypages/MyPageTabs.vue';
     line-height: 160%;
     font-weight: 500;
     color: #000;
-  }
-  .imageIcon {
+}
+
+.imageIcon {
     position: absolute;
     top: 19px;
     left: 239px;
     width: 72px;
     height: 72px;
     object-fit: cover;
-  }
-  .div7 {
+}
+
+.div7 {
     position: absolute;
     top: 19px;
     left: 22px;
     letter-spacing: 0.1px;
     line-height: 120%;
     font-weight: 500;
-  }
-  .cardFrame {
+}
+
+.cardFrame {
     position: absolute;
     top: 0px;
     left: 0px;
@@ -202,13 +223,15 @@ import MyPageTabs from '../../components/mypages/MyPageTabs.vue';
     width: 335px;
     height: 175px;
     overflow: hidden;
-  }
-  .card {
+}
+
+.card {
     width: 335px;
     position: relative;
     height: 175px;
-  }
-  .image {
+}
+
+.image {
     width: 335px;
     position: relative;
     border-radius: 15px;
@@ -219,15 +242,17 @@ import MyPageTabs from '../../components/mypages/MyPageTabs.vue';
     background-size: cover;
     background-repeat: no-repeat;
     background-position: top;
-  }
-  .card1 {
+}
+
+.card1 {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
     margin-left: -322px;
-  }
-  .cardFrame1 {
+}
+
+.cardFrame1 {
     width: 335px;
     position: relative;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -237,8 +262,9 @@ import MyPageTabs from '../../components/mypages/MyPageTabs.vue';
     overflow: hidden;
     flex-shrink: 0;
     margin-left: -322px;
-  }
-  .cardParent {
+}
+
+.cardParent {
     position: absolute;
     top: 127px;
     left: calc(50% - 180.5px);
@@ -248,15 +274,22 @@ import MyPageTabs from '../../components/mypages/MyPageTabs.vue';
     justify-content: center;
     color: #575757;
     font-family: 'Readex Pro';
-  }
-  .item {
+}
+
+.Flipcard {
+
+    margin-left: 10px;
+}
+
+.item {
     position: absolute;
     top: 326px;
     left: 161px;
     width: 52px;
     height: 12px;
-  }
-  .inner {
+}
+
+.inner {
     position: absolute;
     height: 100%;
     width: 100%;
@@ -266,16 +299,18 @@ import MyPageTabs from '../../components/mypages/MyPageTabs.vue';
     left: 0%;
     border-radius: 15px 15px 0px 0px;
     background-color: #fff;
-  }
-  .div15 {
+}
+
+.div15 {
     position: absolute;
     height: 35%;
     width: 50%;
     top: 65%;
     left: 25%;
     display: inline-block;
-  }
-  .iconexlineTwoTonehome {
+}
+
+.iconexlineTwoTonehome {
     position: absolute;
     height: 60%;
     width: 100%;
@@ -286,8 +321,9 @@ import MyPageTabs from '../../components/mypages/MyPageTabs.vue';
     max-width: 100%;
     overflow: hidden;
     max-height: 100%;
-  }
-  .parent1 {
+}
+
+.parent1 {
     position: absolute;
     height: 100%;
     width: 8.82%;
@@ -296,16 +332,18 @@ import MyPageTabs from '../../components/mypages/MyPageTabs.vue';
     bottom: 0%;
     left: 0%;
     color: #c54966;
-  }
-  .div16 {
+}
+
+.div16 {
     position: absolute;
     height: 35%;
     width: 100%;
     top: 65%;
     left: 0%;
     display: inline-block;
-  }
-  .iconexlineTwoTonecoupon3 {
+}
+
+.iconexlineTwoTonecoupon3 {
     position: absolute;
     height: 60%;
     width: 100%;
@@ -317,8 +355,9 @@ import MyPageTabs from '../../components/mypages/MyPageTabs.vue';
     overflow: hidden;
     max-height: 100%;
     object-fit: cover;
-  }
-  .parent2 {
+}
+
+.parent2 {
     position: absolute;
     height: 100%;
     width: 8.82%;
@@ -326,8 +365,9 @@ import MyPageTabs from '../../components/mypages/MyPageTabs.vue';
     right: 45.59%;
     bottom: 0%;
     left: 45.59%;
-  }
-  .parent3 {
+}
+
+.parent3 {
     position: absolute;
     height: 100%;
     width: 8.82%;
@@ -335,8 +375,9 @@ import MyPageTabs from '../../components/mypages/MyPageTabs.vue';
     right: 0%;
     bottom: 0%;
     left: 91.18%;
-  }
-  .groupParent1 {
+}
+
+.groupParent1 {
     position: absolute;
     height: 58.82%;
     width: 72.53%;
@@ -344,8 +385,9 @@ import MyPageTabs from '../../components/mypages/MyPageTabs.vue';
     right: 13.87%;
     bottom: 17.65%;
     left: 13.6%;
-  }
-  .div14 {
+}
+
+.div14 {
     position: absolute;
     bottom: 0px;
     left: 0px;
@@ -353,8 +395,9 @@ import MyPageTabs from '../../components/mypages/MyPageTabs.vue';
     height: 68px;
     font-size: 13px;
     color: #2b3f6c;
-  }
-  .div {
+}
+
+.div {
     width: 100%;
     position: relative;
     background-color: #fafafa;
@@ -364,6 +407,5 @@ import MyPageTabs from '../../components/mypages/MyPageTabs.vue';
     font-size: 16px;
     color: #c54966;
     font-family: Roboto;
-  }
-  
-  </style>
+}
+</style>
