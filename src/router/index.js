@@ -113,6 +113,11 @@ const router = createRouter({
 					name: "seats",
 					component: SeatSelectionPage,
 				},
+				{
+					path: "password",
+					name: "password",
+					component: PasswordInput,
+				},
 			],
 		},
 	],
