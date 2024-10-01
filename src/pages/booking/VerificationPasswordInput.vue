@@ -43,10 +43,9 @@
 <script lang="ts">
 import axios from 'axios';
 import { defineComponent } from 'vue'
-import { useUserStore } from '../../stores/userStore';  
 
 export default defineComponent({
-    name: 'Frame',
+    name: 'VerificationPasswordInput',
     data() {
         return {
             enteredPassword: [] as number[], // 입력된 비밀번호를 저장하는 배열
@@ -110,6 +109,7 @@ export default defineComponent({
                     },
                 });
                 console.log('Registration successful:', response.data);
+                this.$router.push({ path: "/booking/payment-success" });
             } catch (error) {
                 console.error('Error registering member:', error.response ? error.response.data : error.message);
             }

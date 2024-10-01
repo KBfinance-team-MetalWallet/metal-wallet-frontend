@@ -45,10 +45,6 @@
       <button :class="$style.paymentsystem" @click="navigateToPassword">
         간편 결제하기
       </button>
-      <!-- <div :class="$style.paymentsystem">
-        <div :class="$style.paymentframe" />
-        <button :class="$style.b1" @click="navigateToPassword">간편 결제하기</button>
-      </div> -->
     </div>
     <Footer />
   </div>
