@@ -18,6 +18,7 @@ import SeatSelectionPage from "@/pages/booking/SeatSelectionPage.vue";
 import SessionComplete from "../pages/SessionComplete.vue";
 import VerificationPasswordInput from "../pages/booking/VerificationPasswordInput.vue";
 import PaymentSuccessPage from "../pages/booking/PaymentSuccessPage.vue";
+import PaymentHistory from '../pages/mypages/PaymentHistory.vue'
 
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
@@ -90,6 +91,11 @@ const router = createRouter({
 					name: "myticketlist",
 					component: MyTicketList,
 				},
+				{
+					path: "payment-history",
+					name: "paymentHistory",
+					component: PaymentHistory
+				}
 			],
 		},
 
