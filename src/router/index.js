@@ -16,6 +16,7 @@ import Ticket from "@/pages/ticket/Ticket.vue";
 
 import SeatSelectionPage from "@/pages/booking/SeatSelectionPage.vue";
 import SessionComplete from "../pages/SessionComplete.vue";
+import VerificationPasswordInput from "../pages/booking/VerificationPasswordInput.vue";
 
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
@@ -116,7 +117,7 @@ const router = createRouter({
 				{
 					path: "password",
 					name: "password",
-					component: PasswordInput,
+					component: VerificationPasswordInput,
 				},
 			],
 		},
