@@ -30,9 +30,9 @@
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { useRouter } from 'vue-router';
 import MainHeader from '../../components/MainHeader.vue';
 import axios from 'axios';
-
 
 export default defineComponent({
     name: "SignupForm",
@@ -79,13 +79,14 @@ export default defineComponent({
                 const response = await axios.post('http://localhost:8080/api/members/login', this.formData);
                 console.log('Login successful:', response.data);
 
-                // accessToken 로컬스토리지에 저장
                 if (response.data.accessToken) {
                     localStorage.setItem('accessToken', response.data.accessToken);
+                    this.router.push({ name: 'home' });
                 } else {
                     console.error('Access token not found in response');
                 }
             } catch (error) {
+                //TODO: vue error는 response가 없어서 수정해야함
                 console.error('Error login member:', error.response.data);
             }
         }
@@ -97,6 +98,13 @@ export default defineComponent({
                 this.formData.password
             );
         }
+    },
+    setup() {
+        const router = useRouter();
+
+        return {
+            router,
+        };
     }
 })
 </script>
