@@ -17,6 +17,8 @@ import Ticket from "@/pages/ticket/Ticket.vue";
 import SeatSelectionPage from "@/pages/booking/SeatSelectionPage.vue";
 import SessionComplete from "../pages/SessionComplete.vue";
 
+import { isTokenExpired } from "@/utils/auth.js";
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -108,8 +110,8 @@ router.beforeEach((to, from, next) => {
   const publicPages = ["/login", "/signup"];
   const authRequired = !publicPages.some((page) => to.path.startsWith(page));
   const token = localStorage.getItem("accessToken");
-
-  if (authRequired && !token) {
+  if (authRequired && (!token || isTokenExpired(token))) {
+    localStorage.removeItem("accessToken");
     alert("로그인이 필요한 서비스입니다. 로그인 페이지로 이동합니다.");
     next({ name: "login" });
   } else {
