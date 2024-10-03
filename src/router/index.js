@@ -114,13 +114,6 @@ const router = createRouter({
 					path: ":musical_id(\\d+)",
 					name: "bookingDatePage",
 					component: BookingDatePage,
-					beforeEnter: (to, from, next) => {
-						if (!to.params.musical_id) {
-							next({ name: "home" }); // musical_id가 없으면 홈으로 리다이렉트
-						} else {
-							next();
-						}
-					},
 				},
 				{
 					// http://localhost:5173/musicals/1

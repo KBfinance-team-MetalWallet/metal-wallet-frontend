@@ -47,7 +47,7 @@
 		</div>
 
 		<div :class="$style.seatMapContainer">
-			<SeatMap @update-seats="handleUpdateSeats" ref="seatMapRef" />
+			<SeatMap @update-seats="handleUpdateSeats" />
 		</div>
 
 		<!-- 선택된 좌석 정보 -->
@@ -61,7 +61,7 @@
 						:key="index"
 						:class="$style.r16"
 					>
-						{{ seat.type }}석 {{ seat.number + 1 }}열 -
+						{{ seat.type }}석 {{ seat.number }}열 -
 						{{ getSeatPrice(seat.type).toLocaleString() }}원
 					</p>
 				</div>

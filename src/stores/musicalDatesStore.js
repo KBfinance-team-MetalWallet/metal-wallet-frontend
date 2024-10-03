@@ -2,7 +2,7 @@ import axios from "axios";
 import { defineStore } from "pinia";
 import { ref } from "vue";
 
-export const useMusicalDatesStore = defineStore("musicalDates", () => {
+export const useMusicalDatesStore = defineStore("musicalDatesStore", () => {
 	const musicalId = ref(null);
 	const scheduleDates = ref([]);
 	const loading = ref(false);

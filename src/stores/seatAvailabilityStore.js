@@ -1,11 +1,12 @@
+// src/stores/seatAvailabilityStore.js
 import axios from "axios";
 import { defineStore } from "pinia";
 import { ref } from "vue";
 
 export const useSeatAvailabilityStore = defineStore("seatAvailability", () => {
 	// 상태 변수들
-	const selectedDate = ref(null); // 사용자가 선택하 날짜
-	const historyList = ref([]); // 선택한 날짜와 뮤지컬 ID에 따른 좌석 가용성 데이터
+	const selectedDate = ref(null); // 사용자가 선택한 날짜
+	const historyList = ref([]); // 선택한 날짜와 스케줄 ID에 따른 좌석 가용성 데이터
 	const loading = ref(false); // 데이터 로딩 상태
 	const error = ref(null); // 에러 상태
 
@@ -25,9 +26,21 @@ export const useSeatAvailabilityStore = defineStore("seatAvailability", () => {
 				time: "10:00",
 				actorNames: ["이석훈", "정성화"],
 				sections: [
-					{ section: "R", availableSeats: 30 },
-					{ section: "S", availableSeats: 50 },
-					{ section: "A", availableSeats: 80 },
+					{
+						section: "R",
+						availableSeats: 30,
+						bookedSeats: ["R1", "R2", "R3", "R100"],
+					},
+					{
+						section: "S",
+						availableSeats: 50,
+						bookedSeats: ["S1", "S2", "S3", "S100"],
+					},
+					{
+						section: "A",
+						availableSeats: 80,
+						bookedSeats: ["A1", "A2", "A3", "A100"],
+					},
 				],
 			},
 			{
@@ -119,6 +132,62 @@ export const useSeatAvailabilityStore = defineStore("seatAvailability", () => {
 		],
 	};
 
+	/**
+	 * 특정 scheduleId에 해당하는 날짜를 반환하는 함수
+	 * @param {Number} scheduleId - 스케줄 ID
+	 * @returns {String|null} - 날짜 문자열 (YYYY-MM-DD) 또는 null
+	 */
+	const getDateByScheduleId = (scheduleId) => {
+		for (const date in mockData) {
+			const schedules = mockData[date];
+			const schedule = schedules.find((s) => s.scheduleId === scheduleId);
+			if (schedule) {
+				return date;
+			}
+		}
+		return null;
+	};
+
+	/**
+	 * 특정 scheduleId의 예약된 좌석 코드를 반환하는 함수
+	 * @param {Number} scheduleId - 스케줄 ID
+	 * @returns {Array} - 예약된 좌석 코드 배열
+	 */
+	const getBookedSeats = (scheduleId) => {
+		// 우선 목업 데이터에서 찾기
+		for (const date in mockData) {
+			const schedules = mockData[date];
+			const schedule = schedules.find((s) => s.scheduleId === scheduleId);
+			if (schedule) {
+				let booked = [];
+				schedule.sections.forEach((section) => {
+					if (section.bookedSeats) {
+						booked = booked.concat(section.bookedSeats);
+					}
+				});
+				return booked;
+			}
+		}
+
+		// API 호출로 받은 데이터에서 찾기
+		if (historyList.value.length > 0) {
+			const schedule = historyList.value.find(
+				(s) => s.scheduleId === scheduleId
+			);
+			if (schedule && schedule.sections) {
+				let booked = [];
+				schedule.sections.forEach((section) => {
+					if (section.bookedSeats) {
+						booked = booked.concat(section.bookedSeats);
+					}
+				});
+				return booked;
+			}
+		}
+
+		return [];
+	};
+
 	// 지정된 뮤지컬 ID와 날짜에 따라 API를 호출하여 좌석 가용성 데이터를 불러오는 함수
 	// API 호출 실패 시 목업 데이터를 사용하여 historyList를 설정.
 	const fetchSeatAvailability = async (musicalId, date) => {
@@ -126,12 +195,11 @@ export const useSeatAvailabilityStore = defineStore("seatAvailability", () => {
 		loading.value = true;
 		error.value = null;
 
-		console.log("date", date);
+		console.log("날짜:", date);
 
 		// 날짜 형식 변환 (YYYY-MM-DD)
 		const dateStr = formatDate(date);
-
-		console.log("dateStr", dateStr);
+		console.log("날짜 문자열:", dateStr);
 
 		try {
 			// 실제 API 호출 시도
@@ -174,5 +242,7 @@ export const useSeatAvailabilityStore = defineStore("seatAvailability", () => {
 		loading,
 		error,
 		fetchSeatAvailability,
+		getBookedSeats,
+		getDateByScheduleId,
 	};
 });

@@ -10,7 +10,10 @@
 						seat ? seat.type : '',
 						{ selected: seat && seat.selected },
 						{ empty: !seat },
-						{ disabled: seat && !seat.selected && isMaxSelected },
+						{
+							disabled:
+								seat && (seat.booked || (!seat.selected && isMaxSelected)),
+						},
 					]"
 					@click="toggleSeat(rowIndex, seatIndex)"
 				></div>
@@ -20,6 +23,9 @@
 </template>
 
 <script>
+	import { useSeatAvailabilityStore } from "@/stores/seatAvailabilityStore";
+	import { mapActions, mapState } from "pinia";
+
 	export default {
 		name: "SeatMap",
 		data() {
@@ -28,24 +34,28 @@
 				selectedSeats: [],
 			};
 		},
-		created() {
-			/**
-			 * 현재 선택된 좌석이 최대 개수에 도달했는지 여부를 반환합니다.
-			 * @returns {Boolean} 최대 선택 여부
-			 */
-			this.initializeSeats();
-		},
 		computed: {
-			/**
-			 * 현재 선택된 좌석이 최대 개수에 도달했는지 여부를 반환합니다.
-			 * @returns {Boolean} 최대 선택 여부
-			 */
+			// Pinia 스토어의 상태를 가져옵니다.
+			...mapState(useSeatAvailabilityStore, ["historyList"]),
 			isMaxSelected() {
 				return this.selectedSeats.length >= 2;
 			},
+			scheduleId() {
+				// 라우트에서 musical_id 추출
+				return Number(this.$route.params.musical_id);
+			},
 		},
 		methods: {
-			initializeSeats() {
+			// Pinia 스토어의 액션을 가져옵니다.
+			...mapActions(useSeatAvailabilityStore, [
+				"fetchSeatAvailability",
+				"getBookedSeats",
+			]),
+			/**
+			 * 좌석 배치를 초기화합니다.
+			 * @param {Array} bookedSeats - 예약된 좌석 코드 배열
+			 */
+			initializeSeats(bookedSeats) {
 				const layoutString = `
 XXXXOOXOOOOOOOOOOOOOOOXOOXXXX
 OOOOOOXOOOOOOOOOOOOOOOXOOOOOO
@@ -60,10 +70,10 @@ OOOOOOXOOOOOOOOOOOOOOOXOOOOOO
 OOOOOOXOOOOOOOOOOOOOOOXOOOOOO
 OOOOOOXOOOOOOOOOOOOOOOXOOOOOO
 OOXOOOOOOOOOOOOOOOXOO
-      `.trim();
+            `.trim();
 
 				const rows = layoutString.split("\n");
-				const seatLayout = [];
+				const layout = [];
 				let seatId = 1;
 
 				const rSeatsCount = 100;
@@ -77,27 +87,37 @@ OOXOOOOOOOOOOOOOOOXOO
 				};
 
 				const seatTypes = ["R", "S", "A"];
-				let seatTypeNumbers = { R: 0, S: 0, A: 0 };
+				let seatTypeNumbers = { R: 1, S: 1, A: 1 }; // 초기값을 1로 설정
 
 				for (let row of rows) {
 					const seats = [];
 					for (let char of row) {
 						if (char === "O") {
 							let seatType = seatTypes.find((type) => seatTypeCounts[type] > 0);
+							if (!seatType) {
+								seats.push(null);
+								continue;
+							}
 							seatTypeCounts[seatType]--;
+							const seatNumber = seatTypeNumbers[seatType];
+							seatTypeNumbers[seatType]++;
+							const seatCode = `${seatType}${seatNumber}`; // 예: R1, S1
+
 							seats.push({
 								id: seatId++,
 								type: seatType,
-								number: seatTypeNumbers[seatType]++,
+								number: seatNumber,
+								seatCode: seatCode, // seatCode 추가
 								selected: false,
+								booked: bookedSeats.includes(seatCode), // 예매된 좌석인지 확인
 							});
 						} else {
 							seats.push(null); // 빈 공간
 						}
 					}
-					seatLayout.push(seats);
+					layout.push(seats);
 				}
-				this.seatLayout = seatLayout;
+				this.seatLayout = layout;
 			},
 			/**
 			 * 특정 좌석의 선택 상태를 토글합니다.
@@ -106,7 +126,9 @@ OOXOOOOOOOOOOOOOOOXOO
 			 */
 			toggleSeat(rowIndex, seatIndex) {
 				const seat = this.seatLayout[rowIndex][seatIndex];
-				if (!seat) return; // 빈 좌석은 무시
+				if (!seat || seat.booked) return; // 빈 좌석은 무시
+
+				console.log(seat.seatCode); // 좌석 코드 출력
 
 				if (seat.selected) {
 					// 이미 선택된 좌석은 자유롭게 해제 가능
@@ -122,25 +144,46 @@ OOXOOOOOOOOOOOOOOOXOO
 					this.updateSelectedSeats();
 				}
 			},
+			/**
+			 * 선택된 좌석 목록을 업데이트합니다.
+			 */
 			updateSelectedSeats() {
-				const selectedSeats = [];
-				for (let row of this.seatLayout) {
-					for (let seat of row) {
+				const selected = [];
+				this.seatLayout.forEach((row) => {
+					row.forEach((seat) => {
 						if (seat && seat.selected) {
-							selectedSeats.push(seat);
-							console.log(selectedSeats);
+							selected.push(seat);
 						}
-					}
-				}
-				this.selectedSeats = selectedSeats;
-				this.$emit("update-seats", selectedSeats); // 선택된 좌석 정보를 부모 컴포넌트로 전달
+					});
+				});
+				this.selectedSeats = selected;
+				this.$emit("update-seats", this.selectedSeats); // 선택된 좌석 정보를 부모 컴포넌트로 전달
 			},
+			/**
+			 * 좌석 배치를 초기화합니다.
+			 */
 			resetSeatMap() {
-				this.initializeSeats(); // 좌석 배치 초기화
+				const bookedSeats = this.getBookedSeats(this.scheduleId);
+				this.initializeSeats(bookedSeats); // 좌석 배치 초기화
 				this.selectedSeats = [];
 				this.$emit("update-seats", this.selectedSeats);
 				console.log("resetSeatMap 실행");
 			},
+			/**
+			 * 좌석 가용성 데이터를 가져와 좌석 배치를 초기화합니다.
+			 */
+			async fetchAndInitialize() {
+				// scheduleId가 1일 때, 날짜를 '2024-10-01'로 설정
+				const scheduleId = 1;
+				const dateStr = "2024-10-01"; // scheduleId=1에 해당하는 날짜
+				const date = new Date(dateStr);
+				await this.fetchSeatAvailability(scheduleId, date);
+				const bookedSeats = this.getBookedSeats(scheduleId);
+				this.initializeSeats(bookedSeats);
+			},
+		},
+		created() {
+			this.fetchAndInitialize();
 		},
 	};
 </script>
@@ -191,6 +234,7 @@ OOXOOOOOOOOOOOOOOOXOO
 	.seat.empty {
 		visibility: hidden;
 	}
+
 	.seat.disabled {
 		background-color: #cccccc;
 		cursor: not-allowed;
