@@ -18,7 +18,7 @@
     </div>
 </template>
 
-<script lang="ts">
+<script lang="js">
 import { defineComponent } from 'vue';
 import homeIcon from '@/assets/Iconex/Line Two Tone/Home.svg';
 import couponIcon from '@/assets/Iconex/Line Two Tone/Coupon 3.svg';
