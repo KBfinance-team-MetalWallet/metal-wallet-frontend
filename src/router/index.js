@@ -132,7 +132,7 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const publicPages = ["/login", "/signup"];
+  const publicPages = ["/login", "/signup", "/musical"];
   const authRequired = !publicPages.some((page) => to.path.startsWith(page));
   const token = localStorage.getItem("accessToken");
 
