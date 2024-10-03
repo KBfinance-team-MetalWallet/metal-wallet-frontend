@@ -21,6 +21,7 @@ import VerificationPasswordInput from "../pages/booking/VerificationPasswordInpu
 import PaymentSuccessPage from "../pages/booking/PaymentSuccessPage.vue";
 
 import MusicalList from "@/pages/musical/MusicalList.vue";
+import MusicalDetail from "@/pages/musical/MusicalDetail.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -121,6 +122,12 @@ const router = createRouter({
       name: "MusicalList",
       component: MusicalList,
     },
+	{
+		path: "/musical/:id",
+		name: "MusicalDetail",
+		component: MusicalDetail,
+		props: true
+	}
   ],
 });
 

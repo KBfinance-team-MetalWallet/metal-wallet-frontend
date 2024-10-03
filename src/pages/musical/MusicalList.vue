@@ -127,7 +127,7 @@ body {
     gap: 20px;
     padding: 20px;
     position: absolute; /* Positioning absolute to make scrolling work */
-    top: 40px; /* BackHeader의 높이를 고려한 위치 */
+    top: 50px; /* BackHeader의 높이를 고려한 위치 */
     bottom: 80px; /* Footer의 높이를 고려한 위치 */
     overflow-y: auto; /* 수직 스크롤 가능 */
 }
