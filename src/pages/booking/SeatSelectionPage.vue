@@ -47,7 +47,7 @@
 		</div>
 
 		<div :class="$style.seatMapContainer">
-			<SeatMap @update-seats="handleUpdateSeats" />
+			<SeatMap @update-seats="handleUpdateSeats" ref="seatMapRef" />
 		</div>
 
 		<!-- 선택된 좌석 정보 -->
