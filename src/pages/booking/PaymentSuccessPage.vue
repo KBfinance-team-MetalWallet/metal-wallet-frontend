@@ -3,160 +3,132 @@
     <MainHeader />
     <div :class="$style.image163" />
     <img :class="$style.imageIcon" alt="" src="@/assets/mascord2.png" />
-    <div :class="$style.child" />
-    <b :class="$style.b1">
-      <p :class="$style.p">결제를 완료하였습니다.</p>
-      <p :class="$style.p1">결제 내역을 확인하세요.</p>
-    </b>
+    <!-- child 태그 -->
+    <div :class="$style.child">
+      <b :class="$style.b1">
+        <p :class="$style.p1">결제를 완료하였습니다.</p>
+        <p :class="$style.p1">결제 내역을 확인하세요.</p>
+      </b>
+    </div>
+    <!-- child 아래에 위치하는 div1 태그 -->
     <div :class="$style.div1">
-      <div :class="$style.rectangleParent" @click="goBack">
-        <div :class="$style.groupChild" />
-        <!-- TODO : 결제 내역 페이지로 redirect 해야 함 -->
-        <b :class="$style.b2">결제 내역 확인하기</b>
+
+      <div :class="$style.rectangleParent" @click="goToPaymentHistory">
+        <b :class="$style.b2" >
+          결제 내역 확인하기
+        </b>
+      </div>
+      <div :class="$style.countdown">
+        {{ countdown }}초 후 홈으로 이동
       </div>
     </div>
   </div>
 </template>
-<script lang="ts">
-import { defineComponent } from 'vue'
+
+<script>
 import MainHeader from '../../components/MainHeader.vue';
 
-export default defineComponent({
+export default {
   name: "PaymentSuccessPage",
   components: {
     MainHeader,
   },
+  data() {
+    return {
+      countdown: 3, // 카운트다운 초기값
+    };
+  },
   methods: {
-    goBack() {
-      this.$router.back(); // 이전 페이지로 리다이렉트
-    }
-  }
-})
+    goToPaymentHistory() {
+      this.$router.push("/mypage/payment-history");
+    },
+  },
+  mounted() {
+    // 화면이 로딩되면 카운트다운 시작
+    const interval = setInterval(() => {
+      if (this.countdown > 0) {
+        this.countdown -= 1;
+      } else {
+        clearInterval(interval);
+        this.$router.push("/");
+      }
+    }, 1000); // 1초마다 실행
+  },
+};
 </script>
 
 <style module>
-.solarwalletOutlineIcon {
-  position: absolute;
-  top: 11px;
-  left: 14px;
-  width: 24px;
-  height: 24px;
-  overflow: hidden;
-}
-
-.b {
-  position: absolute;
-  top: 14px;
-  left: 43px;
-  font-size: 16px;
-}
-
-.image163 {
-  position: absolute;
-  top: 93px;
-  left: 0px;
-  width: 375px;
-  height: 550.9px;
-}
-
-.imageIcon {
-  position: absolute;
-  top: 113px;
-  left: calc(50% - 118px); /* 키운 크기에 맞춰 left 위치 보정 */
-  width: 237px; /* 기존 197px에서 20% 증가 */
-  height: 323px; /* 기존 269px에서 20% 증가 */
-  object-fit: cover;
-}
-
-.child {
-  position: absolute;
-  top: 401px;
-  left: 50%;
-  transform: translateX(-50%);
-  border-radius: 50px;
-  border: 5px solid #000;
-  box-sizing: border-box;
-  width: 85%;
-  height: 174px;
-}
-
-.p {
-  margin-block-start: 0;
-  margin-block-end: 5px;
-}
-
-.p1 {
-  margin: 0;
-}
-
-.b1 {
-  position: absolute;
-  top: 463px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: inline-block;
-  color: #000;
-  text-align: center;
-  width: 237px;
-  font-size: 18px;
-}
-
-.groupChild {
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  top: 0%;
-  right: 0%;
-  bottom: 0%;
-  left: 0%;
-  border-radius: 15px;
-  background-color: #c54966;
-}
-
-.rectangleParent {
-  position: absolute;
-  height: 100%;
-  width: 95%;
-  top: 0%;
-  left: 50%;
-  transform: translateX(-50%);
-
-  display: flex;
-  justify-content: center; /* 수평 중앙 정렬 */
-  align-items: center; /* 수직 중앙 정렬 */
-}
-
-
-.div1 {
-  position: absolute;
-  top: calc(50% + 193px);
-  left: calc(50% - 123.5px);
-  width: 250px;
-  height: 55px;
-  color: #fff;
-}
-
 .div {
   width: 100%;
-  position: relative;
-  background-color: #fafafa;
-  height: 812px;
-  overflow: hidden;
-  text-align: left;
+  height: auto;
+  text-align: center;
   color: #6e6e6e;
   font-family: Roboto;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  /* 위에서 아래로 배치 */
   align-items: center;
+  padding: 20px;
 }
 
-.div_7ni70_185 {
+.child {
+  display: flex;             /* 내부 요소 정렬을 위한 flex 사용 */
+  justify-content: center;   /* 가로 방향 중앙 정렬 */
+  align-items: center;       /* 세로 방향 중앙 정렬 */
+  width: 85%;
+  height: 174px;
+  border-radius: 50px;
+  border: 2px solid #b5b5b5;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+}
+
+.b1 {
+  text-align: center;        /* 내부 텍스트를 가운데 정렬 */
+  font-size: 18px;
+}
+
+.div1 {
+  width: 100%;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.rectangleParent {
+  width: 250px;
+  height: 55px;
+  display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  height: 100%;
+  margin-bottom: 0px;
+  /* 버튼과 아래 카운트다운 문구 사이의 간격 */
+  cursor: pointer;
+}
+
+.p1{
+  font-weight: bold;
+  color: black;
+}
+
+.b2 {
+  font-weight: bold;
+  font-size: 18px;
+  color: black;  
+  cursor: pointer;
+  text-decoration : underline;
+  text-underline-position : under;
+}
+
+.imageIcon {
+  position: relative;
+  top: 60px;
+  padding: 0px;
+}
+
+.countdown {
+  font-weight: bold;
+  margin-top: 10px;
 }
 </style>

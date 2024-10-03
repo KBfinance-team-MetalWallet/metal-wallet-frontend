@@ -19,6 +19,7 @@ import SeatSelectionPage from "@/pages/booking/SeatSelectionPage.vue";
 import SessionComplete from "../pages/SessionComplete.vue";
 import VerificationPasswordInput from "../pages/booking/VerificationPasswordInput.vue";
 import PaymentSuccessPage from "../pages/booking/PaymentSuccessPage.vue";
+import PaymentHistory from '../pages/mypages/PaymentHistory.vue'
 
 import MusicalList from "@/pages/musical/MusicalList.vue";
 
@@ -84,6 +85,11 @@ const router = createRouter({
       name: "myticketlist",
       component: MyTicketList,
     },
+    {
+               path: "payment-history",
+               name: "paymentHistory",
+               component: PaymentHistory
+            }
     {
       path: "/",
       name: "User",
