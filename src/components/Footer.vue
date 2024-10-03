@@ -2,23 +2,23 @@
     <div :class="$style.div8">
         <div :class="$style.child" />
         <div :class="$style.groupContainer">
-            <div :class="$style.parent">
+            <router-link to="/" :class="$style.parent">
                 <div :class="$style.div9">홈</div>
                 <img :class="$style.iconexlineTwoTonehome" alt="" :src="homeIcon" />
-            </div>
-            <div :class="$style.group">
+            </router-link>
+            <router-link to="/ticket" :class="$style.group">
                 <div :class="$style.div10">티켓</div>
                 <img :class="$style.iconexlineTwoTonecoupon3" alt="" :src="couponIcon" />
-            </div>
-            <div :class="$style.container">
+            </router-link>
+            <router-link to="/mypage" :class="$style.container">
                 <div :class="$style.div10">마이</div>
                 <img :class="$style.iconexlineTwoTonehome" alt="" :src="userIcon" />
-            </div>
+            </router-link>
         </div>
     </div>
 </template>
 
-<script lang="ts">
+<script>
 import { defineComponent } from 'vue';
 import homeIcon from '@/assets/Iconex/Line Two Tone/Home.svg';
 import couponIcon from '@/assets/Iconex/Line Two Tone/Coupon 3.svg';

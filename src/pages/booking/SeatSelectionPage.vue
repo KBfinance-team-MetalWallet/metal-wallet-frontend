@@ -41,10 +41,10 @@
           <p :class="$style.r16">A석 11열 7</p>
         </div>
       </div>
-      <div :class="$style.paymentsystem">
-        <div :class="$style.paymentframe" />
-        <b :class="$style.b1">간편 결제하기</b>
-      </div>
+      <!-- paymentsystem 전체를 버튼으로 수정 -->
+      <button :class="$style.paymentsystem" @click="navigateToPassword">
+        간편 결제하기
+      </button>
     </div>
     <Footer />
   </div>
@@ -61,6 +61,11 @@ export default defineComponent({
     BackHeader,
     Footer,
     SeatMap,
+  },
+  methods: {
+    navigateToPassword() {
+      this.$router.push({path: "/booking/password"});
+    },
   },
   data() {
     return {
@@ -323,6 +328,8 @@ body {
   width: 375px;
   position: relative;
   height: 47px;
+  background-color: #c54966;
+  border: none;
   color: #fff;
 }
 
