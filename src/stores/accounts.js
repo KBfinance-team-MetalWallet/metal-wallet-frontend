@@ -1,41 +1,50 @@
-// accounts.js
-import BankLogo2 from "@/assets/account/kakao.png";
-import BankLogo1 from "@/assets/account/kb.png";
-import BankLogo3 from "@/assets/account/toss.png";
+import kbLogo from "@/assets/account/kb.png";
+import kakaoLogo from "@/assets/account/kakao.png";
+import tossLogo from "@/assets/account/toss.png";
 import { defineStore } from "pinia";
-// 추가적인 로고가 있다면 계속 임포트
+import axios from "axios";
+
+const logos = {
+  kb: kbLogo,
+  kakao: kakaoLogo,
+  toss: tossLogo,
+};
 
 export const useAccountStore = defineStore("account", {
-	state: () => ({
-		accounts: [
-			{
-				id: 1, // 고유 ID 추가
-				number: "420220-01-123456",
-				balance: "$23,345.43",
-				bankName: "국민은행",
-				bankLogo: BankLogo1,
-				color: "#f9c505", // 카드 색상 추가
-				isUsed: false, // 사용 여부 표시
-			},
-			{
-				id: 2,
-				number: "981234-01-123456",
-				balance: "$23,345.43",
-				bankName: "현대카드",
-				bankLogo: BankLogo2,
-				color: "#d7f905",
-				isUsed: false,
-			},
-			{
-				id: 3,
-				number: "111111-01-123456",
-				balance: "$23,345.43",
-				bankName: "토스",
-				bankLogo: BankLogo3,
-				color: "#05f9a0",
-				isUsed: false,
-			},
-			// 추가 계좌가 있다면 계속 추가
-		],
-	}),
+  state: () => ({
+    accounts: [],
+    isLoading: false,
+    error: null,
+  }),
+  actions: {
+    async fetchAccounts() {
+      this.isLoading = true;
+      this.error = null;
+      try {
+        const token = localStorage.getItem("accessToken");
+
+        const response = await axios.get("http://localhost:8080/api/accounts", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.data && response.data.resultCode === 200) {
+          this.accounts = response.data.result.map((account) => ({
+            ...account,
+            color: "#05f9a0",
+            isUsed: false,
+            bankLogo: logos[account.bankLogo],
+          }));
+        } else {
+          this.error = response.data.resultMsg || "Failed to fetch accounts";
+        }
+      } catch (error) {
+        this.error = error;
+        console.error("Error fetching accounts:", error);
+      } finally {
+        this.isLoading = false;
+      }
+    },
+  },
 });
