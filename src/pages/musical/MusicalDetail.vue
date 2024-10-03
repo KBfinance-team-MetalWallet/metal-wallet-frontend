@@ -8,7 +8,7 @@
             <div :class="$style.content">
                 <!-- 포스터 및 뮤지컬 상세 정보 섹션 -->
                 <div :class="$style.posterContainer">
-                    <img :class="$style.posterImage" alt="" :src="musical?.image || TestImage" />
+                    <img :class="$style.posterImage" alt="" :src="musical?.posterImage || TestImage" />
                     <div :class="$style.overlay">
                         <div :class="$style.details">
                             <b>
@@ -34,21 +34,21 @@
                 <div :class="$style.sectionWrapper">
                     <div :class="$style.sectionItem">
                         <b>NOTICE</b>
-                        <img :class="$style.contentImage" alt="" :src="musical?.image || TestImage" />
+                        <img :class="$style.contentImage" alt="" :src="musical?.noticeImage || TestImage" />
                     </div>
                 </div>
                 
                 <div :class="$style.sectionWrapper">
                     <div :class="$style.sectionItem">
                         <b>DETAIL</b>
-                        <img :class="$style.contentImage" alt="" :src="musical?.image || TestImage" />
+                        <img :class="$style.contentImage" alt="" :src="musical?.detailImage || TestImage" />
                     </div>
                 </div>
 
                 <div :class="$style.sectionWrapper">
                     <div :class="$style.sectionItem">
                         <b>PLACE</b>
-                        <img :class="$style.contentImage" alt="" :src="musical?.image || TestImage" />
+                        <img :class="$style.contentImage" alt="" :src="musical?.placeImage || TestImage" />
                     </div>
                 </div>
             </div>
@@ -92,11 +92,14 @@ export default defineComponent({
                 const { result } = await response.json();
                 this.musical = {
                     title: result.title,
-                    image: result.posterImageUrl || TestImage, // 이미지가 없으면 TestImage 사용
                     place: result.place,
                     placeDetail: result.placeDetail,
                     dates: `${result.ticketingStartDate} ~ ${result.ticketingEndDate}`,
                     runningTime: `${result.runningTime}분`,
+                    posterImage: result.posterImageUrl || TestImage, // 이미지가 없으면 TestImage 사용
+                    noticeImage: result.noticeImageUrl || TestImage,
+                    detailImage: result.detailImageUrl || TestImage,
+                    placeImage: result.placeImageUrl || TestImage,
                 };
             } catch (error) {
                 console.error('Failed to fetch data', error);
