@@ -5,9 +5,9 @@
 			alt=""
 			src="@/assets/booking/wait-icon.png"
 		/>
-		<div :class="$style.div8"><a :class="$style.div9">예매대기 신청</a></div>
+		<div :class="$style.div88"><a :class="$style.div99">예매대기 신청</a></div>
 		<img
-			:class="$style.arrow_right3"
+			:class="$style.arrow_right33"
 			src="@/assets/booking/arrow-right.png"
 			alt="arrow-left"
 		/>
@@ -35,21 +35,21 @@
 		height: 16px;
 	}
 
-	.div8 {
+	.div88 {
 		/* width: 100%; */
 		color: white;
+		text-align: center;
 	}
-	.div9 {
+	.div99 {
 		height: 16px;
 		width: auto;
 		font-size: 12px;
 		color: gray;
 	}
-	.arrow_right3 {
+	.arrow_right33 {
 		position: relative;
 		top: 1px;
 		width: 12px;
 		height: 12px;
-		color: white !important;
 	}
 </style>

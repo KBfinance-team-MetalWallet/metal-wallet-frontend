@@ -8,19 +8,19 @@
 					alt="arrow-left"
 				/>
 			</button>
-			<span class="current-year"
-				>{{ currentYear }}년 {{ currentMonth + 1 }}월</span
-			>
+			<span class="current-year">
+				{{ currentYear }}년 {{ currentMonth + 1 }}월
+			</span>
 			<button class="chevron-icon" @click="nextMonth">
 				<img
 					class="fa-solid fa-chevron-right"
 					src="@/assets/booking/arrow-right.png"
-					alt="arrow-left"
+					alt="arrow-right"
 				/>
 			</button>
 		</div>
-		<div class="calendar-grid">
-			<!-- 요일 헤더 -->
+		<div v-if="musicalDatesStore.loading" class="loading">로딩 중...</div>
+		<div v-else class="calendar-grid">
 			<div
 				class="calendar-header"
 				v-for="(day, index) in weekDays"
@@ -28,19 +28,19 @@
 			>
 				{{ day }}
 			</div>
-			<!-- 날짜 렌더링 -->
 			<div
 				class="calendar-day"
-				v-for="day in daysGrid"
-				:key="day.date ? day.date.toString() : Math.random()"
+				v-for="(day, index) in daysGrid"
+				:key="day.date ? formatDate(day.date) : `no-date-${index}`"
 			>
-				<!-- 날짜 컨텐츠 전체  -->
 				<div class="daily-today-contents">
 					<div
-						@click="selectDate(day.date)"
-						:class="{ 'non-current-month': !day.isCurrentMonth }"
+						@click="handleDateClick(day.date)"
+						:class="{
+							'non-current-month': !day.isCurrentMonth,
+							disabled: isDateDisabled(day.date),
+						}"
 					>
-						<!-- today 숫자 -->
 						<div class="daily-today">
 							{{ day.date ? day.date.getDate() : "" }}
 						</div>
@@ -55,82 +55,114 @@
 </template>
 
 <script setup lang="js">
+	import { useMusicalDatesStore } from "@/stores/musicalDatesStore";
+	import { computed, onMounted, ref } from "vue";
 
-																																																					import moment from "moment";
-	import { computed, ref } from "vue";
+	const emit = defineEmits(['dateSelected']);
+	const musicalDatesStore = useMusicalDatesStore();
 
-																																																					// 현재 날짜
-																																																					const currentDate = ref(new Date());
-																																																					// 선택한 날짜
-																																																					const selectedDate = ref(null);
-																																																					// 현재 날짜의 연도 반환
-																																																					const currentYear = computed(() => currentDate.value.getFullYear());
-																																																					// 현재 날짜의 월 반환
-																																																					const currentMonth = computed(() => currentDate.value.getMonth());
+	const currentDate = ref(new Date());
+	const selectedDate = ref(null);
 
-																																																					const weekDays = ["일", "월", "화", "수", "목", "금", "토"];
+	const currentYear = computed(() => currentDate.value.getFullYear());
+	const currentMonth = computed(() => currentDate.value.getMonth());
 
-																																																					const daysGrid = computed(() => {
-																																																						const year = currentYear.value;
-																																																						const month = currentMonth.value;
-																																																						const date = new Date(year, month, 1);
-																																																						const days = [];
+	const weekDays = ["일", "월", "화", "수", "목", "금", "토"];
 
-																																																						// 이전 달의 날짜 추가
-																																																						const prevMonthDays = [];
-																																																						const firstDayIndex = date.getDay();
-																																																						if (firstDayIndex > 0) {
-																																																							const prevMonth = new Date(year, month, 0);
-																																																							for (let i = firstDayIndex - 1; i >= 0; i--) {
-																																																								const prevDate = new Date(year, month, -i);
-																																																								prevMonthDays.push({ date: prevDate, isCurrentMonth: false });
-																																																							}
-																																																						}
+	const formatDate = (date) => {
+		const year = date.getFullYear();
+		const month = (`0${date.getMonth() + 1}`).slice(-2);
+		const day = (`0${date.getDate()}`).slice(-2);
+		return `${year}-${month}-${day}`;
+	};
 
-																																																						// 현재 달의 날짜 추가
-																																																						while (date.getMonth() === month) {
-																																																							days.push({ date: new Date(date), isCurrentMonth: true });
-																																																							date.setDate(date.getDate() + 1);
-																																																						}
+	const daysGrid = computed(() => {
+		const year = currentYear.value;
+		const month = currentMonth.value;
+		const date = new Date(year, month, 1);
+		const days = [];
 
-																																																						// 다음 달의 날짜 추가
-																																																						const nextMonthDays = [];
-																																																						const remainingDays = 7 - ((days.length + prevMonthDays.length) % 7);
-																																																						if (remainingDays < 7) {
-																																																							for (let i = 1; i <= remainingDays; i++) {
-																																																								const nextDate = new Date(year, month + 1, i);
-																																																								nextMonthDays.push({ date: nextDate, isCurrentMonth: false });
-																																																							}
-																																																						}
+		const prevMonthDays = [];
+		const firstDayIndex = date.getDay();
+		if (firstDayIndex > 0) {
+			for (let i = firstDayIndex - 1; i >= 0; i--) {
+				const prevDate = new Date(year, month, -i);
+				prevMonthDays.push({ date: prevDate, isCurrentMonth: false });
+			}
+		}
 
-																																																						return [...prevMonthDays, ...days, ...nextMonthDays];
-																																																					});
+		while (date.getMonth() === month) {
+			days.push({ date: new Date(date), isCurrentMonth: true });
+			date.setDate(date.getDate() + 1);
+		}
 
-																																																					const setToday = () => {
-																																																						currentDate.value = new Date();
-																																																						selectedDate.value = moment(currentDate.value).format("YYYY-MM-DD");
-																																																					};
+		const nextMonthDays = [];
+		const totalDays = prevMonthDays.length + days.length;
+		const remainingDays = totalDays % 7 === 0 ? 0 : 7 - (totalDays % 7);
+		if (remainingDays > 0) {
+			for (let i = 1; i <= remainingDays; i++) {
+				const nextDate = new Date(year, month + 1, i);
+				nextMonthDays.push({ date: nextDate, isCurrentMonth: false });
+			}
+		}
 
-																																																					const selectDate = (date) => {
-																																																						selectedDate.value = date;
-																																																						const formattedDate = moment(date).format("YYYY-MM-DD");
-																																																					};
+		return [...prevMonthDays, ...days, ...nextMonthDays];
+	});
 
-																																																					const prevMonth = () => {
-																																																						currentDate.value = new Date(currentYear.value, currentMonth.value - 1, 1);
-																																																					};
+	const setToday = () => {
+		currentDate.value = new Date();
+		selectedDate.value = currentDate.value;
+		emit('dateSelected', selectedDate.value);
+	};
 
-																																																					const nextMonth = () => {
-																																																						currentDate.value = new Date(currentYear.value, currentMonth.value + 1, 1);
-																																																					};
+	const selectDate = (date) => {
+		selectedDate.value = date;
+		emit('dateSelected', date);
+	};
+
+	const handleDateClick = (date) => {
+		if (!isDateDisabled(date)) {
+			selectDate(date);
+		} else {
+			alert('해당 날짜는 선택할 수 없습니다.');
+		}
+	};
+
+	const isDateDisabled = (date) => {
+		if (!date) return true;
+		const formattedDate = formatDate(date);
+		return !musicalDatesStore.scheduleDates.some(
+			(d) => formatDate(d) === formattedDate
+		);
+	};
+
+	const prevMonth = () => {
+		currentDate.value = new Date(currentYear.value, currentMonth.value - 1, 1);
+		musicalDatesStore.fetchMusicalDates(musicalDatesStore.musicalId);
+	};
+
+	const nextMonth = () => {
+		currentDate.value = new Date(currentYear.value, currentMonth.value + 1, 1);
+		musicalDatesStore.fetchMusicalDates(musicalDatesStore.musicalId);
+	};
+
+	onMounted(async () => {
+		setToday();
+		if (musicalDatesStore.musicalId) {
+			await musicalDatesStore.fetchMusicalDates(musicalDatesStore.musicalId);
+		} else {
+			musicalDatesStore.fetchMusicalDates(1);
+		}
+	});
 </script>
+
 <style scoped>
 	.calendar-box {
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		background-color: white; /* white */
+		background-color: white;
 		padding: 20px auto;
 		width: 100%;
 	}
@@ -146,16 +178,12 @@
 		width: 30px;
 		height: 30px;
 		border: none;
-		background-color: white; /* white */
-	}
-
-	.fa-solid {
-		font-weight: bold;
+		background-color: white;
 	}
 
 	.current-year {
 		font-weight: bold;
-		color: #c54966; /* green -> #C54966 */
+		color: #c54966;
 		font-size: 24px;
 		padding: 0px 20px;
 	}
@@ -169,7 +197,6 @@
 	}
 
 	.calendar-header {
-		/* font-weight: bold; */
 		color: #727272;
 		font-size: 18px;
 		width: 100%;
@@ -179,7 +206,6 @@
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		/* 요일 폰트 크기 조정 */
 		font-size: 18px;
 		width: 100%;
 		height: 100%;
@@ -191,7 +217,6 @@
 		flex-direction: column;
 		align-items: center;
 		justify-content: end;
-		/* 요일별 높이 조절 */
 		height: 40px;
 		width: 100%;
 		cursor: pointer;
@@ -207,19 +232,19 @@
 	}
 
 	.daily-today:hover {
-		background-color: #c54966; /* green -> #C54966 */
-		box-shadow: 0 0 5px 1px #c54966; /* green -> #C54966 */
+		background-color: #c54966;
+		box-shadow: 0 0 5px 1px #c54966;
 	}
 
 	.daily-today:active {
-		background-color: #c54966; /* green -> #C54966 */
+		background-color: #c54966;
 	}
 
 	.today-btn {
-		background-color: #c54966; /* green -> #C54966 */
+		background-color: #c54966;
 		border: none;
 		border-radius: 10px;
-		color: white; /* white */
+		color: white;
 		padding: 5px 10px;
 		margin-top: 10px;
 		transition: background-color 0.2s ease;
@@ -235,6 +260,18 @@
 	}
 
 	.non-current-month {
-		color: black; /* dark-gray -> black */
+		color: #ccc;
+	}
+
+	.disabled {
+		cursor: not-allowed;
+		color: #c0c0c0;
+		pointer-events: none;
+	}
+
+	.loading {
+		font-size: 18px;
+		color: #c54966;
+		margin: 20px 0;
 	}
 </style>

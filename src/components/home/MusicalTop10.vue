@@ -93,10 +93,6 @@
 		border-radius: 0px 0px 12px 12px;
 	}
 
-	.detailframeIcon {
-		/* 필요한 스타일 추가 */
-	}
-
 	.musicaltitle {
 		margin-top: 10px;
 		font-size: 14px;

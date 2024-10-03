@@ -12,11 +12,13 @@ import Home from "@/pages/Home.vue";
 import MyPage from "@/pages/mypages/MyPage.vue";
 import MyTicketList from "@/pages/mypages/MyTicketList.vue";
 import TicketStorage from "@/pages/mypages/TicketStorage.vue";
-import Test from "@/pages/Test.vue";
 import Ticket from "@/pages/ticket/Ticket.vue";
 
 import SeatSelectionPage from "@/pages/booking/SeatSelectionPage.vue";
-import SessionComplete from "../pages/SessionComplete.vue";
+import SessionComplete from "@/pages/SessionComplete.vue";
+
+// 예매 관련 페이지
+import BookingDatePage from "@/pages/booking/BookingDatePage.vue";
 
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
@@ -31,12 +33,6 @@ const router = createRouter({
 			name: "ticket",
 			component: Ticket,
 		},
-		{
-			path: "/test",
-			name: "test",
-			component: Test,
-		},
-
 		{
 			path: "/login",
 			name: "login",
@@ -110,12 +106,25 @@ const router = createRouter({
 			],
 		},
 		{
-			path: "/booking",
-			name: "Booking",
-			redirect: "/booking/seats",
+			path: "/musicals",
+			name: "Musicals",
 			children: [
 				{
-					path: "seats",
+					// http://localhost:5173/musicals/1/seats
+					path: ":musical_id(\\d+)",
+					name: "bookingDatePage",
+					component: BookingDatePage,
+					beforeEnter: (to, from, next) => {
+						if (!to.params.musical_id) {
+							next({ name: "home" }); // musical_id가 없으면 홈으로 리다이렉트
+						} else {
+							next();
+						}
+					},
+				},
+				{
+					// http://localhost:5173/musicals/1
+					path: ":musical_id(\\d+)/seats",
 					name: "seats",
 					component: SeatSelectionPage,
 				},

@@ -1,44 +1,43 @@
 <template>
 	<div :class="$style.weuibackFilledParent">
-		<img :class="$style.weuibackFilledIcon" alt="" :src="backIcon" />
+		<img :class="$style.weuibackFilledIcon" alt="뒤로가기" :src="backIcon" />
 		<b :class="$style.b">뒤로가기</b>
 	</div>
 </template>
 
 <script lang="js">
-		import backIcon from "@/assets/account/kb.png";
+	import backIcon from "@/assets/mypages/backIcon.svg";
 	import { defineComponent } from "vue";
 
-		export default defineComponent({
-			name: "BackHeader",
-			data() {
-				return {
-					backIcon,
-				};
-			},
-		});
+	export default defineComponent({
+		name: "BackHeader",
+		data() {
+			return {
+				backIcon,
+			};
+		},
+	});
 </script>
 
 <style module>
 	.weuibackFilledIcon {
 		position: absolute;
-		top: 2px;
 		left: 0px;
 		width: 11px;
 		height: 22px;
 		overflow: hidden;
-		border: 1px solid red;
 	}
 
 	.b {
 		position: absolute;
-		top: 2px;
 		left: 18px;
 	}
 
 	.weuibackFilledParent {
+		display: flex;
+		align-items: center;
 		position: absolute;
-		top: 12px;
+		top: 16px;
 		left: 14px;
 		width: 82px;
 		height: 22px;
