@@ -52,7 +52,7 @@
                     </div>
                 </div>
             </div>
-            <button :class="$style.bookingButton">예매하기</button>
+            <button :class="$style.bookingButton" @click="redirectToBooking">예매하기</button>
         </div>
         <Footer :class="$style.footer"></Footer> <!-- Footer 수정 -->
     </div>
@@ -81,6 +81,9 @@ export default defineComponent({
     methods: {
         goBack() {
             this.$router.push('/musical');
+        },
+        redirectToBooking() {
+            this.$router.push('/'); // 예매하는 페이지로 이동하는 설정 필요
         },
         async fetchMusical(id) {
             try {
