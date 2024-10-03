@@ -49,7 +49,7 @@
     <Footer />
   </div>
 </template>
-<script lang="ts">
+<script lang="js">
 import { defineComponent } from 'vue';
 import BackHeader from '@/components/BackHeader.vue';
 import Footer from '@/components/Footer.vue';

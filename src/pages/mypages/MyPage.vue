@@ -1,8 +1,18 @@
 <template>
     <div :class="$style.div">
         <MainHeader />
-        <MyPageTabs />
-        <div :class="$style.child" />
+
+        <div :class="$style.groupParent">
+            <div :class="$style.parent">
+                <div :class="[$style.b1, { [$style.activeTab]: selectedTab === 'wallet' }]"
+                    @click="selectTab('wallet')">전자지갑</div>
+                <div :class="[$style.b2, { [$style.activeTab]: selectedTab === 'tickets' }]"
+                    @click="selectTab('tickets')">티켓 보관함</div>
+            </div>
+            <img :class="$style.groupChild" :src="line7Image" alt="Line 7" />
+        </div>
+
+        <div :class="$style.child"></div>
         <div :class="$style.container">
             <div :class="$style.b1">전자지갑 결제내역</div>
             <div :class="$style.div2">&gt;</div>
@@ -11,38 +21,17 @@
             <div :class="$style.div3">공인인증서 관리 / 발급</div>
             <div :class="$style.div2">&gt;</div>
         </div>
-        <!-- <div :class="$style.cardParent">
-                <div :class="$style.card">
-                      <div :class="$style.cardFrame">
-                            <div :class="$style.div5">출금계좌 : 420220-01-123456</div>
-                            <div :class="$style.div6">$23,345.43</div>
-                            <img :class="$style.imageIcon" :src="imageIcon" alt="Bank Logo" />
-                            <div :class="$style.div7">국민은행</div>
-                      </div>
-                </div>
-                <div :class="$style.card1">
-                      <div :class="$style.image">
-                            <div :class="$style.div5">출금계좌 : 981234-01-123456</div>
-                            <div :class="$style.div6">$23,345.43</div>
-                            <img :class="$style.imageIcon" :src="imageIcon" alt="Bank Logo" />
-                            <div :class="$style.div7">현대카드</div>
-                      </div>
-                </div>
-                <div :class="$style.cardFrame1">
-                      <div :class="$style.div5">출금계좌 : 111111-01-123456</div>
-                      <div :class="$style.div6">$23,345.43</div>
-                            <img :class="$style.imageIcon" :src="imageIcon" alt="Bank Logo" />
-                      <div :class="$style.div7">토스</div>
-                </div>
-          </div> -->
-        <div :class="$style.Flipcard">
+
+        <div v-if="selectedTab === 'wallet'" :class="$style.groupParent3">
             <FlipAccount />
         </div>
-
-        <Footer />
+        <div v-else-if="selectedTab === 'tickets'">
+            <TicketStorage />
+        </div>
+        <Footer></Footer>
     </div>
 </template>
-<script lang="js">
+<script>
 import { defineComponent } from 'vue';
 
 import { Icon } from '@iconify/vue';
@@ -55,6 +44,7 @@ import couponIcon from '@/assets/Iconex/Line Two Tone/Coupon 3.svg';
 import userIcon from '@/assets/Iconex/Line Two Tone/User.svg';
 
 import FlipAccount from "@/components/home/FlipAccount.vue";
+import TicketStorage from "@/components/mypages/TicketStorage.vue";
 import Footer from '@/components/Footer.vue';
 import MainHeader from '../../components/MainHeader.vue';
 import MyPageTabs from '../../components/mypages/MyPageTabs.vue';
@@ -66,7 +56,8 @@ export default defineComponent({
         MyPageTabs,
         Icon,
         Footer,
-        FlipAccount
+        FlipAccount,
+        TicketStorage
     },
     data() {
         return {
@@ -76,7 +67,15 @@ export default defineComponent({
             homeIcon,
             couponIcon,
             userIcon,
+            selectedTab: 'wallet',
         };
+    },
+    methods: {
+        selectTab(tab) {
+            console.log(tab)
+            this.selectedTab = tab;
+            this.$emit('tab-selected', tab);
+        },
     },
 });
 </script>
@@ -110,6 +109,7 @@ body {
     position: absolute;
     top: 0px;
     left: 0px;
+    z-index: 10;
 }
 
 .parent {
@@ -407,5 +407,29 @@ body {
     font-size: 16px;
     color: #c54966;
     font-family: Roboto;
+}
+
+/* tab */
+
+.b2 {
+    position: absolute;
+    top: 0px;
+    left: 153px;
+    color: #6e6e6e;
+    z-index: 10;
+}
+
+.activeTab {
+    color: #c54966;
+    font-weight: bold;
+}
+
+/* card */
+.groupParent3 {
+    position: absolute;
+    top: 78px;
+    left: 12px;
+    width: 348px;
+    height: 225.5px;
 }
 </style>
