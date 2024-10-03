@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { useUserStore } from "@/stores/userStore";
+
 // 로그인 관련 페이지
 import LoginAlert from "@/components/login/LoginAlert.vue";
 import WelcomeSignup from "@/components/login/WelcomeSignup.vue";
@@ -18,6 +19,8 @@ import SeatSelectionPage from "@/pages/booking/SeatSelectionPage.vue";
 import SessionComplete from "../pages/SessionComplete.vue";
 import VerificationPasswordInput from "../pages/booking/VerificationPasswordInput.vue";
 import PaymentSuccessPage from "../pages/booking/PaymentSuccessPage.vue";
+
+import MusicalList from "@/pages/musical/MusicalList.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -92,27 +95,32 @@ const router = createRouter({
       ],
     },
     {
-			path: "/booking",
-			name: "Booking",
-			redirect: "/booking/seats",
-			children: [
-				{
-					path: "seats",
-					name: "seats",
-					component: SeatSelectionPage,
-				},
-				{
-					path: "password",
-					name: "password",
-					component: VerificationPasswordInput,
-				},
-				{
-					path: "payment-success",
-					name: "payment-success",
-					component: PaymentSuccessPage,
-				},
-			],
-		},
+      path: "/booking",
+      name: "Booking",
+      redirect: "/booking/seats",
+      children: [
+        {
+          path: "seats",
+          name: "seats",
+          component: SeatSelectionPage,
+        },
+        {
+          path: "password",
+          name: "password",
+          component: VerificationPasswordInput,
+        },
+        {
+          path: "payment-success",
+          name: "payment-success",
+          component: PaymentSuccessPage,
+        },
+      ],
+    },
+    {
+      path: "/musical",
+      name: "MusicalList",
+      component: MusicalList,
+    },
   ],
 });
 
