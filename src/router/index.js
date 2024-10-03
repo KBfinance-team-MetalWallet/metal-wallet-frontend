@@ -17,6 +17,8 @@ import Ticket from "@/pages/ticket/Ticket.vue";
 import SeatSelectionPage from "@/pages/booking/SeatSelectionPage.vue";
 import SessionComplete from "../pages/SessionComplete.vue";
 
+import MusicalList from "@/pages/musical/MusicalList.vue";
+
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
 	routes: [
@@ -115,6 +117,11 @@ const router = createRouter({
 				},
 			],
 		},
+		{
+            path: "/musical",
+            name: "MusicalList",
+            component: MusicalList
+        }
 	],
 });
 
