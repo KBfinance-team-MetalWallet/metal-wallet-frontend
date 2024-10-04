@@ -3,7 +3,7 @@
         <div :class="$style.groupParent">
             <BackHeader @click="goBack"/>
         </div>
-        
+
         <!-- Container for all Frames -->
         <div :class="$style.framesContainer" @scroll="handleScroll">
             <div v-for="musical in musicals" :key="musical.id" class="frame-item">
@@ -35,16 +35,15 @@ export default defineComponent({
         return {
             musicals: [],
             nextCursor: null,
-            size: 3,
-            isLoading: false, // To prevent multiple fetch requests
-            TestImage: TestImage, // TestImage를 data 속성으로 추가
+            size: 4,
+            isLoading: false,
+            TestImage: TestImage,
         };
     },
     methods: {
         async fetchMusicals(cursor = null) {
-            if (this.isLoading) return; // Prevent multiple simultaneous requests
+            if (this.isLoading) return; 
             this.isLoading = true;
-
             const url = cursor 
                 ? `http://localhost:8080/api/musicals?cursor=${cursor}&size=${this.size}`
                 : `http://localhost:8080/api/musicals?size=${this.size}`;
@@ -54,9 +53,13 @@ export default defineComponent({
                 if (!response.ok) throw new Error('Network response was not ok');
                 const data = await response.json();
 
+                // Push new data into the musicals array
                 this.musicals.push(...data.result.data);
+
+                // 업데이트된 nextCursor 확인
                 this.nextCursor = data.result.nextCursor;
 
+                // 데이터가 더 이상 없으면 콘솔에 로그 출력
                 if (!this.nextCursor) {
                     console.log('No more items to load');
                 }
@@ -74,14 +77,14 @@ export default defineComponent({
         },
         handleScroll(event) {
             const { scrollTop, scrollHeight, clientHeight } = event.target;
-            const bottom = scrollHeight === scrollTop + clientHeight;
-            if (bottom && this.nextCursor) {
+            const bottom = scrollHeight - scrollTop <= clientHeight + 1; // 약간의 부동 소수점 오류를 감안
+            if (bottom && this.nextCursor && !this.isLoading) {
                 this.fetchMusicals(this.nextCursor);
             }
         }
     },
     mounted() {
-        this.fetchMusicals(); // Fetch initial data
+        this.fetchMusicals(); 
     }
 });
 </script>
@@ -97,24 +100,24 @@ body {
 
 .backHeader {
     position: fixed;
-    top: 0; /* Header를 고정 */
+    top: 0; 
     width: 100%;
-    z-index: 1000; /* 다른 요소들 위에 위치하도록 */
+    z-index: 1000; 
 }
 
 .footer {
     position: fixed;
-    bottom: 0; /* Footer를 고정 */
+    bottom: 0; 
     width: 100%;
-    z-index: 1000; /* 다른 요소들 위에 위치하도록 */
+    z-index: 1000; 
 }
 
 .div {
     width: 100%;
-    height: 100vh; /* 전체 화면 높이 설정 */
+    height: 100vh; 
     position: relative;
     background-color: #fafafa;
-    overflow: hidden; /* 전체 스크롤 불가 */
+    overflow: hidden; 
     text-align: left;
     font-size: 16px;
     color: #c54966;
@@ -126,13 +129,13 @@ body {
     justify-content: center;
     gap: 20px;
     padding: 20px;
-    position: absolute; /* Positioning absolute to make scrolling work */
-    top: 40px; /* BackHeader의 높이를 고려한 위치 */
-    bottom: 80px; /* Footer의 높이를 고려한 위치 */
-    overflow-y: auto; /* 수직 스크롤 가능 */
+    position: absolute; 
+    top: 40px; 
+    bottom: 80px; 
+    overflow-y: auto; /* Enable vertical scrolling */
 }
 
 .frame-item {
-    flex: 0 1 300px;
+    flex: 0 1 300px; /* Adjust width as needed */
 }
 </style>
