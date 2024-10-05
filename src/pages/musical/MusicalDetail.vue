@@ -83,7 +83,8 @@ export default defineComponent({
             this.$router.push('/musical');
         },
         redirectToBooking() {
-            this.$router.push('/'); // 예매하는 페이지로 이동하는 설정 필요
+            const id = this.$route.params.id;
+            this.$router.push(`/musicals/${id}`);
         },
         async fetchMusical(id) {
             try {
