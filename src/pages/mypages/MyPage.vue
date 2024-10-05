@@ -13,15 +13,22 @@
         </div>
 
         <div :class="$style.child"></div>
-        <div :class="$style.container">
-            <div :class="$style.b1">전자지갑 결제내역</div>
-            <div :class="$style.div2">&gt;</div>
+        <div v-if="selectedTab === 'wallet'">
+            <div :class="$style.container">
+                <div :class="$style.b1">전자지갑 결제내역</div>
+                <div :class="$style.div2">&gt;</div>
+            </div>
+            <div :class="$style.groupDiv">
+                <div :class="$style.div3">공인인증서 관리 / 발급</div>
+                <div :class="$style.div2">&gt;</div>
+            </div>
         </div>
-        <div :class="$style.groupDiv">
-            <div :class="$style.div3">공인인증서 관리 / 발급</div>
-            <div :class="$style.div2">&gt;</div>
+        <div v-else-if="selectedTab === 'tickets'">
+            <div :class="$style.container" @click="goToPage('/my-ticket-list')">
+                <div :class="$style.b1">나의 예매 내역</div>
+                <div :class="$style.div2">&gt;</div>
+            </div>
         </div>
-
         <div v-if="selectedTab === 'wallet'" :class="$style.groupParent3">
             <FlipAccount />
         </div>
@@ -75,6 +82,9 @@ export default defineComponent({
             console.log(tab)
             this.selectedTab = tab;
             this.$emit('tab-selected', tab);
+        },
+        goToPage(path) {
+            this.$router.push(path);
         },
     },
 });

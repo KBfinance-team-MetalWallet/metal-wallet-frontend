@@ -17,12 +17,16 @@ import Ticket from "@/pages/ticket/Ticket.vue";
 
 import SeatSelectionPage from "@/pages/booking/SeatSelectionPage.vue";
 import SessionComplete from "@/pages/SessionComplete.vue";
+
 import VerificationPasswordInput from "@/pages/booking/VerificationPasswordInput.vue";
 import PaymentSuccessPage from "@/pages/booking/PaymentSuccessPage.vue";
 import PaymentHistory from "@/pages/mypages/PaymentHistory.vue";
 
 import MusicalList from "@/pages/musical/MusicalList.vue";
 import MusicalDetail from "@/pages/musical/MusicalDetail.vue";
+
+// 예매 관련 페이지
+import BookingDatePage from "@/pages/booking/BookingDatePage.vue";
 
 import { isTokenExpired } from "@/utils/auth.js";
 
@@ -124,6 +128,24 @@ const router = createRouter({
             component: MusicalDetail,
             props: true,
         },
+        {
+            path: "/musicals",
+            name: "Musicals",
+            children: [
+                {
+                    // http://localhost:5173/musicals/1/seats
+                    path: ":musical_id(\\d+)",
+                    name: "bookingDatePage",
+                    component: BookingDatePage,
+                },
+                {
+                    // http://localhost:5173/musicals/1
+                    path: ":musical_id(\\d+)/seats",
+                    name: "seats",
+                    component: SeatSelectionPage,
+                }
+            ]
+        }
     ],
 });
 
