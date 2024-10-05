@@ -11,14 +11,14 @@
       <div :class="$style.rectangleIcon">
         <div :class="$style.balanceAndImage">
           <div class="account-info">
-            <b :class="$style.kb">KB나라사랑우대통장</b>
-            <div :class="$style.div1">123-4444-5555</div>
+            <b :class="$style.kb">{{ accountName }}</b>
+            <div :class="$style.div1">{{ accountNumber }}</div>
           </div>
 
           <!-- 금액 및 이미지 -->
           <img :class="$style.image141Icon" alt="" src="@/assets/mypages/kbImage.png" />
         </div>
-        <b :class="$style.balance">5,212,500원</b>
+        <b :class="$style.balance">{{ formatCurrency(currentBalance) }}</b>
 
         <!-- 이체하기 버튼 -->
         <div :class="$style.button">
@@ -39,48 +39,75 @@ import { defineComponent } from 'vue';
 import axios from 'axios';
 import MainHeader from '../../components/MainHeader.vue';
 import Footer from '../../components/Footer.vue';
-import TransactionRecords from '../../components/mypages/TransactionRecords.vue'; // 추가
+import TransactionRecords from '../../components/mypages/TransactionRecords.vue';
 
 export default defineComponent({
   name: "Frame",
   components: {
     MainHeader,
     Footer,
-    TransactionRecords, // 등록
+    TransactionRecords,
   },
   data() {
     return {
-      transactions: [],
-      accountId: 8,
+      transactions: [], // 거래 내역
+      accountId: 8, // 현재 선택된 계좌 ID
+      accountName: "", // 계좌 이름
+      accountNumber: "", // 계좌 번호
+      currentBalance: 0, // 현재 잔액
     };
   },
   mounted() {
-    this.fetchTransactionRecords();
+    this.fetchAccountDetails(); // 계좌 상세 정보 가져오기
+    this.fetchTransactionRecords(); // 거래 내역 가져오기
   },
   methods: {
+    // 단일 계좌 상세 정보 가져오기
+    async fetchAccountDetails() {
+      const token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGdtYWlsLmNvbSIsImV4cCI6MTcyODAyNTA0OCwicm9sZSI6IlVTRVIifQ.VkHPsFkYvpWDAbySASPa52usMr1CyhZJLmR7C75niRIQxKz_hrv8bDnlXsu7ltmkOg48whrt5rmjmyupX-576w";
+      try {
+        const response = await axios.get(`http://localhost:8080/api/accounts/${this.accountId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const account = response.data.result;
+        // 응답 결과를 데이터에 반영
+        this.accountName = account.bankName; // 계좌 이름
+        this.accountNumber = account.accountNumber; // 계좌 번호
+        this.currentBalance = account.balance; // 잔액
+      } catch (error) {
+        console.error("Error fetching account details:", error);
+      }
+    },
+
+    // 특정 계좌의 거래 내역 가져오기
     async fetchTransactionRecords() {
       const token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGdtYWlsLmNvbSIsImV4cCI6MTcyODAyNTA0OCwicm9sZSI6IlVTRVIifQ.VkHPsFkYvpWDAbySASPa52usMr1CyhZJLmR7C75niRIQxKz_hrv8bDnlXsu7ltmkOg48whrt5rmjmyupX-576w";
       try {
-        const response = await axios.get(`http://localhost:8080/api/accounts/${this.accountId}/transaction-records`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axios.get(`http://localhost:8080/api/accounts/${this.accountId}/transaction-records`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         this.transactions = response.data.result.data.map(transaction => ({
           transactionId: transaction.transactionId,
           vendor: transaction.vendor,
           amount: transaction.amount,
           transactionType: transaction.transactionType,
           currentBalance: transaction.currentBalance,
-          createdAt: transaction.createdAt
+          createdAt: transaction.createdAt,
         }));
       } catch (error) {
         console.error("Error fetching transaction records:", error);
       }
     },
-  }
+
+    // 금액 형식 지정
+    formatCurrency(amount) {
+      return `${amount.toLocaleString()}원`;
+    },
+  },
 });
 </script>
 
@@ -182,51 +209,5 @@ export default defineComponent({
   justify-content: center;
   box-sizing: border-box;
   color: #333;
-}
-
-.transactionsFrame {
-  width: 85%;
-  position: relative;
-  margin: 0 auto;
-  margin-top: 10px;
-  border-radius: 15px;
-  padding: 15px;
-}
-
-.transactionRow {
-  display: flex;
-  justify-content: space-between;
-  padding: 10px 0;
-  border-bottom: 1px solid #ddd;
-}
-
-.transactionItem,
-.transactionItemTitle {
-  text-align: left;
-  font-size: 16px;
-  color: #fff;
-}
-
-.transactionAmount {
-  font-size: 16px;
-  color: #4f6af6;
-}
-
-.transactionBalance {
-  font-size: 12px;
-  color: #aaa;
-}
-
-/* Footer 하단 고정 */
-.footer {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  height: 60px;
-  background-color: #222;
-  z-index: 10;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
 }
 </style>
