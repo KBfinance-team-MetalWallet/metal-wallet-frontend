@@ -24,7 +24,7 @@ import PaymentHistory from "@/pages/mypages/PaymentHistory.vue";
 
 import MusicalList from "@/pages/musical/MusicalList.vue";
 import MusicalDetail from "@/pages/musical/MusicalDetail.vue";
-  \
+
 // 예매 관련 페이지
 import BookingDatePage from "@/pages/booking/BookingDatePage.vue";
 
@@ -128,6 +128,24 @@ const router = createRouter({
             component: MusicalDetail,
             props: true,
         },
+        {
+            path: "/musicals",
+            name: "Musicals",
+            children: [
+                {
+                    // http://localhost:5173/musicals/1/seats
+                    path: ":musical_id(\\d+)",
+                    name: "bookingDatePage",
+                    component: BookingDatePage,
+                },
+                {
+                    // http://localhost:5173/musicals/1
+                    path: ":musical_id(\\d+)/seats",
+                    name: "seats",
+                    component: SeatSelectionPage,
+                }
+            ]
+        }
     ],
 });
 
@@ -144,24 +162,6 @@ router.beforeEach((to, from, next) => {
     } else {
         next();
     }
-  		{
-			path: "/musicals",
-			name: "Musicals",
-			children: [
-				{
-					// http://localhost:5173/musicals/1/seats
-					path: ":musical_id(\\d+)",
-					name: "bookingDatePage",
-					component: BookingDatePage,
-				},
-				{
-					// http://localhost:5173/musicals/1
-					path: ":musical_id(\\d+)/seats",
-					name: "seats",
-					component: SeatSelectionPage,
-				},
-			],
-		},
 });
 
 export default router;
