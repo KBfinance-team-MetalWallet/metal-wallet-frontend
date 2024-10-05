@@ -91,7 +91,7 @@ const router = createRouter({
             component: MyTicketList,
         },
         {
-            path: "/payment-history",
+            path: "/mypage/payment-history",
             name: "paymentHistory",
             component: PaymentHistory,
         },
@@ -100,11 +100,6 @@ const router = createRouter({
             name: "Booking",
             redirect: "/booking/seats",
             children: [
-                {
-                    path: "seats",
-                    name: "seats",
-                    component: SeatSelectionPage,
-                },
                 {
                     path: "password",
                     name: "password",
@@ -116,6 +111,11 @@ const router = createRouter({
                     component: PaymentSuccessPage,
                 },
             ],
+        },
+        {
+            path: "/booking/seats",
+            name: "seats",
+            component: SeatSelectionPage,
         },
         {
             path: "/musical",
@@ -141,7 +141,7 @@ const router = createRouter({
                 {
                     // http://localhost:5173/musicals/1
                     path: ":musical_id(\\d+)/seats",
-                    name: "seats",
+                    name: "musical-seats",
                     component: SeatSelectionPage,
                 }
             ]
