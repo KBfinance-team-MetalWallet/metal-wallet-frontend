@@ -1,7 +1,7 @@
 <template>
     <div :class="$style.rectangleParent">
         <div :class="$style.rectangleGroup">
-            <img :class="$style.image200Icon" alt="" :src="ticket.image" />
+            <img :class="$style.image200Icon" alt="" :src="getImageUrl(ticket.posterImageUrl)" />
             <div :class="$style.alladdinTheMusical">{{ ticket.title }}</div>
             <div :class="$style.div1">
                 <p :class="$style.p">예매번호</p>
@@ -14,12 +14,12 @@
             </div>
             <div :class="$style.t200098371820231205Container">
                 <p :class="$style.p">{{ ticket.id }}</p>
-                <p :class="$style.p">{{ ticket.date }}</p>
+                <p :class="$style.p">{{ ticket.createdAt }}</p>
                 <p :class="$style.p">{{ ticket.venue }}</p>
-                <p :class="$style.p">{{ ticket.time }}</p>
-                <p :class="$style.p">{{ ticket.seats }}</p>
-                <p :class="$style.p">{{ ticket.cancelBy }}</p>
-                <p :class="$style.p11">{{ ticket.status }}</p>
+                <p :class="$style.p">{{ ticket.scheduleDate }} {{ ticket.startTime }}</p>
+                <p :class="$style.p">{{ ticket.grade }}석 {{ ticket.seatNo }}</p>
+                <p :class="$style.p">{{ ticket.cancelUntil }} 까지</p>
+                <p :class="$style.p11">{{ status }}</p>
             </div>
             <div :class="$style.rectangleDiv" />
             <div :class="$style.groupChild1" />
@@ -29,28 +29,61 @@
     </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, PropType } from 'vue';
-
-export default defineComponent({
+<script>
+export default {
     name: 'TicketCard',
     props: {
         ticket: {
-            type: Object as PropType<{
-                id: string;
-                date: string;
-                venue: string;
-                time: string;
-                seats: string;
-                cancelBy: string;
-                status: string;
-                image: string;
-                title: string;
-            }>,
-            required: true
+            type: Object,
+            required: true,
+            default: () => ({
+                id: '', // 예매번호
+                title: '', // 공연 제목
+                createdAt: '', // 예매일
+                venue: '', // 장소
+                scheduleDate: '', // 관람일시
+                startTime: '',// 관람시간
+                grade: '', // 좌석 등급
+                seatNo: '', // 좌석 번호
+                cancelUntil: '', // 취소 가능 일시
+                ticketStatus: '', // 상태
+                musicalImgName: '', // 이미지 URL 또는 경로
+            })
+        },
+        status: String
+    },
+    methods: {
+        formatDate(dateArray, formatType) {
+            const [year, month, day, hour, minute, second] = dateArray;
+            const date = new Date(year, month - 1, day, hour, minute, second);
+            const weekDays = ['일', '월', '화', '수', '목', '금', '토'];
+            const dayOfWeek = weekDays[date.getDay()];
+
+            let formattedDate = `${year}.${month.toString().padStart(2, '0')}.${day
+                .toString()
+                .padStart(2, '0')}(${dayOfWeek})`;
+
+            if (formatType === 'YMDHM') {
+                formattedDate += ` ${hour.toString().padStart(2, '0')}:${minute
+                    .toString()
+                    .padStart(2, '0')}`;
+            } else if (formatType === 'YMDHMS') {
+                formattedDate += ` ${hour.toString().padStart(2, '0')}:${minute
+                    .toString()
+                    .padStart(2, '0')}:${second.toString().padStart(2, '0')}`;
+            }
+
+            return formattedDate;
+        },
+        getImageUrl(posterImageUrl) {
+            const s3BaseUrl = 'https://s3.amazonaws.com/your-bucket-name/';
+            return `${s3BaseUrl}${posterImageUrl}`;
         }
+    },
+    computed: {
+
     }
-});
+};
 </script>
 
 <style module>
