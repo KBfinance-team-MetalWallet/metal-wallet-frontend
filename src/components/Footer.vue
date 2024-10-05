@@ -1,32 +1,29 @@
 <template>
-	<div :class="$style.div8">
-		<div :class="$style.child" />
-		<div :class="$style.groupContainer">
-			<div :class="$style.parent">
-				<div :class="$style.div9">홈</div>
-				<img :class="$style.iconexlineTwoTonehome" alt="" :src="homeIcon" />
-			</div>
-			<div :class="$style.group">
-				<div :class="$style.div10">티켓</div>
-				<img
-					:class="$style.iconexlineTwoTonecoupon3"
-					alt=""
-					:src="couponIcon"
-				/>
-			</div>
-			<div :class="$style.container">
-				<div :class="$style.div10">마이</div>
-				<img :class="$style.iconexlineTwoTonehome" alt="" :src="userIcon" />
-			</div>
-		</div>
-	</div>
+
+    <div :class="$style.div8">
+        <div :class="$style.child" />
+        <div :class="$style.groupContainer">
+            <router-link to="/" :class="$style.parent">
+                <div :class="$style.div9">홈</div>
+                <img :class="$style.iconexlineTwoTonehome" alt="" :src="homeIcon" />
+            </router-link>
+            <router-link to="/ticket" :class="$style.group">
+                <div :class="$style.div10">티켓</div>
+                <img :class="$style.iconexlineTwoTonecoupon3" alt="" :src="couponIcon" />
+            </router-link>
+            <router-link to="/mypage" :class="$style.container">
+                <div :class="$style.div10">마이</div>
+                <img :class="$style.iconexlineTwoTonehome" alt="" :src="userIcon" />
+            </router-link>
+        </div>
+    </div>
 </template>
 
 <script lang="js">
-	import couponIcon from '@/assets/Iconex/Line Two Tone/Coupon 3.svg';
-	import homeIcon from '@/assets/Iconex/Line Two Tone/Home.svg';
-	import userIcon from '@/assets/Iconex/Line Two Tone/User.svg';
-	import { defineComponent } from 'vue';
+import { defineComponent } from 'vue';
+import homeIcon from '@/assets/Iconex/Line Two Tone/Home.svg';
+import couponIcon from '@/assets/Iconex/Line Two Tone/Coupon 3.svg';
+import userIcon from '@/assets/Iconex/Line Two Tone/User.svg';
 
 	export default defineComponent({
 	    name: 'Footer',

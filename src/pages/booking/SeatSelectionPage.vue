@@ -125,6 +125,7 @@
 			},
 		},
 	});
+
 </script>
 
 <style module>
@@ -520,3 +521,4 @@
 		height: 812px;
 	}
 </style>
+

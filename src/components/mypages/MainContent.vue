@@ -17,7 +17,7 @@ export default defineComponent({
         tickets: {
             type: Array as PropType<Array<{
                 id: string;
-                date: string;
+                cancelUntil: string;
                 venue: string;
                 time: string;
                 seats: string;
@@ -33,7 +33,6 @@ export default defineComponent({
 <style module>
 .groupParent {
     position: absolute;
-    top: 65px;
     left: -1px;
     width: 376px;
     display: flex;

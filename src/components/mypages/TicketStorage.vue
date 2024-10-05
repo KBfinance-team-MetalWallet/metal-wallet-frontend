@@ -1,49 +1,39 @@
 <template>
-    <div :class="$style.div">
-        <MainHeader />
-        <MyPageTabs />
-        <div :class="$style.child" />
-        <div :class="$style.group">
-            <div :class="$style.b1">나의 예매 내역</div>
-            <div :class="$style.div2">&gt;</div>
-        </div>
-        <div :class="$style.rectangleParent">
-            <div :class="$style.groupItem" />
-            <b :class="$style.my">My 뮤지컬 해시태그</b>
-            <img :class="$style.image203Icon" alt="" :src="image203Icon" />
+    <div :class="$style.rectangleParent">
+        <div :class="$style.groupItem" />
+        <b :class="$style.my">My 뮤지컬 해시태그</b>
+        <img :class="$style.image203Icon" alt="" :src="image203Icon" />
 
-            <div :class="$style.rectangleGroup">
-                <div :class="$style.groupInner" />
-                <div :class="$style.div3">사용자의 예매 내역을 바탕으로 생성된 해시태그입니다. </div>
+        <div :class="$style.rectangleGroup">
+            <div :class="$style.groupInner" />
+            <div :class="$style.div3">사용자의 예매 내역을 바탕으로 생성된 해시태그입니다. </div>
+        </div>
+        <div :class="$style.menuItem">
+            <div :class="$style.button">
+                <b :class="$style.b3">#알라딘</b>
             </div>
-            <div :class="$style.menuItem">
-                <div :class="$style.button">
-                    <b :class="$style.b3">#알라딘</b>
-                </div>
-                <div :class="$style.button">
-                    <b :class="$style.b3">#시카고</b>
-                </div>
-                <div :class="$style.button">
-                    <b :class="$style.b3">#발랄한</b>
-                </div>
-                <div :class="$style.button">
-                    <b :class="$style.b6">#캣츠</b>
-                </div>
-                <div :class="$style.button">
-                    <b :class="$style.b6">#신작</b>
-                </div>
-                <div :class="$style.button">
-                    <b :class="$style.b6">#신작</b>
-                </div>
-                <div :class="$style.button">
-                    <b :class="$style.b6">#신작</b>
-                </div>
+            <div :class="$style.button">
+                <b :class="$style.b3">#시카고</b>
+            </div>
+            <div :class="$style.button">
+                <b :class="$style.b3">#발랄한</b>
+            </div>
+            <div :class="$style.button">
+                <b :class="$style.b6">#캣츠</b>
+            </div>
+            <div :class="$style.button">
+                <b :class="$style.b6">#신작</b>
+            </div>
+            <div :class="$style.button">
+                <b :class="$style.b6">#신작</b>
+            </div>
+            <div :class="$style.button">
+                <b :class="$style.b6">#신작</b>
             </div>
         </div>
-        <Footer />
     </div>
 </template>
-<script lang="js">
+<script lang="ts">
 
 import { defineComponent } from 'vue';
 import { Icon } from '@iconify/vue';
@@ -54,17 +44,11 @@ import homeIcon from '@/assets/Iconex/Line Two Tone/Home.svg';
 import couponIcon from '@/assets/Iconex/Line Two Tone/Coupon 3.svg';
 import userIcon from '@/assets/Iconex/Line Two Tone/User.svg';
 
-import Footer from '@/components/Footer.vue';
-import MainHeader from '../../components/MainHeader.vue';
-import MyPageTabs from '../../components/mypages/MyPageTabs.vue';
 
 export default defineComponent({
     name: "TicketStorage",
     components: {
-        MainHeader,
-        MyPageTabs,
         Icon,
-        Footer
     },
     data() {
         return {
