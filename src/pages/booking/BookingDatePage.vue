@@ -30,6 +30,7 @@
 								?.availableSeats || 0
 						)
 					"
+					:musicalId="musicalId"
 				/>
 			</div>
 		</div>
@@ -38,7 +39,7 @@
 </template>
 
 <script lang="js">
-	import BackHeader from "@/components/BackHeader.vue";
+		import BackHeader from "@/components/BackHeader.vue";
 	import Calender from "@/components/booking/Calender.vue";
 	import ShowTimeInfo from "@/components/booking/ShowTimeInfo.vue";
 	import MainHeader from "@/components/MainHeader.vue";
@@ -47,39 +48,39 @@
 	import { onMounted } from "vue";
 	import { useRoute } from "vue-router";
 
-	export default {
-		components: {
-			BackHeader,
-			Calender,
-			ShowTimeInfo,
-			MainHeader,
-		},
-		setup() {
-			// URL에서 musical_id 추출
-			const route = useRoute();
-			const musicalId = route.params.musical_id;
+		export default {
+			components: {
+				BackHeader,
+				Calender,
+				ShowTimeInfo,
+				MainHeader,
+			},
+			setup() {
+				// URL에서 musical_id 추출
+				const route = useRoute();
+				const musicalId = route.params.musical_id;
 
-			const seatAvailabilityStore = useSeatAvailabilityStore();
-			const musicalDatesStore = useMusicalDatesStore();
+				const seatAvailabilityStore = useSeatAvailabilityStore();
+				const musicalDatesStore = useMusicalDatesStore();
 
-			// 날짜가 선택되었을 때 실행되는 함수
-			const onDateSelected = (selectedDate) => {
-				seatAvailabilityStore.fetchSeatAvailability(musicalId, selectedDate);
-				musicalDatesStore.fetchMusicalDates(musicalId);
-			};
+				// 날짜가 선택되었을 때 실행되는 함수
+				const onDateSelected = (selectedDate) => {
+					seatAvailabilityStore.fetchSeatAvailability(musicalId, selectedDate);
+					musicalDatesStore.fetchMusicalDates(musicalId);
+				};
 
-			// 컴포넌트가 마운트되었을 때 API 호출
-			onMounted(() => {
-				musicalDatesStore.fetchMusicalDates(musicalId);
-			});
+				// 컴포넌트가 마운트되었을 때 API 호출
+				onMounted(() => {
+					musicalDatesStore.fetchMusicalDates(musicalId);
+				});
 
-			return {
-				seatAvailabilityStore,
-				musicalId,
-				onDateSelected,
-			};
-		},
-	};
+				return {
+					seatAvailabilityStore,
+					musicalId,
+					onDateSelected,
+				};
+			},
+		};
 </script>
 
 <style module>

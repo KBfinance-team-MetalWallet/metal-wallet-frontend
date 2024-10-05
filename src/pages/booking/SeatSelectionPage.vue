@@ -66,7 +66,7 @@
 					</p>
 				</div>
 			</div>
-			<div :class="$style.paymentsystem">
+			<div :class="$style.paymentsystem" @click="navigateToPassword">
 				<div :class="$style.paymentframe" />
 				<b :class="$style.b1">간편 결제하기</b>
 			</div>
@@ -94,6 +94,7 @@
 				totalAmount: 0,
 			};
 		},
+
 		methods: {
 			sectionsSelect() {
 				this.isSectionsInfo = !this.isSectionsInfo;
@@ -112,7 +113,6 @@
 				this.totalAmount = total;
 			},
 			resetSeats() {
-				console.log("reset");
 				this.selectedSeats = [];
 				this.$refs.seatMapRef.resetSeatMap();
 				this.totalAmount = 0;
@@ -123,9 +123,22 @@
 				if (type === "A") return 130000;
 				return 0;
 			},
+			mounted() {
+				// musicalId와 time을 사용하여 좌석 정보를 가져오는 로직 작성
+				console.log("Seat컴포넌트");
+				console.log("뮤지컬 ID:", this.musicalId);
+				console.log("선택된 시간:", this.time);
+			},
+			navigateToPassword() {
+				this.$router.push({
+					name: "password",
+					params: {
+						seats: this.selectedSeats, // 좌석 정보 전달
+					},
+				});
+			},
 		},
 	});
-
 </script>
 
 <style module>
@@ -521,4 +534,3 @@
 		height: 812px;
 	}
 </style>
-

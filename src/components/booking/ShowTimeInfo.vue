@@ -81,6 +81,10 @@
 				type: Number,
 				required: true,
 			},
+			musicalId: {
+				type: Number,
+				required: true,
+			},
 		},
 		computed: {
 			formattedNames() {
@@ -89,7 +93,11 @@
 		},
 		methods: {
 			handleSelect() {
-				this.$emit("select", this.time);
+				// 선택된 시간에 좌석 선택 페이지로 이동
+				this.$router.push({
+					name: "seats", // seats 라우터로 이동
+					params: { musical_id: this.musicalId, time: this.time }, // musical_id와 time 전달
+				});
 			},
 		},
 	};

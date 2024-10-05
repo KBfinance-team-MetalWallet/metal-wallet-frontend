@@ -195,11 +195,8 @@ export const useSeatAvailabilityStore = defineStore("seatAvailability", () => {
 		loading.value = true;
 		error.value = null;
 
-		console.log("날짜:", date);
-
 		// 날짜 형식 변환 (YYYY-MM-DD)
 		const dateStr = formatDate(date);
-		console.log("날짜 문자열:", dateStr);
 
 		try {
 			// 실제 API 호출 시도
@@ -211,25 +208,21 @@ export const useSeatAvailabilityStore = defineStore("seatAvailability", () => {
 			);
 
 			if (response.data.resultCode === 200) {
-				// 서버에서 받은 데이터를 historyList에 저장
+				// 성공적으로 데이터를 받았을 때
 				historyList.value = response.data.result;
-				console.log("historyList:", historyList.value);
-				console.log("seats-availability API 호출 성공:");
+				console.log("API 호출 성공:", historyList.value);
 			} else {
-				throw new Error(
-					response.data.resultMsg || "seats-availability API 호출 실패"
-				);
+				console.error("API 응답 오류:", response.data);
 			}
 		} catch (apiError) {
 			// API 호출 실패 시 목업 데이터 사용
-			console.warn(
-				"seats-availability API 호출 실패, 목업 데이터를 사용합니다:"
-			);
+			console.warn("API 호출 실패, 목업 데이터를 사용합니다:", apiError);
 			historyList.value = mockData[dateStr] || [];
-			console.log(
-				"seatAvailability store - mockData[dateStr]",
-				mockData[dateStr]
-			);
+			if (historyList.value.length) {
+				console.log("목업 데이터 사용:", historyList.value);
+			} else {
+				console.warn("해당 날짜에 사용할 목업 데이터가 없습니다.");
+			}
 			error.value = apiError;
 		} finally {
 			loading.value = false;
