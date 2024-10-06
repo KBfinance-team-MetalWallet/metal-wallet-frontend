@@ -1,11 +1,11 @@
 <template>
-    <div :class="$style.weuibackFilledParent">
+    <div :class="$style.weuibackFilledParent" @click="goBack">
         <img :class="$style.weuibackFilledIcon" alt="" :src="backIcon" />
         <b :class="$style.b">뒤로가기</b>
     </div>
 </template>
 
-<script lang="ts">
+<script>
 import { defineComponent } from 'vue';
 import backIcon from '@/assets/mypages/backIcon.svg';
 
@@ -16,6 +16,11 @@ export default defineComponent({
             backIcon,
         };
     },
+    methods: {
+        goBack() {
+            window.history.back();
+        }
+    }
 });
 </script>
 
