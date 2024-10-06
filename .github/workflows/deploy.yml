@@ -26,6 +26,9 @@ jobs: # Workflow가 수행할 작업 목록
       - name: Install dependencies # 설치된 Node 버전을 기반으로 npm 의존성 설치
         uses: bahmutov/npm-install@v1
 
+      - name: check branch
+        uses: ls
+
       - name: Build project # npm run build 명령어를 통해 프로젝트 빌드
         run: npm run build
 
