@@ -1,27 +1,22 @@
 <template>
-    <div :class="$style.weuibackFilledParent" @click="goBack">
-        <img :class="$style.weuibackFilledIcon" alt="" :src="backIcon" />
-        <b :class="$style.b">뒤로가기</b>
-    </div>
+	<div :class="$style.weuibackFilledParent">
+		<img :class="$style.weuibackFilledIcon" alt="뒤로가기" :src="backIcon" />
+		<b :class="$style.b">뒤로가기</b>
+	</div>
 </template>
 
-<script>
-import { defineComponent } from 'vue';
-import backIcon from '@/assets/mypages/backIcon.svg';
+<script lang="js">
+	import backIcon from "@/assets/mypages/backIcon.svg";
+	import { defineComponent } from "vue";
 
-export default defineComponent({
-    name: 'BackHeader',
-    data() {
-        return {
-            backIcon,
-        };
-    },
-    methods: {
-        goBack() {
-            window.history.back();
-        }
-    }
-});
+	export default defineComponent({
+		name: "BackHeader",
+		data() {
+			return {
+				backIcon,
+			};
+		},
+	});
 </script>
 
 <style module>
