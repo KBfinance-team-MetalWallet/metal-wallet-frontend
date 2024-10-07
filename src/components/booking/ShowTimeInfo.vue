@@ -95,8 +95,8 @@ export default {
     handleSelect() {
       // 선택된 일정에 좌석 선택 페이지로 이동
       this.$router.push({
-        name: "musical-seats",
-        params: { musical_id: Number(this.musicalId) },
+        name: "seats",
+        params: { musical_id: this.musicalId },
       });
     },
   },
