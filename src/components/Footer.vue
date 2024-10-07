@@ -1,4 +1,5 @@
 <template>
+
     <div :class="$style.div8">
         <div :class="$style.child" />
         <div :class="$style.groupContainer">
@@ -89,7 +90,27 @@ export default defineComponent({
     right: 91.18%;
     bottom: 0%;
     left: 0%;
-    color: #c54966;
+    /* color: #c54966; */
+}
+
+.group {
+    position: absolute;
+    height: 100%;
+    width: 9.82%;
+    top: 0%;
+    right: 45.59%;
+    bottom: 0%;
+    left: 45.59%;
+}
+
+.container {
+    position: absolute;
+    height: 100%;
+    width: 9.82%;
+    top: 0%;
+    right: 0%;
+    bottom: 0%;
+    left: 91.18%;
 }
 
 .div10 {
@@ -113,26 +134,6 @@ export default defineComponent({
     overflow: hidden;
     max-height: 100%;
     object-fit: cover;
-}
-
-.group {
-    position: absolute;
-    height: 100%;
-    width: 9.82%;
-    top: 0%;
-    right: 45.59%;
-    bottom: 0%;
-    left: 45.59%;
-}
-
-.container {
-    position: absolute;
-    height: 100%;
-    width: 9.82%;
-    top: 0%;
-    right: 0%;
-    bottom: 0%;
-    left: 91.18%;
 }
 
 .groupContainer {

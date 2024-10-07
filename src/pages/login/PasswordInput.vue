@@ -114,6 +114,7 @@ export default defineComponent({
             try {
                 const response = await axios.post('http://localhost:8080/api/members/register', formData);
                 console.log('Registration successful:', response.data);
+                this.$router.push('/');
             } catch (error) {
                 console.error('Error registering member:', error.response ? error.response.data : error.message);
             }

@@ -20,6 +20,9 @@
                     <input v-model="formData.password" type="password" :class="$style.input1"
                         placeholder="비밀번호를 입력해주세요." />
                 </div>
+                <div :class="$style.signupButton" @click="goToSignup">
+                    <b>회원가입&gt;</b>
+                </div>
             </div>
         </div>
         <div :class="$style.button1" :style="{ backgroundColor: isFormValid ? '#C54966' : '#CCCCCC' }"
@@ -32,6 +35,7 @@
 import { defineComponent } from 'vue'
 import { useRouter } from 'vue-router';
 import MainHeader from '../../components/MainHeader.vue';
+import Signup from "@/pages/login/Signup.vue";
 import axios from 'axios';
 
 export default defineComponent({
@@ -89,6 +93,9 @@ export default defineComponent({
                 //TODO: vue error는 response가 없어서 수정해야함
                 console.error('Error login member:', error.response.data);
             }
+        },
+        goToSignup() {
+            this.router.push('/signup');
         }
     },
     computed: {
@@ -109,6 +116,15 @@ export default defineComponent({
 })
 </script>
 <style module>
+.signupButton {
+    position: relative;
+    top: 4px;
+    left: 4px;
+    text-align: right;
+    color: #3498db;
+    cursor: pointer;
+}
+
 .solarwalletOutlineIcon {
     position: absolute;
     top: 11px;

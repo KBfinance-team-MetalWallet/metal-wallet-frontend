@@ -15,12 +15,11 @@
             <div :class="$style.t200098371820231205Container">
                 <p :class="$style.p">{{ ticket.id }}</p>
                 <p :class="$style.p">{{ ticket.createdAt }}</p>
-                <p :class="$style.p">{{ ticket.place }}</p>
+                <p :class="$style.p">{{ ticket.venue }}</p>
                 <p :class="$style.p">{{ ticket.scheduleDate }} {{ ticket.startTime }}</p>
                 <p :class="$style.p">{{ ticket.grade }}석 {{ ticket.seatNo }}</p>
                 <p :class="$style.p">{{ ticket.cancelUntil }} 까지</p>
-                <p :class="$style.p11" :style="{ color: getStatusColor(ticket.ticketStatus) }">
-                    {{ getStatusText(ticket.ticketStatus) }}</p>
+                <p :class="$style.p11">{{ status }}</p>
             </div>
             <div v-if="ticket.ticketStatus === 'BOOKED' || ticket.ticketStatus === 'EXCHANGE_REQUESTED'"
                 :class="[ticket.ticketStatus === 'BOOKED' ? 'bookedColor' : 'exchangeRequestedColor']" />
@@ -50,7 +49,7 @@ export default {
                 id: '', // 예매번호
                 title: '', // 공연 제목
                 createdAt: '', // 예매일
-                place: '', // 장소
+                venue: '', // 장소
                 scheduleDate: '', // 관람일시
                 startTime: '',// 관람시간
                 grade: '', // 좌석 등급
@@ -63,41 +62,6 @@ export default {
         status: String
     },
     methods: {
-        handleExchangeRequest() {
-
-        },
-        handleTicketCancel() {
-            // 티켓 취소 클릭 시 부모에게 이벤트 전달
-            this.$emit('cancel-ticket', this.ticket.id); // ticket.id를 전달
-        },
-        getStatusText(ticketStatus) {
-            switch (ticketStatus) {
-                case 'BOOKED':
-                    return '예매완료';
-                case 'CANCELED':
-                    return '취소됨';
-                case 'EXCHANGE_REQUESTED':
-                    return '교환신청';
-                case 'CHECKED':
-                    return '사용됨';
-                default:
-                    return '알 수 없음';
-            }
-        },
-        getStatusColor(ticketStatus) {
-            switch (ticketStatus) {
-                case 'BOOKED':
-                    return '#28a745';
-                case 'CANCELED':
-                    return '#dc3545';
-                case 'EXCHANGE_REQUESTED':
-                    return '#fd7e14';
-                case 'CHECKED':
-                    return '#6c757d';
-                default:
-                    return '#000000';
-            }
-        },
         formatDate(dateArray, formatType) {
             const [year, month, day, hour, minute, second] = dateArray;
             const date = new Date(year, month - 1, day, hour, minute, second);

@@ -5,11 +5,11 @@
         <div :class="$style.ticketContainer">
             <div :class="$style.groupParent">
                 <TicketCard v-for="(ticket, index) in tickets" :key="index" :ticket="ticket"
-                    @cancel-ticket="openCancelDialog" />
+                    :status="getStatusText(ticket.ticketStatus)" />
             </div>
             <div ref="loadMoreTrigger" class="load-more-trigger"></div>
         </div>
-        <CancelDialog v-if="isCancelDialogVisible" @confirm="confirmCancel" @close="closeCancelDialog" />
+        <CancelDialog v-if="isCancelDialogVisible" />
         <Footer />
     </div>
 </template>
@@ -42,13 +42,13 @@ export default defineComponent({
                     id: 'T200098371820231205',
                     title: '뮤지컬 <알라딘> 한국 초연 (ALLADDIN The Musical)',
                     createdAt: '2023.12.05',
-                    place: '계명아트센터',
+                    venue: '계명아트센터',
                     scheduleDate: '2024.01.02(화)',
                     startTime: '19:30',
                     grade: 'R석',
                     seatNo: '0',
                     cancelUntil: '2024.01.01(월) 17:00 까지',
-                    ticketStatus: 'BOOKED',
+                    ticketStatus: '예매완료',
                     musicalImgName: image200,
                     posterImageUrl: ''
                 },
@@ -56,13 +56,13 @@ export default defineComponent({
                     id: 'T200098371820231204',
                     title: '뮤지컬 <알라딘> 한국 초연 (ALLADDIN The Musical)',
                     createdAt: '2023.12.03',
-                    place: '계명아트센터',
+                    venue: '계명아트센터',
                     scheduleDate: '2024.01.02(화)',
                     startTime: '19:30',
                     grade: 'R석',
                     seatNo: '0',
                     cancelUntil: '2024.01.01(월) 17:00',
-                    ticketStatus: 'BOOKED',
+                    ticketStatus: '교환신청',
                     musicalImgName: image200,
                     posterImageUrl: ''
                 },
@@ -70,13 +70,13 @@ export default defineComponent({
                     id: 'T200098371820231203',
                     title: '뮤지컬 <알라딘> 한국 초연 (ALLADDIN The Musical)',
                     createdAt: '2023.12.04',
-                    place: '계명아트센터',
+                    venue: '계명아트센터',
                     scheduleDate: '2024.01.02(화)',
                     startTime: '19:30',
                     grade: 'R석',
                     seatNo: '0',
                     cancelUntil: '2024.01.01(월) 17:00 까지',
-                    ticketStatus: 'BOOKED',
+                    ticketStatus: '취소됨',
                     musicalImgName: image200,
                     posterImageUrl: ''
                 },
@@ -84,19 +84,18 @@ export default defineComponent({
                     id: 'T200098371820231203',
                     title: '뮤지컬 <알라딘> 한국 초연 (ALLADDIN The Musical)',
                     createdAt: '2023.12.04',
-                    place: '계명아트센터',
+                    venue: '계명아트센터',
                     scheduleDate: '2024.01.02(화)',
                     startTime: '19:30',
                     grade: 'R석',
                     seatNo: '0',
                     cancelUntil: '2024.01.01(월) 17:00 까지',
-                    ticketStatus: 'BOOKED',
+                    ticketStatus: '취소됨',
                     musicalImgName: image200,
                     posterImageUrl: ''
                 },
             ],
             isCancelDialogVisible: false,
-            selectedTicketId: null,
             token: localStorage.getItem("accessToken"),
             visibleTickets: [],        // 화면에 보이는 티켓 데이터
             currentPage: 0,           // 현재 페이지 번호
@@ -133,8 +132,7 @@ export default defineComponent({
                 this.currentPage++;
             }
         },
-        openCancelDialog(ticketId) {
-            this.selectedTicketId = ticketId;
+        openCancelDialog() {
             this.isCancelDialogVisible = true;
         },
         closeCancelDialog() {
@@ -157,6 +155,20 @@ export default defineComponent({
                 console.error('티켓 취소 중 오류 발생:', error);
             }
         },
+        getStatusText(ticketStatus) {
+            switch (ticketStatus) {
+                case 'BOOKED':
+                    return '예매완료';
+                case 'CANCELED':
+                    return '취소됨';
+                case 'EXCHANGE_REQUESTED':
+                    return '교환신청';
+                case 'CHECKED':
+                    return '사용됨';
+                default:
+                    return '알 수 없음';
+            }
+        }
     },
     mounted() {
         // mounted가 호출된 후 $refs가 완전히 준비되었는지 확인
