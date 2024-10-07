@@ -43,7 +43,7 @@
             alt="예매 아이콘"
             src="@/assets/booking/wait-icon.png"
           />
-          <div :class="$style.div7">예매대기 신청</div>
+          <div :class="$style.div8">예매대기 신청</div>
           <img
             :class="$style.border1"
             alt="예매 아이콘"
@@ -265,7 +265,7 @@ export default {
 .div6 {
   position: absolute;
   top: -1px;
-  left: 20px;
+  left: 10px;
   line-height: 15.6px;
 }
 
@@ -291,6 +291,13 @@ export default {
 }
 
 .div7 {
+  position: relative;
+  line-height: 18px;
+  height: auto;
+  left: -5px;
+}
+
+.div8 {
   position: relative;
   line-height: 18px;
   height: auto;
