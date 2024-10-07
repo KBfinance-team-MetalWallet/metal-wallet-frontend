@@ -31,6 +31,7 @@
             )
           "
           :musicalId="musicalId"
+          :scheduleId="history.scheduleId"
         />
       </div>
       <div v-if="seatAvailabilityStore.error" class="error-message">

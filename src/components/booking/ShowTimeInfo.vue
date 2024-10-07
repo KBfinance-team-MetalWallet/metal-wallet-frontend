@@ -85,6 +85,10 @@ export default {
       type: Number,
       required: true,
     },
+    scheduleId: {
+      type: Number,
+      required: true,
+    },
   },
   computed: {
     formattedNames() {
@@ -96,7 +100,7 @@ export default {
       // 선택된 일정에 좌석 선택 페이지로 이동
       this.$router.push({
         name: "seats",
-        params: { musical_id: this.musicalId },
+        params: { musicalId: this.musicalId, scheduleId: this.scheduleId },
       });
     },
   },

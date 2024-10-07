@@ -104,12 +104,13 @@ const router = createRouter({
           component: BookingDatePage,
         },
         {
-          // /booking/{musicalId}/seats
-          path: ":musical_id(\\d+)/seats",
+          // /booking/{musicalId}/{scheduleId}/seats
+          path: ":musicalId/:scheduleId/seats",
           name: "seats",
           component: SeatSelectionPage,
           props: (route) => ({
-            musicalId: route.params.musical_id,
+            musicalId: route.params.musicalId,
+            scheduleId: route.params.scheduleId,
           }),
         },
         {
