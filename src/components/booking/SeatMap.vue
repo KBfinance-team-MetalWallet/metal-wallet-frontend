@@ -145,7 +145,12 @@ OOXOOOOOOOOOOOOOOOXOO
       this.seatLayout.forEach((row) => {
         row.forEach((seat) => {
           if (seat && seat.selected) {
-            selected.push(this.availableSeats[seat.seatCode]);
+            // 원하는 구조의 객체를 생성하여 selected 배열에 추가합니다.
+            selected.push({
+              number: seat.number, // 좌석 번호
+              type: seat.type, // 좌석 타입
+              id: this.availableSeats[seat.seatCode], // 가용성 데이터
+            });
           }
         });
       });
