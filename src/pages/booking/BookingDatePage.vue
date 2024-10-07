@@ -1,6 +1,6 @@
 <template>
   <div :class="$style.div">
-    <BackHeader />
+    <BackHeader @click="goBack" />
     <div :class="$style.groupParent">
       <Calender :musicalId="musicalId" @dateSelected="onDateSelected" />
       <div
@@ -38,7 +38,6 @@
         <!-- 에러 메시지 출력 -->
       </div>
     </div>
-    <MainHeader />
   </div>
 </template>
 
@@ -46,21 +45,20 @@
 import BackHeader from "@/components/BackHeader.vue";
 import Calender from "@/components/booking/Calender.vue";
 import ShowTimeInfo from "@/components/booking/ShowTimeInfo.vue";
-import MainHeader from "@/components/MainHeader.vue";
 import { useMusicalDatesStore } from "@/stores/musicalDatesStore";
 import { useSeatAvailabilityStore } from "@/stores/seatAvailabilityStore";
 import { onMounted } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 export default {
     components: {
         BackHeader,
         Calender,
         ShowTimeInfo,
-        MainHeader,
     },
     setup() {
         const route = useRoute();
+        const router = useRouter();
         const musicalId = Number(route.params.musical_id);
 
         const seatAvailabilityStore = useSeatAvailabilityStore();
@@ -72,6 +70,10 @@ export default {
 			seatAvailabilityStore.fetchSeatAvailability(musicalId, selectedDate);
         };
 
+        const goBack = () => {
+            router.push(`/musical/${musicalId}`);
+        };
+
         onMounted(() => {
             // 초기 로딩 시 뮤지컬 날짜를 가져오는 메소드 호출
             musicalDatesStore.fetchMusicalDates(musicalId);
@@ -81,6 +83,7 @@ export default {
             seatAvailabilityStore,
             musicalId,
             onDateSelected,
+            goBack, // goBack 함수 반환
         };
     },
 };
