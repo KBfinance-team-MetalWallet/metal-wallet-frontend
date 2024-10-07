@@ -24,6 +24,8 @@ import Footer from '@/components/Footer.vue';
 import image200 from '@/assets/mypages/image 200.png'; // 이미지 파일 import
 import CancelDialog from '../../components/mypages/CancelDialog.vue';
 
+import { useTicketStore } from "@/stores/tickets.js";
+
 export default defineComponent({
     name: 'MyTicketList',
     components: {
@@ -34,10 +36,11 @@ export default defineComponent({
     },
     data() {
         return {
+            ticketStore: useTicketStore(),
             tickets: [
                 {
                     id: 'T200098371820231205',
-                    title: '뮤지컬 <알라딘> 한국 초연 (ALLADDIN The Musical) - 2매',
+                    title: '뮤지컬 <알라딘> 한국 초연 (ALLADDIN The Musical)',
                     createdAt: '2023.12.05',
                     place: '계명아트센터',
                     scheduleDate: '2024.01.02(화)',
@@ -51,7 +54,7 @@ export default defineComponent({
                 },
                 {
                     id: 'T200098371820231204',
-                    title: '뮤지컬 <알라딘> 한국 초연 (ALLADDIN The Musical) - 2매',
+                    title: '뮤지컬 <알라딘> 한국 초연 (ALLADDIN The Musical)',
                     createdAt: '2023.12.03',
                     place: '계명아트센터',
                     scheduleDate: '2024.01.02(화)',
@@ -65,7 +68,7 @@ export default defineComponent({
                 },
                 {
                     id: 'T200098371820231203',
-                    title: '뮤지컬 <알라딘> 한국 초연 (ALLADDIN The Musical) - 2매',
+                    title: '뮤지컬 <알라딘> 한국 초연 (ALLADDIN The Musical)',
                     createdAt: '2023.12.04',
                     place: '계명아트센터',
                     scheduleDate: '2024.01.02(화)',
@@ -79,12 +82,13 @@ export default defineComponent({
                 },
                 {
                     id: 'T200098371820231203',
-                    title: '뮤지컬 <알라딘> 한국 초연 (ALLADDIN The Musical) - 2매',
+                    title: '뮤지컬 <알라딘> 한국 초연 (ALLADDIN The Musical)',
                     createdAt: '2023.12.04',
                     place: '계명아트센터',
                     scheduleDate: '2024.01.02(화)',
                     startTime: '19:30',
-                    seats: 'R석 11열 6, R석 11열 7',
+                    grade: 'R석',
+                    seatNo: '0',
                     cancelUntil: '2024.01.01(월) 17:00 까지',
                     ticketStatus: 'BOOKED',
                     musicalImgName: image200,
@@ -99,21 +103,26 @@ export default defineComponent({
             ticketsPerPage: 3,        // 페이지당 티켓 수
         };
     },
-    methods: {
-        async fetchTickets() {
-            try {
-                const response = await axios.get('http://localhost:8080/api/tickets', {
-                    headers: {
-                        Authorization: `Bearer ${this.token}`,
-                    },
-                });
-                console.log(response.data.result)
-                this.tickets = response.data.result.content;
-                this.loadMoreTickets(); // 초기 티켓 로드
-            } catch (error) {
-                console.error('티켓을 불러오는 중 오류 발생:', error);
-            }
+    computed: {
+        tickets() {
+            return this.ticketStore.tickets;
         },
+    },
+    methods: {
+        // async fetchTickets() {
+        //     try {
+        //         const response = await axios.get('http://localhost:8080/api/tickets', {
+        //             headers: {
+        //                 Authorization: `Bearer ${this.token}`,
+        //             },
+        //         });
+        //         console.log(response.data.result)
+        //         this.tickets = response.data.result.content;
+        //         this.loadMoreTickets(); // 초기 티켓 로드
+        //     } catch (error) {
+        //         console.error('티켓을 불러오는 중 오류 발생:', error);
+        //     }
+        // },
         loadMoreTickets() {
             const start = this.currentPage * this.ticketsPerPage;
             const end = start + this.ticketsPerPage;
@@ -139,11 +148,11 @@ export default defineComponent({
                     }
                 });
 
-                console.log('티켓 취소 완료:', response.data);
-                alert('티켓 취소 알림');
+                alert('티켓이 취소되었습니다.');
 
-                await this.fetchTickets();
-                this.closeCancelDialog(); // 다이얼로그 닫기
+                // await this.fetchTickets();
+                await this.ticketStore.fetchTickets();
+                this.closeCancelDialog();
             } catch (error) {
                 console.error('티켓 취소 중 오류 발생:', error);
             }
@@ -165,8 +174,8 @@ export default defineComponent({
                 console.error('loadMoreTrigger element가 존재하지 않습니다.');
             }
         });
-
-        this.fetchTickets(); // 컴포넌트가 마운트될 때 티켓 데이터 가져오기
+        this.ticketStore.fetchTickets();
+        // this.fetchTickets(); // 컴포넌트가 마운트될 때 티켓 데이터 가져오기
     },
 });
 </script>
