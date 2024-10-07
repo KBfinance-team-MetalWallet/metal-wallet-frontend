@@ -20,7 +20,7 @@
 				</router-link>
 			</div>
 		</div>
-		<router-link to="/" :class="$style.div10">더보기 &gt;</router-link>
+		<router-link to="/musical" :class="$style.div11">더보기 &gt;</router-link>
 	</div>
 </template>
 
@@ -36,8 +36,6 @@
 
 			onMounted(async () => {
 				await musicalStore.fetchMusicals();
-				// 데이터를 가져온 후 콘솔에 출력합니다.
-				console.log("뮤지컬 데이터:", musicals.value);
 			});
 
 			return {
@@ -64,7 +62,16 @@
 		color: #c54966;
 		text-decoration: none;
 	}
-
+	.div11 {
+		position: relative;
+		bottom: 50px;
+		right: 10px;
+		width: 100%;
+		display: flex;
+		justify-content: end;
+		color: #c54966;
+		text-decoration: none;
+	}
 	.poster1Parent {
 		display: flex;
 		overflow-x: auto;
