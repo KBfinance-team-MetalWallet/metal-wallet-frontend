@@ -89,19 +89,37 @@ const router = createRouter({
       component: MyTicketList,
     },
     {
-      path: "/mypage/payment-history",
+      path: "/payment-history",
       name: "paymentHistory",
       component: PaymentHistory,
     },
     {
       path: "/booking",
-      name: "Booking",
-      redirect: "/booking/seats",
+      name: "booking",
       children: [
+        {
+          // /booking/{musicalId}/dates
+          path: ":musical_id(\\d+)/dates",
+          name: "bookingDatePage",
+          component: BookingDatePage,
+        },
+        {
+          // /booking/{musicalId}/{scheduleId}/seats
+          path: ":musicalId/:scheduleId/seats",
+          name: "seats",
+          component: SeatSelectionPage,
+          props: (route) => ({
+            musicalId: route.params.musicalId,
+            scheduleId: route.params.scheduleId,
+          }),
+        },
         {
           path: "password",
           name: "password",
           component: VerificationPasswordInput,
+          props: (route) => ({
+            seats: route.params.seats, // 좌석 정보를 params로 전달
+          }),
         },
         {
           path: "payment-success",
@@ -120,24 +138,6 @@ const router = createRouter({
       name: "MusicalDetail",
       component: MusicalDetail,
       props: true,
-    },
-    {
-      path: "/musicals",
-      name: "Musicals",
-      children: [
-        {
-          // http://localhost:5173/musicals/1
-          path: ":musical_id(\\d+)",
-          name: "bookingDatePage",
-          component: BookingDatePage,
-        },
-        {
-          // http://localhost:5173/musicals/1/seats
-          path: ":musical_id(\\d+)/seats",
-          name: "musical-seats",
-          component: SeatSelectionPage,
-        },
-      ],
     },
   ],
 });
