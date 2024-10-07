@@ -84,7 +84,7 @@ export default defineComponent({
         },
         redirectToBooking() {
             const id = this.$route.params.id;
-            this.$router.push(`/musicals/${id}`);
+            this.$router.push(`/booking/${id}/dates`);
         },
         async fetchMusical(id) {
             try {
