@@ -133,7 +133,7 @@
 			            };
 
 			            // 로컬 스토리지에 저장된 JWT 토큰 가져오기
-			            const token = localStorage.getItem('authToken');
+			            const token = localStorage.getItem('accessToken');
 
 			            try {
 			                const response = await axios.post(
