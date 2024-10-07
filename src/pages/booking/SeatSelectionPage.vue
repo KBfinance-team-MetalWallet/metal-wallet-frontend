@@ -164,7 +164,7 @@ body {
 .div1 {
   position: absolute;
   top: 7.5px;
-  left: 15px;
+  left: 20px;
   display: inline-block;
   width: 62px;
 }
