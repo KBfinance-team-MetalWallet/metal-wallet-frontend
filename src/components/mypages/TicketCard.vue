@@ -21,10 +21,19 @@
                 <p :class="$style.p">{{ ticket.cancelUntil }} 까지</p>
                 <p :class="$style.p11">{{ status }}</p>
             </div>
-            <div :class="$style.rectangleDiv" />
-            <div :class="$style.groupChild1" />
-            <div :class="$style.div2">교환 신청</div>
-            <div :class="$style.div3">티켓 취소</div>
+            <div v-if="ticket.ticketStatus === 'BOOKED' || ticket.ticketStatus === 'EXCHANGE_REQUESTED'"
+                :class="[ticket.ticketStatus === 'BOOKED' ? 'bookedColor' : 'exchangeRequestedColor']" />
+            <div v-if="ticket.ticketStatus === 'BOOKED' || ticket.ticketStatus === 'EXCHANGE_REQUESTED'"
+                :class="[$style.groupChild1]" />
+
+
+            <div v-if="ticket.ticketStatus === 'BOOKED'" @click="handleExchangeRequest"
+                :class="$style.exchangeRequested">교환 신청</div>
+            <div v-if="ticket.ticketStatus === 'EXCHANGE_REQUESTED'" @click="handleExchangeCancel"
+                :class="$style.exchangeCancel">
+                교환 취소</div>
+            <div v-if="ticket.ticketStatus === 'BOOKED' || ticket.ticketStatus === 'EXCHANGE_REQUESTED'"
+                @click="handleTicketCancel" :class="$style.ticketCancel">티켓 취소</div>
         </div>
     </div>
 </template>
@@ -143,10 +152,10 @@ export default {
     height: 105.3px;
 }
 
-.rectangleDiv {
+.groupChild1 {
     position: absolute;
     top: 164px;
-    left: 26px;
+    left: 190px;
     border-radius: 5px;
     background-color: #fff;
     border: 1px solid #c54966;
@@ -155,35 +164,61 @@ export default {
     height: 31px;
 }
 
-.groupChild1 {
+:global(.bookedColor) {
     position: absolute;
     top: 164px;
-    left: 190px;
-    border-radius: 5px;
+    left: 26px;
     background-color: #fff;
-    border: 1px solid #6e6e6e;
-    box-sizing: border-box;
     width: 150px;
     height: 31px;
+    box-sizing: border-box;
+    border-radius: 5px;
+    border: 1px solid #4CAF50 !important;
 }
 
-.div2 {
+:global(.exchangeRequestedColor) {
+    position: absolute;
+    top: 164px;
+    left: 26px;
+    background-color: #fff;
+    width: 150px;
+    height: 31px;
+    box-sizing: border-box;
+    border-radius: 5px;
+    border: 1px solid #fd7e14 !important;
+}
+
+/* 교환신청 */
+.exchangeRequested {
     position: absolute;
     top: 170px;
     left: 74px;
     font-size: 14px;
     font-family: Roboto;
-    color: #c54966;
+    color: #28a745;
     text-align: center;
 }
 
-.div3 {
+/* 교환 취소 */
+.exchangeCancel {
+    position: absolute;
+    top: 170px;
+    left: 74px;
+    font-size: 14px;
+    font-family: Roboto;
+    color: #fd7e14;
+    text-align: center;
+}
+
+/* 티켓 취소 */
+.ticketCancel {
     position: absolute;
     top: 170px;
     left: 238px;
     font-size: 14px;
     font-family: Roboto;
     text-align: center;
+    color: #c54966;
 }
 
 .rectangleGroup {
