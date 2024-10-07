@@ -5,7 +5,7 @@ export const useTicketStore = defineStore("tickets", {
   state: () => ({
     currentCard: 0, // 현재 선택된 카드의 인덱스
     // TODO: 초기 정적 데이터 (test data)
-    cards: [
+    tickets: [
       {
         id: 1,
         ticketId: "1L",

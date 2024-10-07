@@ -6,7 +6,7 @@
 			<div :class="$style.ticketposterChild" />
 			<div :class="$style.ticketposterlayer">
 				<!-- Ticket 포스터 -->
-				<TicketCard :cards="cards" :currentCard="currentCard" @update:currentCard="updateCurrentCard" />
+				<TicketCard :tickets="tickets" :currentCard="currentCard" @update:currentCard="updateCurrentCard" />
 			</div>
 		</div>
 
@@ -14,10 +14,10 @@
 		<div :class="$style.r16Container">
 			<div :class="$style.MyTicketsInfo">
 				<p :class="$style.musicalTitle">
-					{{ cards[currentCard].musicalTitle }}
+					{{ tickets[currentCard].musicalTitle }}
 				</p>
-				<p :class="$style.showDate">{{ cards[currentCard].date }}</p>
-				<p :class="$style.seatInfo">{{ cards[currentCard].seat }}</p>
+				<p :class="$style.showDate">{{ tickets[currentCard].date }}</p>
+				<p :class="$style.seatInfo">{{ tickets[currentCard].seat }}</p>
 			</div>
 		</div>
 		<Footer />
@@ -40,7 +40,7 @@ export default defineComponent({
 	},
 	setup() {
 		const ticketStore = useTicketStore();
-		const { cards, currentCard, fetchCards, prevCard } = toRefs(ticketStore); // Pinia 스토어에서 cards와 currentCard를 반응형으로 가져옴
+		const { tickets, currentCard, fetchTickets, prevCard } = toRefs(ticketStore); // Pinia 스토어에서 cards와 currentCard를 반응형으로 가져옴
 
 		// 컴포넌트가 마운트되면 카드 데이터를 가져옵니다.
 		onMounted(() => {
@@ -54,7 +54,7 @@ export default defineComponent({
 		};
 
 		return {
-			cards,
+			tickets,
 			currentCard,
 			updateCurrentCard,
 		};
