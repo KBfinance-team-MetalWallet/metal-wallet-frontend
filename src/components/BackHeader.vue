@@ -25,28 +25,28 @@ export default defineComponent({
 </script>
 
 <style module>
-.weuibackFilledIcon {
-    position: absolute;
-    top: 2px;
-    left: 0px;
-    width: 11px;
-    height: 22px;
-    overflow: hidden;
-}
+	.weuibackFilledIcon {
+		position: absolute;
+		left: 0px;
+		width: 11px;
+		height: 22px;
+		overflow: hidden;
+	}
 
-.b {
-    position: absolute;
-    top: 2px;
-    left: 18px;
-}
+	.b {
+		position: absolute;
+		left: 18px;
+	}
 
-.weuibackFilledParent {
-    position: absolute;
-    top: 12px;
-    left: 14px;
-    width: 82px;
-    height: 22px;
-    font-size: 16px;
-    color: #6e6e6e;
-}
+	.weuibackFilledParent {
+		display: flex;
+		align-items: center;
+		position: absolute;
+		top: 16px;
+		left: 14px;
+		width: 82px;
+		height: 22px;
+		font-size: 16px;
+		color: #6e6e6e;
+	}
 </style>
