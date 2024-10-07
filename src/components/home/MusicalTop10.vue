@@ -7,30 +7,38 @@
 				:key="index"
 				:class="$style.poster1"
 			>
-				<img
-					:class="$style.posterimageIcon"
-					:src="musical.imageUrl"
-					:alt="musical.title"
-				/>
-				<div :class="$style.details">
-					<div :class="$style.rank">{{ musical.rank }}</div>
-					<b :class="$style.musicaltitle">{{ musical.title }}</b>
-				</div>
+				<router-link :to="`/musical/${musical.id}`" :class="$style.div10">
+					<img
+						:class="$style.posterimageIcon"
+						:src="musical.imageUrl"
+						:alt="musical.title"
+					/>
+					<div :class="$style.details">
+						<div :class="$style.rank">{{ musical.rank }}</div>
+						<b :class="$style.musicaltitle">{{ musical.title }}</b>
+					</div>
+				</router-link>
 			</div>
 		</div>
-		<router-link to="/ticket" :class="$style.div10">더보기 &gt;</router-link>
+		<router-link to="/" :class="$style.div10">더보기 &gt;</router-link>
 	</div>
 </template>
 
 <script>
 	import { useMusicalsStore } from "@/stores/musicals.js";
-	import { computed, defineComponent } from "vue";
+	import { computed, defineComponent, onMounted } from "vue";
 
 	export default defineComponent({
 		name: "MusicalTop10",
 		setup() {
 			const musicalStore = useMusicalsStore();
 			const musicals = computed(() => musicalStore.musicals);
+
+			onMounted(async () => {
+				await musicalStore.fetchMusicals();
+				// 데이터를 가져온 후 콘솔에 출력합니다.
+				console.log("뮤지컬 데이터:", musicals.value);
+			});
 
 			return {
 				musicals,
