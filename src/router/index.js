@@ -58,7 +58,7 @@ const router = createRouter({
         },
         {
           path: "password", // /signup/password
-          name: "password",
+          name: "login-password",
           component: PasswordInput, // 비밀번호 입력 화면
         },
         {
