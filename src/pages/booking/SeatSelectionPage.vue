@@ -99,7 +99,12 @@ export default defineComponent({
       this.isSectionsInfo = !this.isSectionsInfo;
     },
     navigateToPassword() {
-      this.$router.push({ path: "/booking/password" });
+      const seatIdList = this.selectedSeats.map((seat) => seat.id);
+      console.log(seatIdList);
+      this.$router.push({
+        path: "/booking/password",
+        query: { seats: JSON.stringify(seatIdList) }, // 문자열로 변환하여 전달
+      });
     },
     handleUpdateSeats(seats) {
       this.selectedSeats = seats;
