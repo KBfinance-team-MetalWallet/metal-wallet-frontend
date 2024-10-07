@@ -45,6 +45,18 @@ export default {
     },
   },
   methods: {
+    resetSeatMap() {
+      // 좌석 선택 상태를 초기화
+      this.seatLayout.forEach((row) => {
+        row.forEach((seat) => {
+          if (seat) {
+            seat.selected = false; // 모든 좌석의 선택 상태를 false로 변경
+          }
+        });
+      });
+      this.selectedSeats = []; // 선택된 좌석 리스트 초기화
+      this.updateSelectedSeats(); // 부모에게 선택 상태 업데이트
+    },
     /**
      * 좌석 배치를 초기화합니다.
      * @param {Array} availableSeats - 가용 좌석 데이터 배열

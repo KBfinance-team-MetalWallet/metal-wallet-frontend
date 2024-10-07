@@ -122,8 +122,18 @@ export default defineComponent({
     resetSeats() {
       console.log("reset");
       this.selectedSeats = [];
-      this.$refs.seatMapRef.resetSeatMap();
       this.totalAmount = 0;
+
+      // SeatMap 컴포넌트의 메서드 호출
+      if (
+        this.$refs.seatMapRef &&
+        typeof this.$refs.seatMapRef.resetSeatMap === "function"
+      ) {
+        this.$refs.seatMapRef.fetchAndInitialize(); // 좌석 현황 업데이트
+        this.$refs.seatMapRef.resetSeatMap(); // 좌석 맵의 상태도 리셋
+      } else {
+        console.error("SeatMap reference or resetSeatMap method not available");
+      }
     },
     getSeatPrice(type) {
       if (type === "R") return 190000;
