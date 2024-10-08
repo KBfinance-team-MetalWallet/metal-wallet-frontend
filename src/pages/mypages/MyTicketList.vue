@@ -4,12 +4,12 @@
         <div :class="$style.ticketContainer">
             <div :class="$style.groupParent">
                 <TicketCard v-for="(ticket, index) in tickets" :key="index" :ticket="ticket"
-                    @cancel-ticket="openCancelDialog" />
+                    :status="getStatusText(ticket.ticketStatus)" />
             </div>
             <div ref="loadMore" class="load-more-indicator" style="height: 1px; visibility: hidden;"></div>
             <div v-if="isLoading" class="loading-spinner">로딩 중...</div>
         </div>
-        <CancelDialog v-if="isCancelDialogVisible" @confirm="confirmCancel" @close="closeCancelDialog" />
+        <CancelDialog v-if="isCancelDialogVisible" />
         <Footer />
     </div>
 </template>
@@ -37,7 +37,6 @@ export default defineComponent({
         return {
             ticketStore: useTicketStore(),
             isCancelDialogVisible: false,
-            selectedTicketId: null,
             token: localStorage.getItem("accessToken"),
             nextCursor: null,
             size: 10,
@@ -48,11 +47,10 @@ export default defineComponent({
     computed: {
         tickets() {
             return this.ticketStore.tickets;
-        }
+        },
     },
     methods: {
-        openCancelDialog(ticketId) {
-            this.selectedTicketId = ticketId;
+        openCancelDialog() {
             this.isCancelDialogVisible = true;
         },
         closeCancelDialog() {
@@ -65,8 +63,10 @@ export default defineComponent({
                         Authorization: `Bearer ${this.token}`
                     }
                 });
-                await this.fetchTickets(this.nextCursor);
+
                 alert('티켓이 취소되었습니다.');
+
+                await this.fetchTickets(this.nextCursor);
                 this.closeCancelDialog();
             } catch (error) {
                 console.error('티켓 취소 중 오류 발생:', error);
@@ -106,6 +106,7 @@ export default defineComponent({
             const { scrollTop, scrollHeight, clientHeight } = event.target;
             const bottom = scrollHeight - scrollTop <= clientHeight + 1;
 
+            console.log()
             if (bottom && this.nextCursor && !this.isLoading) {
                 this.fetchTickets(this.nextCursor);
             }
