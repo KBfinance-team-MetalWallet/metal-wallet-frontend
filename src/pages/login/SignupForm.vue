@@ -130,7 +130,7 @@ export default defineComponent({
             userStore.setUserData(this.formData.name, this.formData.password, this.formData.email, this.formData.phone);
 
             // PasswordInput.vue로 리디렉션
-            this.$router.push('/login/password');
+            this.$router.push({ name: 'login-password' });
         }
     },
     computed: {
