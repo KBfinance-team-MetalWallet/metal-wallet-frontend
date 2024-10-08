@@ -23,6 +23,8 @@ import TicketCard from '@/components/mypages/TicketCard.vue';
 import Footer from '@/components/Footer.vue';
 import CancelDialog from '../../components/mypages/CancelDialog.vue';
 
+import { useTicketStore } from "@/stores/tickets.js";
+
 export default defineComponent({
     name: 'MyTicketList',
     components: {
@@ -49,7 +51,8 @@ export default defineComponent({
         }
     },
     methods: {
-        openCancelDialog() {
+        openCancelDialog(ticketId) {
+            this.selectedTicketId = ticketId;
             this.isCancelDialogVisible = true;
         },
         closeCancelDialog() {
@@ -62,9 +65,8 @@ export default defineComponent({
                         Authorization: `Bearer ${this.token}`
                     }
                 });
-                alert('티켓 취소 알림');
-
                 await this.fetchTickets(this.nextCursor);
+                alert('티켓이 취소되었습니다.');
                 this.closeCancelDialog();
             } catch (error) {
                 console.error('티켓 취소 중 오류 발생:', error);
@@ -104,7 +106,6 @@ export default defineComponent({
             const { scrollTop, scrollHeight, clientHeight } = event.target;
             const bottom = scrollHeight - scrollTop <= clientHeight + 1;
 
-            console.log()
             if (bottom && this.nextCursor && !this.isLoading) {
                 this.fetchTickets(this.nextCursor);
             }
