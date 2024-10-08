@@ -30,7 +30,7 @@
             </div>
         </div>
         <div v-if="selectedTab === 'wallet'" :class="$style.groupParent3">
-            <FlipAccount />
+            <FlipAccount :disableCardClick="true" />
         </div>
         <div v-else-if="selectedTab === 'tickets'">
             <TicketStorage />
@@ -56,6 +56,8 @@ import Footer from '@/components/Footer.vue';
 import MainHeader from '../../components/MainHeader.vue';
 import MyPageTabs from '../../components/mypages/MyPageTabs.vue';
 
+import { useAccountStore } from "@/stores/accounts.js";
+
 export default defineComponent({
     name: "MyPage",
     components: {
@@ -67,6 +69,7 @@ export default defineComponent({
         TicketStorage
     },
     data() {
+        const accountStore = useAccountStore();
         return {
             line7Image,
             imageIcon,
@@ -75,7 +78,12 @@ export default defineComponent({
             couponIcon,
             userIcon,
             selectedTab: 'wallet',
+            accounts: accountStore.accounts,
         };
+    },
+    mounted() {
+        const accountStore = useAccountStore();
+        accountStore.fetchAccounts();
     },
     methods: {
         selectTab(tab) {
@@ -438,7 +446,7 @@ body {
 .groupParent3 {
     position: absolute;
     top: 78px;
-    left: 12px;
+    left: 13px;
     width: 348px;
     height: 225.5px;
 }
