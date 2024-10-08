@@ -4,12 +4,12 @@
         <div :class="$style.ticketContainer">
             <div :class="$style.groupParent">
                 <TicketCard v-for="(ticket, index) in tickets" :key="index" :ticket="ticket"
-                    :status="getStatusText(ticket.ticketStatus)" />
+                    @cancel-ticket="openCancelDialog" />
             </div>
             <div ref="loadMore" class="load-more-indicator" style="height: 1px; visibility: hidden;"></div>
             <div v-if="isLoading" class="loading-spinner">로딩 중...</div>
         </div>
-        <CancelDialog v-if="isCancelDialogVisible" />
+        <CancelDialog v-if="isCancelDialogVisible" @confirm="confirmCancel" @close="closeCancelDialog" />
         <Footer />
     </div>
 </template>
@@ -86,20 +86,6 @@ export default defineComponent({
         cleanupObserver() {
             if (this.loadMoreObserver) {
                 this.loadMoreObserver.unobserve(this.$refs.loadMore);
-            }
-        },
-        getStatusText(ticketStatus) {
-            switch (ticketStatus) {
-                case 'BOOKED':
-                    return '예매완료';
-                case 'CANCELED':
-                    return '취소됨';
-                case 'EXCHANGE_REQUESTED':
-                    return '교환신청';
-                case 'CHECKED':
-                    return '사용됨';
-                default:
-                    return '알 수 없음';
             }
         },
         handleScroll(event) {
