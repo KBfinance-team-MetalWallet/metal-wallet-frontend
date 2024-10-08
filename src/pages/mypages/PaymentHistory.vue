@@ -1,7 +1,7 @@
 <template>
   <div :class="$style.container">
     <div :class="$style.content">
-      <MainHeader/>
+      <MainHeader />
       <div :class="$style.inner">
         <b :class="$style.pageName">결제 내역</b>
       </div>
@@ -14,23 +14,21 @@
             <b :class="$style.kb">{{ accountName }}</b>
             <div :class="$style.div1">{{ accountNumber }}</div>
           </div>
-
-          <!-- 금액 및 이미지 -->
           <img :class="$style.image141Icon" alt="" src="@/assets/mypages/kbImage.png" />
         </div>
         <b :class="$style.balance">{{ formatCurrency(currentBalance) }}</b>
-
-        <!-- 이체하기 버튼 -->
         <div :class="$style.button">
           <div :class="$style.buttonText">이체하기</div>
         </div>
       </div>
 
-      <!-- 거래 내역 리스트 컴포넌트 -->
-      <TransactionRecords :transactions="transactions" />
+      <!-- 스크롤 가능한 거래 내역 리스트 컴포넌트 -->
+      <div :class="$style.transactionList">
+        <TransactionRecords :transactions="transactions" />
+      </div>
     </div>
+    <Footer></Footer>
   </div>
-  <Footer></Footer>
 </template>
 
 <script lang="js">
@@ -112,9 +110,9 @@ export default defineComponent({
 
 <style module>
 body {
-    margin: 0;
-    padding: 0;
-    line-height: normal;
+  margin: 0;
+  padding: 0;
+  line-height: normal;
 }
 
 .container {
@@ -124,9 +122,10 @@ body {
   align-items: center;
   width: 100%;
   font-size: 16px;
-  height: 100vh; 
+  height: 100vh;
   position: relative;
-  background-color: #fafafa; /* 배경색도 첫 번째 스타일과 맞추기 */
+  background-color: #fafafa;
+  /* 배경색도 첫 번째 스타일과 맞추기 */
 }
 
 .content {
@@ -164,7 +163,7 @@ body {
 }
 
 .rectangleIcon {
-  width: 90%;
+  width: 95%;
   position: relative;
   margin: 0 auto;
   margin-top: 30px;
@@ -209,5 +208,14 @@ body {
   justify-content: center;
   box-sizing: border-box;
   color: #333;
+}
+
+.transactionList {
+  max-height: calc(100vh - 400px);
+  /* Adjust based on header/footer height */
+  overflow-y: scroll;
+  /* Enable vertical scroll */
+  width: 95%;
+  margin: 0 auto;
 }
 </style>

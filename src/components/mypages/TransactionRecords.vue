@@ -39,7 +39,7 @@ export default {
 
 <style module>
 .transactionsFrame {
-  width: 85%;
+  width: 95%;
   position: relative;
   margin: 0 auto;
   margin-top: 10px;
