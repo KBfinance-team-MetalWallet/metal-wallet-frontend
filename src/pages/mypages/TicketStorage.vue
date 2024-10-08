@@ -168,8 +168,8 @@ export default defineComponent({
 
 .my {
     position: absolute;
-    top: 11px;
-    left: 17px;
+    top: 16px;
+    left: 20px;
 }
 
 .image203Icon {
@@ -195,7 +195,7 @@ export default defineComponent({
 .div3 {
     position: absolute;
     top: 3px;
-    left: 2px;
+    left: 7px;
     font-weight: 100;
 }
 

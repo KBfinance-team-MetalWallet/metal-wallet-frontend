@@ -6,14 +6,14 @@
             </div>
         </div>
         <div :class="$style.dialogMessage">티켓을 취소하시겠습니까?</div>
-        <div :class="$style.cancelButton">돌아가기</div>
-        <div :class="$style.confirmButton">취소하기</div>
+        <div :class="$style.cancelButton" @click="$emit('close')">돌아가기</div>
+        <div :class="$style.confirmButton" @click="$emit('confirm')">취소하기</div>
         <div :class="$style.horizontalDivider" />
         <div :class="$style.verticalDivider" />
     </div>
 </template>
 
-<script lang="ts">
+<script>
 import { defineComponent } from 'vue';
 
 export default defineComponent({

@@ -446,7 +446,7 @@ body {
 .groupParent3 {
     position: absolute;
     top: 78px;
-    left: 13px;
+    left: 12px;
     width: 348px;
     height: 225.5px;
 }

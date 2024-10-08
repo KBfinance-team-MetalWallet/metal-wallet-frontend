@@ -16,7 +16,7 @@
 			<div v-for="(account, index) in accounts" :key="account.id" :style="cardStyle(index)"
 				@click="handleCardClick(account)" class="card-container">
 				<!-- 개별 카드 -->
-				<div class="card" :style="{ backgroundColor: account.color }">
+				<div class="card" :style="{ backgroundColor: account.bankColor }">
 					<div class="front">
 						<!-- 계좌 정보 -->
 						<div class="div3">{{ account.bankName }}</div>
@@ -53,7 +53,6 @@ export default defineComponent({
 		const router = useRouter();
 		const accountStore = useAccountStore();
 		const accounts = computed(() => accountStore.accounts);
-		console.log(accounts.value);
 		const currentAccount = ref(0);
 		const touchStartX = ref(0);
 		const touchEndX = ref(0);
