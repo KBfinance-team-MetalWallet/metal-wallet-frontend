@@ -3,8 +3,7 @@ import { defineStore } from "pinia";
 
 export const useTicketStore = defineStore("tickets", {
   state: () => ({
-    currentCard: 0, // 현재 선택된 카드의 인덱스
-    // TODO: 초기 정적 데이터 (test data)
+    currentCard: 0,
     tickets: [],
   }),
   actions: {
@@ -29,13 +28,11 @@ export const useTicketStore = defineStore("tickets", {
       }
     },
     getNextCursor() {
-      return this.nextCursor; // 다음 커서를 반환
+      return this.nextCursor;
     },
-    // 다음 카드로 이동합니다.
     nextCard() {
       this.currentCard = (this.currentCard + 1) % this.cards.length;
     },
-    // 이전 카드로 이동합니다.
     prevCard() {
       this.currentCard =
         (this.currentCard - 1 + this.cards.length) % this.cards.length;
