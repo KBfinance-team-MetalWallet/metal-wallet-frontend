@@ -20,7 +20,7 @@
 					<div class="front">
 						<!-- 계좌 정보 -->
 						<div class="div3">{{ account.bankName }}</div>
-						<div class="div2">{{ account.balance }}</div>
+						<div class="div2">${{ account.balance.toLocaleString() }}</div>
 						<div class="div1">출금계좌 : {{ account.accountNumber }}</div>
 						<img :src="account.bankLogo" alt="Bank Logo" class="imageIcon" />
 						<a class="div4" @click.stop="goToPaymentHistory(account.id)">더보기</a>
