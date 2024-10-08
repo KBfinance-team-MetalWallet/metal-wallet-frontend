@@ -1,7 +1,7 @@
 <template>
     <div :class="$style.rectangleParent">
         <div :class="$style.rectangleGroup">
-            <img :class="$style.image200Icon" alt="" :src="getImageUrl(ticket.posterImageUrl)" />
+            <img :class="$style.image200Icon" alt="" :src="ticket.posterImageUrl" />
             <div :class="$style.alladdinTheMusical">{{ ticket.title }}</div>
             <div :class="$style.div1">
                 <p :class="$style.p">예매번호</p>
@@ -83,10 +83,6 @@ export default {
             }
 
             return formattedDate;
-        },
-        getImageUrl(posterImageUrl) {
-            const s3BaseUrl = 'https://s3.amazonaws.com/your-bucket-name/';
-            return `${s3BaseUrl}${posterImageUrl}`;
         }
     },
     computed: {
@@ -98,10 +94,10 @@ export default {
 <style module>
 .image200Icon {
     position: absolute;
-    top: 59px;
+    top: 35px;
     left: 26px;
-    width: 73.9px;
-    height: 91.1px;
+    width: 89.9px;
+    height: 114.1px;
     object-fit: cover;
 }
 
