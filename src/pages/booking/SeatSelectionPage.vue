@@ -99,6 +99,10 @@ export default defineComponent({
       this.isSectionsInfo = !this.isSectionsInfo;
     },
     navigateToPassword() {
+      if (this.selectedSeats.length === 0) {
+        alert("좌석을 선택해주세요!");
+        return;
+      }
       const seatIdList = this.selectedSeats.map((seat) => seat.id);
       console.log(seatIdList);
       this.$router.push({
