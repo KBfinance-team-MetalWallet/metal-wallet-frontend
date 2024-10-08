@@ -245,6 +245,9 @@
 		/** Footer의 높이를 고려하여 최소 높이 설정 */
 		min-height: calc(100vh - 60px);
 	}
+	.wrapper ::-webkit-scrollbar {
+		display: none;
+	}
 
 	.content {
 		display: flex;

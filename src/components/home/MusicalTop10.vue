@@ -71,6 +71,8 @@
 		justify-content: end;
 		color: #c54966;
 		text-decoration: none;
+		font-size: 12px !important;
+		font-weight: bold;
 	}
 	.poster1Parent {
 		display: flex;
@@ -100,7 +102,7 @@
 		display: flex;
 		justify-content: space-between;
 		position: absolute;
-		bottom: 10px;
+		bottom: 0px;
 		width: 100%;
 		padding: 10px;
 		background: rgba(0, 0, 0, 0.5);
