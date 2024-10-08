@@ -47,10 +47,11 @@ export default defineComponent({
     computed: {
         tickets() {
             return this.ticketStore.tickets;
-        },
+        }
     },
     methods: {
-        openCancelDialog() {
+        openCancelDialog(ticketId) {
+            this.selectedTicketId = ticketId;
             this.isCancelDialogVisible = true;
         },
         closeCancelDialog() {
@@ -63,10 +64,8 @@ export default defineComponent({
                         Authorization: `Bearer ${this.token}`
                     }
                 });
-
-                alert('티켓이 취소되었습니다.');
-
                 await this.fetchTickets(this.nextCursor);
+                alert('티켓이 취소되었습니다.');
                 this.closeCancelDialog();
             } catch (error) {
                 console.error('티켓 취소 중 오류 발생:', error);
@@ -92,7 +91,6 @@ export default defineComponent({
             const { scrollTop, scrollHeight, clientHeight } = event.target;
             const bottom = scrollHeight - scrollTop <= clientHeight + 1;
 
-            console.log()
             if (bottom && this.nextCursor && !this.isLoading) {
                 this.fetchTickets(this.nextCursor);
             }

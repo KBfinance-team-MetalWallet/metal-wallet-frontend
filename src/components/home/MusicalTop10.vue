@@ -7,30 +7,36 @@
 				:key="index"
 				:class="$style.poster1"
 			>
-				<img
-					:class="$style.posterimageIcon"
-					:src="musical.imageUrl"
-					:alt="musical.title"
-				/>
-				<div :class="$style.details">
-					<div :class="$style.rank">{{ musical.rank }}</div>
-					<b :class="$style.musicaltitle">{{ musical.title }}</b>
-				</div>
+				<router-link :to="`/musical/${musical.id}`" :class="$style.div10">
+					<img
+						:class="$style.posterimageIcon"
+						:src="musical.imageUrl"
+						:alt="musical.title"
+					/>
+					<div :class="$style.details">
+						<div :class="$style.rank">{{ musical.rank }}</div>
+						<b :class="$style.musicaltitle">{{ musical.title }}</b>
+					</div>
+				</router-link>
 			</div>
 		</div>
-		<router-link to="/ticket" :class="$style.div10">더보기 &gt;</router-link>
+		<router-link to="/musical" :class="$style.div11">더보기 &gt;</router-link>
 	</div>
 </template>
 
 <script>
 	import { useMusicalsStore } from "@/stores/musicals.js";
-	import { computed, defineComponent } from "vue";
+	import { computed, defineComponent, onMounted } from "vue";
 
 	export default defineComponent({
 		name: "MusicalTop10",
 		setup() {
 			const musicalStore = useMusicalsStore();
 			const musicals = computed(() => musicalStore.musicals);
+
+			onMounted(async () => {
+				await musicalStore.fetchMusicals();
+			});
 
 			return {
 				musicals,
@@ -56,7 +62,16 @@
 		color: #c54966;
 		text-decoration: none;
 	}
-
+	.div11 {
+		position: relative;
+		bottom: 50px;
+		right: 10px;
+		width: 100%;
+		display: flex;
+		justify-content: end;
+		color: #c54966;
+		text-decoration: none;
+	}
 	.poster1Parent {
 		display: flex;
 		overflow-x: auto;

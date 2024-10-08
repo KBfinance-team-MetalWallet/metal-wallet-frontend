@@ -89,10 +89,11 @@ const router = createRouter({
       component: MyTicketList,
     },
     {
-      path: "/payment-history",
+      path: "/payment-history/:accountId",
       name: "paymentHistory",
       component: PaymentHistory,
-    },
+      props: true, // route params를 컴포넌트의 props로 전달
+    },    
     {
       path: "/booking",
       name: "booking",
