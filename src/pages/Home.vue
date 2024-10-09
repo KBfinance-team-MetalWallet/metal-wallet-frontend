@@ -3,10 +3,7 @@
 		<MainHeader />
 		<div :class="$style.groupParent">
 			<div :class="$style.contentWrapper">
-				<FlipAccount
-					:accounts="accountStore.accounts"
-					v-if="!accountStore.isLoading"
-				/>
+				<FlipAccount :accounts="accountStore.accounts" v-if="!accountStore.isLoading" />
 				<MusicalTop10 />
 				<SlidePoster />
 			</div>
@@ -17,67 +14,60 @@
 </template>
 
 <script>
-	import Footer from "@/components/Footer.vue";
-	import MainHeader from "@/components/MainHeader.vue";
-	import FlipAccount from "@/components/home/FlipAccount.vue";
-	import MusicalTop10 from "@/components/home/MusicalTop10.vue";
-	import SlidePoster from "@/components/home/SlidePoster.vue";
-	import { useAccountStore } from "@/stores/accounts";
-	import { defineComponent } from "vue";
+import Footer from "@/components/Footer.vue";
+import MainHeader from "@/components/MainHeader.vue";
+import FlipAccount from "@/components/home/FlipAccount.vue";
+import MusicalTop10 from "@/components/home/MusicalTop10.vue";
+import SlidePoster from "@/components/home/SlidePoster.vue";
+import { useAccountStore } from "@/stores/accounts";
+import { defineComponent } from "vue";
 
-	export default defineComponent({
-		name: "Home",
-		components: {
-			Footer,
-			MainHeader,
-			FlipAccount,
-			MusicalTop10,
-			SlidePoster,
-		},
-		setup() {
-			const accountStore = useAccountStore();
-			accountStore.fetchAccounts();
+export default defineComponent({
+	name: "Home",
+	components: {
+		Footer,
+		MainHeader,
+		FlipAccount,
+		MusicalTop10,
+		SlidePoster,
+	},
+	setup() {
+		const accountStore = useAccountStore();
+		accountStore.fetchAccounts();
 
-			return {
-				accountStore,
-			};
-		},
-	});
+		return {
+			accountStore,
+		};
+	},
+});
 </script>
 <style module>
-	@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
 
-	body {
-		margin: 0;
-		line-height: normal;
-		overflow-x: hidden; /* Prevent horizontal scrolling on the body */
-	}
+.div {
+	width: 100%;
+	height: 100vh;
+	overflow: hidden;
+	position: relative;
+	background-color: #fafafa;
+	text-align: left;
+	font-size: 16px;
+	color: #c54966;
+	font-family: Roboto;
+}
 
-	.div {
-		width: 100%;
-		position: relative;
-		background-color: #fafafa;
-		min-height: 100vh;
-		text-align: left;
-		font-size: 16px;
-		color: #c54966;
-		font-family: Roboto;
-	}
+.groupParent {
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	overflow-y: auto;
+}
 
-	.groupParent {
-		width: 100%;
-		height: 100vh;
-		overflow-y: auto;
-		overflow-x: hidden;
-		display: flex;
-		flex-direction: column;
-		position: relative;
-		text-align: left;
-		font-size: 14px;
-		color: #000;
-		font-family: Inter;
-		background-size: cover;
-		background-position: center;
-		background-repeat: no-repeat;
-	}
+.container {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: auto;
+}
 </style>
