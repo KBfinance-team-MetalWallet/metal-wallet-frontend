@@ -16,13 +16,14 @@
 			<div v-for="(account, index) in accounts" :key="account.id" :style="cardStyle(index)"
 				@click="handleCardClick(account)" class="card-container">
 				<!-- 개별 카드 -->
-				<div class="card" :style="{ backgroundColor: account.color }">
+				<div class="card" :style="{ backgroundColor: account.bankColor }">
 					<div class="front">
 						<!-- 계좌 정보 -->
-						<div class="div2">{{ account.balance }}</div>
+						<div class="div3">{{ account.bankName }}</div>
+						<div class="div2">${{ account.balance.toLocaleString() }}</div>
 						<div class="div1">출금계좌 : {{ account.accountNumber }}</div>
 						<img :src="account.bankLogo" alt="Bank Logo" class="imageIcon" />
-						<div class="div3">{{ account.bankName }}</div>
+						<a class="div4" @click.stop="goToPaymentHistory(account.id)">더보기</a>
 					</div>
 				</div>
 			</div>
@@ -38,13 +39,20 @@
 <script>
 import { useAccountStore } from "@/stores/accounts.js";
 import { computed, defineComponent, ref } from "vue";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
 	name: "FlipAccount",
-	setup() {
+	props: {
+		disableCardClick: {
+			type: Boolean,
+			default: false,
+		},
+	},
+	setup(props) {
+		const router = useRouter();
 		const accountStore = useAccountStore();
 		const accounts = computed(() => accountStore.accounts);
-		console.log(accounts.value);
 		const currentAccount = ref(0);
 		const touchStartX = ref(0);
 		const touchEndX = ref(0);
@@ -101,6 +109,7 @@ export default defineComponent({
 
 		// 카드 클릭 시 QR 코드 생성 및 표시/숨기기
 		const handleCardClick = (account) => {
+			if (props.disableCardClick) return;
 			if (selectedCard.value && selectedCard.value.id === account.id) {
 				// 이미 선택된 카드 클릭 시 QR 코드 숨기기
 				selectedCard.value = null;
@@ -130,6 +139,11 @@ export default defineComponent({
 			qrCodeDataUrl.value = "";
 		};
 
+		const goToPaymentHistory = (accountId) => {
+			const path = `/payment-history/${accountId}`; // 경로 설정
+			router.push(path); // Vue Router를 사용하여 이동
+		};
+
 		return {
 			accounts,
 			currentAccount,
@@ -140,6 +154,7 @@ export default defineComponent({
 			selectedCard,
 			qrCodeDataUrl,
 			closeQrCode,
+			goToPaymentHistory
 		};
 	},
 });
@@ -310,6 +325,11 @@ export default defineComponent({
 	top: 19px;
 	left: 22px;
 	font-weight: 500;
+}
+
+.div4 {
+	top: 141px;
+	left: 272px;
 }
 
 /* 페이지 인디케이터 스타일 */

@@ -1,7 +1,7 @@
 <template>
   <div :class="$style.container">
-    <MainHeader class="main-header" />
     <div :class="$style.content">
+      <MainHeader />
       <div :class="$style.inner">
         <b :class="$style.pageName">결제 내역</b>
       </div>
@@ -14,23 +14,20 @@
             <b :class="$style.kb">{{ accountName }}</b>
             <div :class="$style.div1">{{ accountNumber }}</div>
           </div>
-
-          <!-- 금액 및 이미지 -->
           <img :class="$style.image141Icon" alt="" src="@/assets/mypages/kbImage.png" />
         </div>
         <b :class="$style.balance">{{ formatCurrency(currentBalance) }}</b>
-
-        <!-- 이체하기 버튼 -->
         <div :class="$style.button">
           <div :class="$style.buttonText">이체하기</div>
         </div>
       </div>
 
-      <!-- 거래 내역 리스트 컴포넌트 -->
-      <TransactionRecords :transactions="transactions" />
+      <!-- 스크롤 가능한 거래 내역 리스트 컴포넌트 -->
+      <div :class="$style.transactionList">
+        <TransactionRecords :transactions="transactions" />
+      </div>
     </div>
-    <!-- Footer -->
-    <Footer class="footer" />
+    <Footer></Footer>
   </div>
 </template>
 
@@ -51,7 +48,7 @@ export default defineComponent({
   data() {
     return {
       transactions: [], // 거래 내역
-      accountId: 8, // 현재 선택된 계좌 ID
+      accountId: this.$route.params.accountId, // 현재 선택된 계좌 ID
       accountName: "", // 계좌 이름
       accountNumber: "", // 계좌 번호
       currentBalance: 0, // 현재 잔액
@@ -64,7 +61,7 @@ export default defineComponent({
   methods: {
     // 단일 계좌 상세 정보 가져오기
     async fetchAccountDetails() {
-      const token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGdtYWlsLmNvbSIsImV4cCI6MTcyODAyNTA0OCwicm9sZSI6IlVTRVIifQ.VkHPsFkYvpWDAbySASPa52usMr1CyhZJLmR7C75niRIQxKz_hrv8bDnlXsu7ltmkOg48whrt5rmjmyupX-576w";
+      const token = localStorage.getItem("accessToken");;
       try {
         const response = await axios.get(`http://localhost:8080/api/accounts/${this.accountId}`, {
           headers: {
@@ -83,7 +80,7 @@ export default defineComponent({
 
     // 특정 계좌의 거래 내역 가져오기
     async fetchTransactionRecords() {
-      const token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGdtYWlsLmNvbSIsImV4cCI6MTcyODAyNTA0OCwicm9sZSI6IlVTRVIifQ.VkHPsFkYvpWDAbySASPa52usMr1CyhZJLmR7C75niRIQxKz_hrv8bDnlXsu7ltmkOg48whrt5rmjmyupX-576w";
+      const token = localStorage.getItem("accessToken");;
       try {
         const response = await axios.get(`http://localhost:8080/api/accounts/${this.accountId}/transaction-records`, {
           headers: {
@@ -112,28 +109,30 @@ export default defineComponent({
 </script>
 
 <style module>
+body {
+  margin: 0;
+  padding: 0;
+  line-height: normal;
+}
+
 .container {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   width: 100%;
+  font-size: 16px;
   height: 100vh;
   position: relative;
-  background-color: #f3f3f3;
-}
-
-.main-header {
-  width: 100%;
-  height: 60px;
+  background-color: #fafafa;
+  /* 배경색도 첫 번째 스타일과 맞추기 */
 }
 
 .content {
   flex: 1;
+  position: relative;
   width: 100%;
-  padding-top: 60px;
-  overflow: auto;
-  padding-bottom: 70px;
+  padding: 14px;
 }
 
 .inner {
@@ -164,7 +163,7 @@ export default defineComponent({
 }
 
 .rectangleIcon {
-  width: 85%;
+  width: 95%;
   position: relative;
   margin: 0 auto;
   margin-top: 30px;
@@ -209,5 +208,14 @@ export default defineComponent({
   justify-content: center;
   box-sizing: border-box;
   color: #333;
+}
+
+.transactionList {
+  max-height: calc(100vh - 400px);
+  /* Adjust based on header/footer height */
+  overflow-y: scroll;
+  /* Enable vertical scroll */
+  width: 95%;
+  margin: 0 auto;
 }
 </style>

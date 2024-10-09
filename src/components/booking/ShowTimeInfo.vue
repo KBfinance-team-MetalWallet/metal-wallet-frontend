@@ -43,7 +43,7 @@
 						alt="예매 아이콘"
 						src="@/assets/booking/wait-icon.png"
 					/>
-					<div :class="$style.div7">예매대기 신청</div>
+					<div :class="$style.div8">예매대기 신청</div>
 					<img
 						:class="$style.border1"
 						alt="예매 아이콘"
@@ -81,6 +81,14 @@
 				type: Number,
 				required: true,
 			},
+			musicalId: {
+				type: Number,
+				required: true,
+			},
+			scheduleId: {
+				type: Number,
+				required: true,
+			},
 		},
 		computed: {
 			formattedNames() {
@@ -89,7 +97,11 @@
 		},
 		methods: {
 			handleSelect() {
-				this.$emit("select", this.time);
+				// 선택된 일정에 좌석 선택 페이지로 이동
+				this.$router.push({
+					name: "seats",
+					params: { musicalId: this.musicalId, scheduleId: this.scheduleId },
+				});
 			},
 		},
 	};
@@ -97,17 +109,19 @@
 
 <style module>
 	.groupWrapper {
-		width: 370px;
+		border-radius: 10px;
+		width: 350px;
 		position: relative;
 		height: 160px;
+		padding: 10px;
 	}
 
 	.group {
 		position: absolute;
 		top: 0px;
 		left: 0px;
-		width: 370px;
-		height: 149.6px;
+		width: 100%;
+		height: 100%;
 	}
 
 	.div2 {
@@ -120,7 +134,7 @@
 	.button {
 		position: absolute;
 		top: 0px;
-		right: 5px;
+		right: 0px;
 		border-radius: 15px;
 		background-color: #c54966;
 		width: 88px;
@@ -175,7 +189,7 @@
 		background-color: #f8f8f8;
 		border-top: 1px solid #c54966;
 		box-sizing: border-box;
-		height: 71.6px;
+		/* height: auto; */
 	}
 
 	.div4 {
@@ -253,14 +267,6 @@
 		line-height: 15.6px;
 	}
 
-	.div5,
-	.div6 {
-		position: absolute;
-		top: -1px;
-		left: 20px;
-		line-height: 15.6px;
-	}
-
 	.waiting {
 		position: relative;
 		top: 100px;
@@ -281,8 +287,21 @@
 		cursor: pointer;
 		background-color: transparent;
 	}
+	.div5,
+	.div6 {
+		position: absolute;
+		top: -1px;
+		left: 10px;
+		line-height: 15.6px;
+	}
 
 	.div7 {
+		position: relative;
+		line-height: 18px;
+		height: auto;
+	}
+
+	.div8 {
 		position: relative;
 		line-height: 18px;
 		height: auto;

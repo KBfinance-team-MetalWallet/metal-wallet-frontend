@@ -1,74 +1,38 @@
-import {
-	default as PosterImg1,
-	default as PosterImg10,
-	default as PosterImg4,
-	default as PosterImg7,
-} from "@/assets/poster/PosterImg1.png";
-import {
-	default as PosterImg2,
-	default as PosterImg5,
-	default as PosterImg8,
-} from "@/assets/poster/PosterImg2.png";
-import {
-	default as PosterImg3,
-	default as PosterImg6,
-	default as PosterImg9,
-} from "@/assets/poster/PosterImg3.png";
+// stores/musicals.js
+
+import axios from "axios";
 import { defineStore } from "pinia";
 
 export const useMusicalsStore = defineStore("musicals", {
 	state: () => ({
-		musicals: [
-			{
-				title: "킹키부츠",
-				rank: 1,
-				imageUrl: PosterImg1,
-			},
-			{
-				title: "홍련",
-				rank: 2,
-				imageUrl: PosterImg2,
-			},
-			{
-				title: "뮤지컬 3",
-				rank: 3,
-				imageUrl: PosterImg3,
-			},
-			{
-				title: "뮤지컬 4",
-				rank: 4,
-				imageUrl: PosterImg4,
-			},
-			{
-				title: "뮤지컬 5",
-				rank: 5,
-				imageUrl: PosterImg5,
-			},
-			{
-				title: "뮤지컬 6",
-				rank: 6,
-				imageUrl: PosterImg6,
-			},
-			{
-				title: "뮤지컬 7",
-				rank: 7,
-				imageUrl: PosterImg7,
-			},
-			{
-				title: "뮤지컬 8",
-				rank: 8,
-				imageUrl: PosterImg8,
-			},
-			{
-				title: "뮤지컬 9",
-				rank: 9,
-				imageUrl: PosterImg9,
-			},
-			{
-				title: "뮤지컬 10",
-				rank: 10,
-				imageUrl: PosterImg10,
-			},
-		],
+		musicals: [],
 	}),
+	actions: {
+		async fetchMusicals() {
+			try {
+				const response = await axios.get(
+					"http://localhost:8080/api/musicals?size=10"
+				);
+				const apiData = response.data.result.data;
+
+				// API에서 받은 데이터를 스토어 구조에 맞게 매핑합니다.
+				this.musicals = apiData.map((item) => ({
+					id: item.id,
+					title: item.title,
+					rank: item.ranking,
+					imageUrl: item.posterImageUrl,
+					// 필요한 다른 속성들도 추가 가능합니다.
+					place: item.place,
+					placeDetail: item.placeDetail,
+					ticketingStartDate: item.ticketingStartDate,
+					ticketingEndDate: item.ticketingEndDate,
+				}));
+
+				// 콘솔에 데이터를 출력합니다.
+				console.log(this.musicals);
+			} catch (error) {
+				console.error("뮤지컬 데이터를 가져오는 중 오류 발생:", error);
+			}
+		},
+	},
 });

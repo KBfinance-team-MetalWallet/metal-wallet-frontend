@@ -32,9 +32,7 @@ export const useAccountStore = defineStore("account", {
         if (response.data && response.data.resultCode === 200) {
           this.accounts = response.data.result.map((account) => ({
             ...account,
-            color: "#05f9a0",
             isUsed: false,
-            bankLogo: logos[account.bankLogo],
           }));
         } else {
           this.error = response.data.resultMsg || "Failed to fetch accounts";

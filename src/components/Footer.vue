@@ -1,40 +1,43 @@
 <template>
-
-    <div :class="$style.div8">
-        <div :class="$style.child" />
-        <div :class="$style.groupContainer">
-            <router-link to="/" :class="$style.parent">
-                <div :class="$style.div9">홈</div>
-                <img :class="$style.iconexlineTwoTonehome" alt="" :src="homeIcon" />
-            </router-link>
-            <router-link to="/ticket" :class="$style.group">
-                <div :class="$style.div10">티켓</div>
-                <img :class="$style.iconexlineTwoTonecoupon3" alt="" :src="couponIcon" />
-            </router-link>
-            <router-link to="/mypage" :class="$style.container">
-                <div :class="$style.div10">마이</div>
-                <img :class="$style.iconexlineTwoTonehome" alt="" :src="userIcon" />
-            </router-link>
-        </div>
-    </div>
+	<div :class="$style.div8">
+		<div :class="$style.child" />
+		<div :class="$style.groupContainer">
+			<router-link to="/" :class="$style.parent">
+				<div :class="$style.div9">홈</div>
+				<img :class="$style.iconexlineTwoTonehome" alt="" :src="homeIcon" />
+			</router-link>
+			<router-link to="/ticket" :class="$style.group">
+				<div :class="$style.div10">티켓</div>
+				<img
+					:class="$style.iconexlineTwoTonecoupon3"
+					alt=""
+					:src="couponIcon"
+				/>
+			</router-link>
+			<router-link to="/mypage" :class="$style.container">
+				<div :class="$style.div10">마이</div>
+				<img :class="$style.iconexlineTwoTonehome" alt="" :src="userIcon" />
+			</router-link>
+		</div>
+	</div>
 </template>
 
 <script lang="js">
-import { defineComponent } from 'vue';
-import homeIcon from '@/assets/Iconex/Line Two Tone/Home.svg';
-import couponIcon from '@/assets/Iconex/Line Two Tone/Coupon 3.svg';
-import userIcon from '@/assets/Iconex/Line Two Tone/User.svg';
+									import couponIcon from '@/assets/Iconex/Line Two Tone/Coupon 3.svg';
+	import homeIcon from '@/assets/Iconex/Line Two Tone/Home.svg';
+	import userIcon from '@/assets/Iconex/Line Two Tone/User.svg';
+	import { defineComponent } from 'vue';
 
-	export default defineComponent({
-	    name: 'Footer',
-	    data() {
-	        return {
-	            homeIcon,
-	            couponIcon,
-	            userIcon
-	        };
-	    },
-	});
+									export default defineComponent({
+									    name: 'Footer',
+									    data() {
+									        return {
+									            homeIcon,
+									            couponIcon,
+									            userIcon
+									        };
+									    },
+									});
 </script>
 
 <style module>
@@ -90,7 +93,32 @@ import userIcon from '@/assets/Iconex/Line Two Tone/User.svg';
 		right: 91.18%;
 		bottom: 0%;
 		left: 0%;
-		color: #c54966;
+		text-align: center;
+
+		/* color: #c54966; */
+	}
+
+	.group {
+		text-align: center;
+		position: absolute;
+		height: 100%;
+		width: 9.82%;
+		top: 0%;
+		right: 45.59%;
+		bottom: 0%;
+		left: 45.59%;
+	}
+
+	.container {
+		position: absolute;
+		text-align: center;
+
+		height: 100%;
+		width: 9.82%;
+		top: 0%;
+		right: 0%;
+		bottom: 0%;
+		left: 91.18%;
 	}
 
 	.div10 {
@@ -114,26 +142,6 @@ import userIcon from '@/assets/Iconex/Line Two Tone/User.svg';
 		overflow: hidden;
 		max-height: 100%;
 		object-fit: cover;
-	}
-
-	.group {
-		position: absolute;
-		height: 100%;
-		width: 9.82%;
-		top: 0%;
-		right: 45.59%;
-		bottom: 0%;
-		left: 45.59%;
-	}
-
-	.container {
-		position: absolute;
-		height: 100%;
-		width: 9.82%;
-		top: 0%;
-		right: 0%;
-		bottom: 0%;
-		left: 91.18%;
 	}
 
 	.groupContainer {
