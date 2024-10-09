@@ -48,6 +48,7 @@ export default defineComponent({
 	width: 100%;
 	height: 100vh;
 	overflow: hidden;
+	overflow-y: auto;
 	position: relative;
 	background-color: #fafafa;
 	text-align: left;

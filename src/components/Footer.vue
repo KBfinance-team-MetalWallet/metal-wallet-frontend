@@ -8,11 +8,7 @@
 			</router-link>
 			<router-link to="/ticket" :class="$style.group">
 				<div :class="$style.div10">티켓</div>
-				<img
-					:class="$style.iconexlineTwoTonecoupon3"
-					alt=""
-					:src="couponIcon"
-				/>
+				<img :class="$style.iconexlineTwoTonecoupon3" alt="" :src="couponIcon" />
 			</router-link>
 			<router-link to="/mypage" :class="$style.container">
 				<div :class="$style.div10">마이</div>
@@ -23,134 +19,135 @@
 </template>
 
 <script lang="js">
-									import couponIcon from '@/assets/Iconex/Line Two Tone/Coupon 3.svg';
-	import homeIcon from '@/assets/Iconex/Line Two Tone/Home.svg';
-	import userIcon from '@/assets/Iconex/Line Two Tone/User.svg';
-	import { defineComponent } from 'vue';
+import couponIcon from '@/assets/Iconex/Line Two Tone/Coupon 3.svg';
+import homeIcon from '@/assets/Iconex/Line Two Tone/Home.svg';
+import userIcon from '@/assets/Iconex/Line Two Tone/User.svg';
+import { defineComponent } from 'vue';
 
-									export default defineComponent({
-									    name: 'Footer',
-									    data() {
-									        return {
-									            homeIcon,
-									            couponIcon,
-									            userIcon
-									        };
-									    },
-									});
+export default defineComponent({
+	name: 'Footer',
+	data() {
+		return {
+			homeIcon,
+			couponIcon,
+			userIcon
+		};
+	},
+});
 </script>
 
 <style module>
-	.div8 {
-		position: absolute;
-		bottom: 0px;
-		left: 0px;
-		width: 375px;
-		height: 68px;
-		font-size: 13px;
-		color: #2b3f6c;
-	}
+.div8 {
+	position: fixed;
+	bottom: 0px;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 375px;
+	height: 68px;
+	font-size: 13px;
+	color: #2b3f6c;
+}
 
-	.child {
-		position: absolute;
-		height: 100%;
-		width: 100%;
-		top: 0%;
-		right: 0%;
-		bottom: 0%;
-		left: 0%;
-		border-radius: 15px 15px 0px 0px;
-		background-color: #fff;
-	}
+.child {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	top: 0%;
+	right: 0%;
+	bottom: 0%;
+	left: 0%;
+	border-radius: 15px 15px 0px 0px;
+	background-color: #fff;
+}
 
-	.div9 {
-		position: absolute;
-		height: 35%;
-		width: 50%;
-		top: 65%;
-		left: 25%;
-		display: inline-block;
-	}
+.div9 {
+	position: absolute;
+	height: 35%;
+	width: 50%;
+	top: 65%;
+	left: 25%;
+	display: inline-block;
+}
 
-	.iconexlineTwoTonehome {
-		position: absolute;
-		height: 60%;
-		width: 100%;
-		top: 0%;
-		right: 0%;
-		bottom: 40%;
-		left: 0%;
-		max-width: 100%;
-		overflow: hidden;
-		max-height: 100%;
-	}
+.iconexlineTwoTonehome {
+	position: absolute;
+	height: 60%;
+	width: 100%;
+	top: 0%;
+	right: 0%;
+	bottom: 40%;
+	left: 0%;
+	max-width: 100%;
+	overflow: hidden;
+	max-height: 100%;
+}
 
-	.parent {
-		position: absolute;
-		height: 100%;
-		width: 8.82%;
-		top: 0%;
-		right: 91.18%;
-		bottom: 0%;
-		left: 0%;
-		text-align: center;
+.parent {
+	position: absolute;
+	height: 100%;
+	width: 8.82%;
+	top: 0%;
+	right: 91.18%;
+	bottom: 0%;
+	left: 0%;
+	text-align: center;
 
-		/* color: #c54966; */
-	}
+	/* color: #c54966; */
+}
 
-	.group {
-		text-align: center;
-		position: absolute;
-		height: 100%;
-		width: 9.82%;
-		top: 0%;
-		right: 45.59%;
-		bottom: 0%;
-		left: 45.59%;
-	}
+.group {
+	text-align: center;
+	position: absolute;
+	height: 100%;
+	width: 9.82%;
+	top: 0%;
+	right: 45.59%;
+	bottom: 0%;
+	left: 45.59%;
+}
 
-	.container {
-		position: absolute;
-		text-align: center;
+.container {
+	position: absolute;
+	text-align: center;
 
-		height: 100%;
-		width: 9.82%;
-		top: 0%;
-		right: 0%;
-		bottom: 0%;
-		left: 91.18%;
-	}
+	height: 100%;
+	width: 9.82%;
+	top: 0%;
+	right: 0%;
+	bottom: 0%;
+	left: 91.18%;
+}
 
-	.div10 {
-		position: absolute;
-		height: 35%;
-		width: 100%;
-		top: 65%;
-		left: 0%;
-		display: inline-block;
-	}
+.div10 {
+	position: absolute;
+	height: 35%;
+	width: 100%;
+	top: 65%;
+	left: 0%;
+	display: inline-block;
+}
 
-	.iconexlineTwoTonecoupon3 {
-		position: absolute;
-		height: 60%;
-		width: 100%;
-		top: 0%;
-		right: 0%;
-		bottom: 40%;
-		left: 0%;
-		max-width: 100%;
-		overflow: hidden;
-		max-height: 100%;
-		object-fit: cover;
-	}
+.iconexlineTwoTonecoupon3 {
+	position: absolute;
+	height: 60%;
+	width: 100%;
+	top: 0%;
+	right: 0%;
+	bottom: 40%;
+	left: 0%;
+	max-width: 100%;
+	overflow: hidden;
+	max-height: 100%;
+	object-fit: cover;
+}
 
-	.groupContainer {
-		position: absolute;
-		height: 58.82%;
-		width: 72.53%;
-		top: 23.53%;
-		right: 13.87%;
-		bottom: 17.65%;
-		left: 13.6%;
-	}
+.groupContainer {
+	position: absolute;
+	height: 58.82%;
+	width: 72.53%;
+	top: 23.53%;
+	right: 13.87%;
+	bottom: 17.65%;
+	left: 13.6%;
+}
 </style>
