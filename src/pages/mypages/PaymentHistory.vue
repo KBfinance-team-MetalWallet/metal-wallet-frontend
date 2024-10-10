@@ -132,7 +132,6 @@ body {
   flex: 1;
   position: relative;
   width: 100%;
-  padding: 14px;
 }
 
 .inner {
@@ -141,29 +140,24 @@ body {
 }
 
 .pageName {
-  font-size: 16px;
+  font-size: 18px;
   color: #6e6e6e;
-  font-weight: bold;
-  font-family: Roboto;
 }
 
 .kb {
-  font-size: 14px;
-  font-family: Roboto;
-  font-weight: bold;
+  font-size: 17px;
   color: black;
 }
 
 .div1 {
   margin-top: 3px;
-  font-size: 13px;
-  font-family: Roboto;
+  font-size: 14px;
   color: black;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .rectangleIcon {
-  width: 95%;
+  width: 90%;
   position: relative;
   margin: 0 auto;
   margin-top: 30px;
@@ -212,10 +206,25 @@ body {
 
 .transactionList {
   max-height: calc(100vh - 400px);
-  /* Adjust based on header/footer height */
   overflow-y: scroll;
-  /* Enable vertical scroll */
-  width: 95%;
+  width: 90%;
   margin: 0 auto;
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+
+  display: flex;
+  justify-content: center;
+}
+
+.transactionList::-webkit-scrollbar {
+  width: 8px;
+}
+
+.transactionList::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.transactionList::-webkit-scrollbar-thumb {
+  background: transparent;
 }
 </style>
