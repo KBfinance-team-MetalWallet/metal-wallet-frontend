@@ -132,7 +132,6 @@ body {
   flex: 1;
   position: relative;
   width: 100%;
-  padding: 14px;
 }
 
 .inner {
