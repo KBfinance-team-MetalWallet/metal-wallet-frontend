@@ -409,9 +409,9 @@ body {
 
 .div {
     width: 100%;
+    height: 100vh;
     position: relative;
     background-color: #fafafa;
-    height: 812px;
     overflow: hidden;
     text-align: left;
     font-size: 16px;
