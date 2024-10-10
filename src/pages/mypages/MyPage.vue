@@ -9,15 +9,9 @@
                 <div :class="[$style.b2, { [$style.activeTab]: selectedTab === 'tickets' }]"
                     @click="selectTab('tickets')">티켓 보관함</div>
             </div>
-            <img :class="$style.groupChild" :src="line7Image" alt="Line 7" />
         </div>
 
-        <div :class="$style.child"></div>
         <div v-if="selectedTab === 'wallet'">
-            <div :class="$style.container">
-                <div :class="$style.b1">전자지갑 결제내역</div>
-                <div :class="$style.div2">&gt;</div>
-            </div>
             <div :class="$style.groupDiv">
                 <div :class="$style.div3">공인인증서 관리 / 발급</div>
                 <div :class="$style.div2">&gt;</div>
@@ -25,14 +19,17 @@
         </div>
         <div v-else-if="selectedTab === 'tickets'">
             <div :class="$style.container" @click="goToPage('/my-ticket-list')">
-                <div :class="$style.b1">나의 예매 내역</div>
+                <div :class="$style.child"></div>
+                <div :class="$style.div3">나의 예매 내역</div>
                 <div :class="$style.div2">&gt;</div>
             </div>
         </div>
         <div v-if="selectedTab === 'wallet'" :class="$style.groupParent3">
             <FlipAccount :disableCardClick="true" />
+            <div :class="$style.child"></div>
         </div>
-        <div v-else-if="selectedTab === 'tickets'">
+
+        <div v-else-if="selectedTab === 'tickets'" :class="$style.groupParent4">
             <TicketStorage />
         </div>
         <Footer></Footer>
@@ -128,6 +125,9 @@ body {
     top: 0px;
     left: 0px;
     z-index: 10;
+    color: #6e6e6e;
+    /* 기본 색상: 회색 */
+    cursor: pointer;
 }
 
 .parent {
@@ -148,31 +148,32 @@ body {
 
 .groupParent {
     position: absolute;
-    top: 78px;
+    top: 50px;
     left: 59px;
     width: 242px;
-    height: 25.5px;
+    font-size: 18px;
 }
 
 .child {
     position: absolute;
-    top: 352.5px;
-    left: -0.5px;
     border-top: 1px solid rgba(110, 110, 110, 0.37);
     box-sizing: border-box;
     width: 376px;
     height: 1px;
+    margin-top: 15px;
 }
 
 .div2 {
     position: absolute;
     top: 0px;
     left: 317px;
+    margin-top: 35px;
 }
 
 .container {
     position: absolute;
-    top: 387px;
+    top: 330px;
+    margin-bottom: 20px;
     left: 23px;
     width: 326px;
     height: 19px;
@@ -183,11 +184,13 @@ body {
     position: absolute;
     top: 5px;
     left: 0px;
+    margin-top: 30px;
 }
 
 .groupDiv {
+    margin-top: 40px;
     position: absolute;
-    top: 429px;
+    top: 300px;
     left: 23px;
     width: 326px;
     height: 24px;
@@ -349,7 +352,6 @@ body {
     right: 91.18%;
     bottom: 0%;
     left: 0%;
-    color: #c54966;
 }
 
 .div16 {
@@ -405,16 +407,6 @@ body {
     left: 13.6%;
 }
 
-.div14 {
-    position: absolute;
-    bottom: 0px;
-    left: 0px;
-    width: 375px;
-    height: 68px;
-    font-size: 13px;
-    color: #2b3f6c;
-}
-
 .div {
     width: 100%;
     position: relative;
@@ -424,7 +416,6 @@ body {
     text-align: left;
     font-size: 16px;
     color: #c54966;
-    font-family: Roboto;
 }
 
 /* tab */
@@ -434,20 +425,32 @@ body {
     top: 0px;
     left: 153px;
     color: #6e6e6e;
+    cursor: pointer;
     z-index: 10;
 }
 
 .activeTab {
     color: #c54966;
     font-weight: bold;
+    border-bottom: 2px solid #c54966;
+    /* 밑줄 추가 */
+    padding-bottom: 4px;
+    /* 밑줄과 텍스트 간격 */
 }
 
-/* card */
 .groupParent3 {
     position: absolute;
     top: 78px;
     left: 12px;
     width: 348px;
     height: 225.5px;
+    margin-bottom: 10px;
+}
+
+.groupParent4 {
+    position: absolute;
+    top: 0%;
+    width: fit-content;
+    height: fit-content;
 }
 </style>
