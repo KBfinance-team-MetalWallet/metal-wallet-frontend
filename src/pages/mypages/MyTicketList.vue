@@ -124,8 +124,7 @@ body {
     overflow: auto;
     padding: 10px;
     top: 37px;
-    scrollbar-width: none;
-    /* Firefox */
+    scrollbar-width: none;  /* Firefox */
     -ms-overflow-style: none;
 }
 

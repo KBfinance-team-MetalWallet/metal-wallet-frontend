@@ -48,5 +48,7 @@ export default defineComponent({
 	height: 22px;
 	font-size: 16px;
 	color: #6e6e6e;
+	padding: 14px;
+	font-family: "bamin_title";
 }
 </style>

@@ -1,26 +1,23 @@
 <template>
-	<div class="slidePosterWrapper">
+	<div
+		class="slidePosterWrapper"
+		@mouseenter="pauseSlide"
+		@mouseleave="startSlide"
+	>
 		<div class="bannerWrapper">
 			<div class="slideContainer" :style="slideStyle">
-				<img
+				<div
+					class="slide"
 					v-for="(image, index) in images"
 					:key="index"
-					:src="image"
-					alt="배너 이미지"
-					class="bannerImg"
-				/>
-			</div>
-			<div class="bannerNav">
-				<p
-					v-for="(image, index) in images"
-					:key="index"
-					:class="{ active: index === currentIndex }"
-				></p>
+					:style="{ width: `${100 / images.length}%` }"
+				>
+					<img :src="image" alt="배너 이미지" class="bannerImg" />
+				</div>
 			</div>
 		</div>
 	</div>
 </template>
-
 <script>
 	import kbBanner1 from "@/assets/slide/kbBanner1.jpg";
 	import kbBanner2 from "@/assets/slide/kbBanner2.jpg";
@@ -38,29 +35,46 @@
 		computed: {
 			slideStyle() {
 				return {
-					transform: `translateX(-${this.currentIndex * 100}%)`,
+					transform: `translateX(-${
+						this.currentIndex * (100 / this.images.length)
+					}%)`,
 					transition: "transform 0.5s ease-in-out",
 					width: `${this.images.length * 100}%`,
 				};
 			},
 		},
-		mounted() {
-			this.intervalId = setInterval(() => {
+		methods: {
+			nextSlide() {
 				this.currentIndex = (this.currentIndex + 1) % this.images.length;
-			}, 3000); // 3초마다 이미지 변경 (1초는 너무 빠를 수 있음)
+			},
+			pauseSlide() {
+				clearInterval(this.intervalId);
+			},
+			startSlide() {
+				this.intervalId = setInterval(() => {
+					this.nextSlide();
+				}, 2000);
+			},
+		},
+		mounted() {
+			this.startSlide();
 		},
 		beforeUnmount() {
 			clearInterval(this.intervalId);
 		},
 	};
 </script>
-
 <style scoped>
+	* {
+		box-sizing: border-box;
+	}
+
 	.slidePosterWrapper {
 		width: 100%;
-		height: 200px; /* 적절한 높이로 설정 */
-		overflow: hidden; /* 이미지가 넘치지 않도록 숨김 */
+		height: 200px;
+		overflow: hidden;
 		position: relative;
+		margin-bottom: 150px;
 	}
 
 	.bannerWrapper {
@@ -71,34 +85,26 @@
 
 	.slideContainer {
 		display: flex;
+		flex-wrap: nowrap;
 		height: 100%;
-		width: 300%; /* 이미지 개수에 따라 조정 */
+		transition: transform 3s ease-in-out;
+	}
+
+	.slide {
+		flex: 0% 10% 0%;
+		height: 100%;
 	}
 
 	.bannerImg {
-		object-fit: cover;
-		width: 100%;
+		width: 375px;
 		height: 100%;
+		display: block;
+		object-fit: cover;
 	}
 
-	.bannerNav {
-		position: absolute;
-		bottom: 10px;
-		left: 50%;
-		transform: translateX(-50%);
-		display: flex;
-	}
-
-	.bannerNav > p {
-		border-radius: 50%;
-		width: 10px;
-		height: 10px;
-		background-color: rgba(255, 255, 255, 0.5);
-		margin: 0 5px;
-		cursor: pointer;
-	}
-
-	.bannerNav > p.active {
-		background-color: rgba(255, 255, 255, 1);
+	@media (max-width: 812px) {
+		.slidePosterWrapper {
+			height: 130px;
+		}
 	}
 </style>

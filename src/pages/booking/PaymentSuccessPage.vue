@@ -69,15 +69,13 @@ export default {
 <style module>
 .div {
   width: 100%;
-  height: auto;
+  height: 812px;
   text-align: center;
   color: #6e6e6e;
-  font-family: Roboto;
   display: flex;
   flex-direction: column;
   /* 위에서 아래로 배치 */
   align-items: center;
-  padding: 20px;
 }
 
 .child {
