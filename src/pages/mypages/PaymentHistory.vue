@@ -1,7 +1,7 @@
 <template>
   <div :class="$style.container">
     <div :class="$style.content">
-      <MainHeader />
+      <BackHeader />
       <div :class="$style.inner">
         <b :class="$style.pageName">결제 내역</b>
       </div>
@@ -34,14 +34,14 @@
 <script lang="js">
 import { defineComponent } from 'vue';
 import axios from 'axios';
-import MainHeader from '../../components/MainHeader.vue';
+import BackHeader from '../../components/BackHeader.vue';
 import Footer from '../../components/Footer.vue';
 import TransactionRecords from '../../components/mypages/TransactionRecords.vue';
 
 export default defineComponent({
   name: "Frame",
   components: {
-    MainHeader,
+    BackHeader,
     Footer,
     TransactionRecords,
   },
