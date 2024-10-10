@@ -21,7 +21,7 @@ export const useTicketStore = defineStore("tickets", {
           },
         });
         const { result } = response.data;
-        this.tickets.push(...result.data);
+        this.tickets = [...this.tickets, ...result.data];
         this.nextCursor = result.nextCursor;
         return result.data;
       } catch (error) {

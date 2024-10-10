@@ -2,7 +2,7 @@
     <div :class="$style.div">
         <BackHeader />
         <div :class="$style.ticketContainer">
-            <div :class="$style.groupParent">
+            <div :class="$style.groupParent" :key="renderKey">
                 <TicketCard v-for="(ticket, index) in tickets" :key="index" :ticket="ticket"
                     @cancel-ticket="openCancelDialog" />
             </div>
@@ -64,9 +64,10 @@ export default defineComponent({
                         Authorization: `Bearer ${this.token}`
                     }
                 });
-                await this.fetchTickets(this.nextCursor);
                 alert('티켓이 취소되었습니다.');
-                this.closeCancelDialog();
+        this.ticketStore.tickets = []; 
+        await this.ticketStore.fetchTickets(); 
+        this.closeCancelDialog();
             } catch (error) {
                 console.error('티켓 취소 중 오류 발생:', error);
             }
@@ -101,6 +102,7 @@ export default defineComponent({
             const newTickets = await this.ticketStore.fetchTickets(cursor);
             this.nextCursor = this.ticketStore.getNextCursor();
             this.isLoading = false;
+            this.renderKey += 1;
         },
     },
     mounted() {
