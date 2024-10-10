@@ -69,7 +69,7 @@ export default {
 <style module>
 .div {
   width: 100%;
-  height: 812px;
+  height: 100vh;
   text-align: center;
   color: #6e6e6e;
   display: flex;
