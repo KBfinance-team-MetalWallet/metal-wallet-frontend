@@ -54,7 +54,7 @@ export default defineComponent({
 	text-align: left;
 	font-size: 16px;
 	color: #c54966;
-	font-family: Roboto;
+	font-family: "bamin_content";
 }
 
 .groupParent {

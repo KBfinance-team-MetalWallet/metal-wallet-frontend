@@ -6,8 +6,19 @@
 	</div>
 </template>
 
-<style scoped>
+<style>
+@font-face {
+	font-family: "bamin_title";
+	src: url("./assets/fonts/BMHANNAPro.ttf");
+}
+
+@font-face {
+	font-family: "bamin_content";
+	src: url("./assets/fonts/BMHANNAAir.ttf");
+}
+
 #app {
+	font-family: "bamin_title";
 	width: 375px;
 	background-color: white;
 	overflow: hidden;
