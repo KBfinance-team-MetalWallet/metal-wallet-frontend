@@ -102,9 +102,4 @@
 		object-fit: cover;
 	}
 
-	@media (max-width: 812px) {
-		.slidePosterWrapper {
-			height: 130px;
-		}
-	}
 </style>

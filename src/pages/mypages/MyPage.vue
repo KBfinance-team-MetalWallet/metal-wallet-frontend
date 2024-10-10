@@ -18,15 +18,15 @@
             </div>
         </div>
         <div v-else-if="selectedTab === 'tickets'">
-            <div :class="$style.container" @click="goToPage('/my-ticket-list')">
-                <div :class="$style.child"></div>
+            <div :class="$style.groupDiv" @click="goToPage('/my-ticket-list')">
+                <div :class="$style.child100"></div>
                 <div :class="$style.div3">나의 예매 내역</div>
                 <div :class="$style.div2">&gt;</div>
             </div>
         </div>
         <div v-if="selectedTab === 'wallet'" :class="$style.groupParent3">
             <FlipAccount :disableCardClick="true" />
-            <div :class="$style.child"></div>
+            <div :class="$style.child100"></div>
         </div>
 
         <div v-else-if="selectedTab === 'tickets'" :class="$style.groupParent4">
@@ -154,41 +154,33 @@ body {
     font-size: 18px;
 }
 
-.child {
-    position: absolute;
+.child100 {
+    position: fixed;
+    /* position: absolute; */
     border-top: 1px solid rgba(110, 110, 110, 0.37);
-    box-sizing: border-box;
-    width: 376px;
-    height: 1px;
-    margin-top: 15px;
+    /* box-sizing: border-box; */
+    top:350px;
+
+    width: 350px;
+    /* margin-top: 70px; */
+    /* margin-bottom: 60px; */
 }
 
 .div2 {
     position: absolute;
-    top: 0px;
+    /* top: 0px; */
     left: 317px;
-    margin-top: 35px;
-}
-
-.container {
-    position: absolute;
-    top: 330px;
-    margin-bottom: 20px;
-    left: 23px;
-    width: 326px;
-    height: 19px;
-    color: #000;
+    margin-top: 10px;
 }
 
 .div3 {
     position: absolute;
     top: 5px;
     left: 0px;
-    margin-top: 30px;
+    margin-top: 10px;
 }
 
 .groupDiv {
-    margin-top: 40px;
     position: absolute;
     top: 300px;
     left: 23px;
