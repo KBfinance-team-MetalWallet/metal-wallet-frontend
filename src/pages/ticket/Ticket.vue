@@ -1,24 +1,26 @@
 <template>
-	<div :class="$style.ticketWrapper">
+	<div :class="$style.div">
 		<MainHeader />
-		<!-- 포스터 영역 -->
-		<div :class="$style.ticketposter">
-			<div :class="$style.ticketposterChild" />
-			<div :class="$style.ticketposterlayer">
-				<!-- Ticket 포스터 -->
-				<TicketCard :tickets="tickets" :currentCard="currentCard" @update:currentCard="updateCurrentCard" />
+		<div :class="$style.ticketWrapper">
+			<!-- 포스터 영역 -->
+			<div :class="$style.ticketposter">
+				<div :class="$style.ticketposterChild" />
+				<div :class="$style.ticketposterlayer">
+					<!-- Ticket 포스터 -->
+					<TicketCard :tickets="tickets" :currentCard="currentCard" @update:currentCard="updateCurrentCard" />
 
+				</div>
 			</div>
-		</div>
 
-		<!-- 현재 뮤지컬 티켓의 상세 정보 표시 -->
-		<div :class="$style.r16Container" v-if="tickets && tickets.length > 0 && tickets[currentCard]">
-			<div :class="$style.MyTicketsInfo">
-				<p :class="$style.musicalTitle">
-					{{ tickets[currentCard].title }} - {{ tickets[currentCard].place }}
-				</p>
-				<p :class="$style.showDate">{{ tickets[currentCard].scheduleDate }} {{ tickets[currentCard].startTime }}</p>
-				<p :class="$style.seatInfo">{{ tickets[currentCard].grade }} {{ tickets[currentCard].seatNo }} 석</p>
+			<!-- 현재 뮤지컬 티켓의 상세 정보 표시 -->
+			<div :class="$style.r16Container" v-if="tickets && tickets.length > 0 && tickets[currentCard]">
+				<div :class="$style.MyTicketsInfo">
+					<p :class="$style.musicalTitle">
+						{{ tickets[currentCard].title }} - {{ tickets[currentCard].place }}
+					</p>
+					<p :class="$style.showDate">{{ tickets[currentCard].scheduleDate }} {{ tickets[currentCard].startTime }}</p>
+					<p :class="$style.seatInfo">{{ tickets[currentCard].grade }} {{ tickets[currentCard].seatNo }} 석</p>
+				</div>
 			</div>
 		</div>
 		<Footer />
@@ -66,7 +68,19 @@ export default defineComponent({
 
 <style module>
 @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap");
+
+.div {
+	width: 100%;
+	height: 100vh;
+	overflow: hidden;
+	overflow-y: auto;
+	position: relative;
+	background-color: #fafafa;
+	text-align: left;
+	font-size: 16px;
+	color: #c54966;
+	font-family: Roboto;
+}
 
 .changeBtn {
 	margin-top: 40px;

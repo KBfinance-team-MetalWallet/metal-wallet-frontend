@@ -169,6 +169,9 @@ export default defineComponent({
     top: 10px;
     left: 5px;
     line-height: 30px;
+    font-family: "bamin_title";
+    color: #C54966;
+    
 }
 
 .div1 {
@@ -251,12 +254,14 @@ export default defineComponent({
     font-size: 12px;
     color: #999;
     opacity: 1; /* 투명도 */
+    font-family: "bamin_content";
 }
 
 .div3 {
     position: absolute;
-    top: 7px;
-    left: 14px;
+    top: 5px;
+    left: 17px;
+    font-family: "bamin_content";
 }
 
 .button {
@@ -309,6 +314,7 @@ export default defineComponent({
     font-size: 12px;
     color: #999;
     opacity: 1; /* 투명도 */
+    font-family: "bamin_content";
 }
 
 .groupParent {
@@ -322,6 +328,7 @@ export default defineComponent({
     justify-content: flex-start;
     gap: 10px;
     font-size: 14.06px;
+    margin-top: 20px; /* 해당 값으로 전체를 아래로 이동 */
 }
 
 .sms {
@@ -377,16 +384,17 @@ export default defineComponent({
 
 .div5 {
     position: absolute;
-    top: 622px;
+    top: 610px;
     left: 12px;
-    font-size: 14.18px;
+    font-size: 14px;
     line-height: 22px;
 }
 
 .b1 {
     position: absolute;
-    top: 15.5px;
-    left: calc(50% - 28px);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .button1 {
@@ -401,11 +409,11 @@ export default defineComponent({
     text-align: center;
     font-size: 15px;
     color: #fff;
+    margin-top: 160px; /* 해당 값으로 전체를 아래로 이동 */
 }
 
 .div7 {
     position: absolute;
-    top: 3px;
     left: 33px;
     line-height: 20px;
 }
@@ -422,7 +430,7 @@ export default defineComponent({
 .parent {
     position: absolute;
     height: 4.93%;
-    top: 69.95%;
+    top: 59%;
     bottom: 25.12%;
     left: 6px;
     width: 126.8px;
@@ -431,14 +439,13 @@ export default defineComponent({
 
 .div {
     width: 100%;
+    height: 100vh;
     position: relative;
     background-color: #fafafa;
-    height: 812px;
     overflow: hidden;
     text-align: left;
     font-size: 16px;
     color: #000;
-    font-family: Roboto;
 }
 
 .select {
@@ -452,5 +459,6 @@ export default defineComponent({
     background-color: #fff;
     outline: none;
     font-size: 15px;
+    font-family: "bamin_content";
 }
 </style>

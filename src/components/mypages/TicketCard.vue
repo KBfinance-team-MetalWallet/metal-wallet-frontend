@@ -22,10 +22,10 @@
                 <p :class="$style.p11" :style="{ color: getStatusColor(ticket.ticketStatus) }">
                     {{ getStatusText(ticket.ticketStatus) }}</p>
             </div>
-            <div v-if="ticket.ticketStatus === 'BOOKED' || ticket.ticketStatus === 'EXCHANGE_REQUESTED'"
-                :class="[ticket.ticketStatus === 'BOOKED' ? 'bookedColor' : 'exchangeRequestedColor']" />
-            <div v-if="ticket.ticketStatus === 'BOOKED' || ticket.ticketStatus === 'EXCHANGE_REQUESTED'"
-                :class="[$style.groupChild1]" />
+            <!-- <div v-if="ticket.ticketStatus === 'BOOKED' || ticket.ticketStatus === 'EXCHANGE_REQUESTED'"
+                :class="[ticket.ticketStatus === 'BOOKED' ? 'bookedColor' : 'exchangeRequestedColor']" /> -->
+            <!-- <div v-if="ticket.ticketStatus === 'BOOKED' || ticket.ticketStatus === 'EXCHANGE_REQUESTED'"
+                :class="[$style.groupChild1]" /> -->
 
 
             <div v-if="ticket.ticketStatus === 'BOOKED'" @click="handleExchangeRequest"
@@ -33,8 +33,11 @@
             <div v-if="ticket.ticketStatus === 'EXCHANGE_REQUESTED'" @click="handleExchangeCancel"
                 :class="$style.exchangeCancel">
                 교환 취소</div>
-            <div v-if="ticket.ticketStatus === 'BOOKED' || ticket.ticketStatus === 'EXCHANGE_REQUESTED'"
-                @click="handleTicketCancel" :class="$style.ticketCancel">티켓 취소</div>
+                <div v-if="ticket.ticketStatus === 'BOOKED' || ticket.ticketStatus === 'EXCHANGE_REQUESTED'"
+           :class="$style.ticketCancel"
+           @click="handleTicketCancel">
+        티켓 취소
+      </div>
         </div>
     </div>
 </template>
@@ -215,13 +218,27 @@ export default {
 
 /* 교환신청 */
 .exchangeRequested {
-    position: absolute;
-    top: 170px;
-    left: 74px;
-    font-size: 14px;
-    font-family: Roboto;
-    color: #28a745;
-    text-align: center;
+  position: absolute;
+  top: 164px;
+  left: 26px;
+  width: 150px;
+  height: 31px;
+  font-size: 14px;
+  font-family: "bamin_content";
+  font-weight: bold;
+  color: #28a745;
+  text-align: center;
+  background-color: #fff;
+  border: 1px solid #28a745;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.exchangeRequested:hover {
+  background-color: #e8f5e9;  
 }
 
 /* 교환 취소 */
@@ -230,33 +247,53 @@ export default {
     top: 170px;
     left: 74px;
     font-size: 14px;
-    font-family: Roboto;
+    font-family: "bamin_content";
     color: #fd7e14;
     text-align: center;
+    cursor: pointer;
 }
 
 /* 티켓 취소 */
 .ticketCancel {
-    position: absolute;
-    top: 170px;
-    left: 238px;
-    font-size: 14px;
-    font-family: Roboto;
-    text-align: center;
-    color: #c54966;
+  position: absolute;
+  top: 164px;
+  left: 190px;
+  width: 150px;
+  height: 31px;
+  font-size: 14px;
+  font-family: "bamin_content";
+  font-weight: bold;
+  text-align: center;
+  color: #c54966;
+  background-color: #fff;
+  border: 1px solid #c54966;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
+.ticketCancel:hover {
+  background-color: #ffeef1;  
+}
 .rectangleGroup {
     position: absolute;
     top: 0px;
     left: 0px;
-    width: 375px;
+    width: 100%;
     height: 208px;
+    border-radius: 10px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
+    overflow: hidden;
 }
 
 .rectangleParent {
-    width: 375px;
+    width: 100%;
     position: relative;
     height: 208px;
+    margin-bottom: 10px;
 }
 </style>

@@ -4,29 +4,16 @@
     <div :class="$style.groupParent">
       <!-- 좌석선택 -->
       <div :class="$style.vectorParent" @click="sectionsSelect">
-        <img
-          :class="$style.groupChild"
-          alt=""
-          src="@/assets/booking/Rectangle 203.svg"
-        />
+        <img :class="$style.groupChild" alt="" src="@/assets/booking/Rectangle 203.svg" />
         <div :class="$style.div1">좌석 선택</div>
       </div>
       <!-- refresh 버튼 -->
-      <img
-        :class="$style.frameChild"
-        alt=""
-        @click="resetSeats"
-        src="@/assets/booking/Group 9670.png"
-      />
+      <img :class="$style.frameChild" alt="" @click="resetSeats" src="@/assets/booking/Group 9670.png" />
     </div>
 
     <!-- 좌석 정보 -->
     <div :class="$style.groupContainer" v-if="isSectionsInfo">
-      <img
-        :class="$style.groupItem"
-        alt=""
-        src="@/assets/booking/Group 9668.svg"
-      />
+      <img :class="$style.groupItem" alt="" src="@/assets/booking/Group 9668.svg" />
       <div :class="$style.rParent">
         <div :class="$style.r">
           <div :class="$style.colorboxRed" />
@@ -56,11 +43,7 @@
         <!-- 동적으로 선택된 좌석 정보 표시 -->
         <div :class="$style.div5">{{ totalAmount }}원</div>
         <div :class="$style.div6">
-          <p
-            v-for="(seat, index) in selectedSeats"
-            :key="index"
-            :class="$style.r16"
-          >
+          <p v-for="(seat, index) in selectedSeats" :key="index" :class="$style.r16">
             {{ seat.type }}석 {{ seat.number }} -
             {{ getSeatPrice(seat.type).toLocaleString() }}원
           </p>
@@ -150,8 +133,6 @@ export default defineComponent({
 </script>
 
 <style module>
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;600;700&display=swap");
-
 body {
   margin: 0;
   line-height: normal;
@@ -353,7 +334,6 @@ body {
 .div5 {
   position: absolute;
   left: 285px;
-  font-weight: 600;
 }
 
 .div6 {
@@ -384,6 +364,7 @@ body {
   color: #fff;
   background-color: #c54966;
   border: none;
+  font-family: 'bamin_content';
 }
 
 .child {
@@ -493,7 +474,8 @@ body {
 }
 
 .locationandamountParent {
-  display: flex;
+  position: fixed;
+  bottom: 0px;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
@@ -534,13 +516,12 @@ body {
   text-align: left;
   font-size: 16px;
   color: #fff;
-  font-family: Roboto;
 }
 
 .seatMapContainer {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 812px;
+  height: 672px;
 }
 </style>
