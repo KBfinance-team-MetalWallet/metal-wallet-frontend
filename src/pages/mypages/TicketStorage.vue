@@ -87,6 +87,11 @@ export default defineComponent({
     overflow: hidden;
 }
 
+.rectangleParent {
+    position: relative;
+    top: 0;
+}
+
 .b {
     position: absolute;
     top: 14px;
