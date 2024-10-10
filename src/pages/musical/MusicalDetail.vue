@@ -63,7 +63,7 @@
 					</div>
 				</div> -->
 			</div>
-
+			<div :class="$style.footerMargin"></div>
 			<!-- Booking button -->
 			<button :class="$style.bookingButton" @click="redirectToBooking">
 				예매하기
@@ -231,7 +231,7 @@ body {
 	justify-content: flex-start; */
 	/* 상단 정렬 */
 	/* align-items: center; */
-	height: 598px;
+	height: 100%;
 	/* 최대 높이 설정 */
 	overflow-y: auto;
 	/* 스크롤 가능하도록 설정 */
@@ -341,6 +341,10 @@ body {
 	color: #333;
 }
 
+.footerMargin {
+	height: 108px;
+}
+
 .bookingButton {
 	position: fixed;
 	width: 375px;
@@ -356,14 +360,5 @@ body {
 	text-align: center;
 	bottom: 68px;
 	/* Footer 바로 위에 위치하도록 설정 */
-}
-
-.footer {
-	position: absolute;
-	/* 고정 위치 설정 */
-	bottom: 0;
-	/* 하단에 위치 */
-	width: 100%;
-	/* 전체 너비 설정 */
 }
 </style>
