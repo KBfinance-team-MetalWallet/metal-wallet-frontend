@@ -135,6 +135,7 @@ body {
 }
 
 .inner {
+  margin-top: 30px;
   text-align: center;
   width: 100%;
 }
@@ -160,7 +161,7 @@ body {
   width: 90%;
   position: relative;
   margin: 0 auto;
-  margin-top: 30px;
+  margin-top: 20px;
   border-radius: 15px;
   padding: 25px;
   height: auto;
