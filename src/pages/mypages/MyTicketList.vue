@@ -23,7 +23,7 @@ import TicketCard from '@/components/mypages/TicketCard.vue';
 import Footer from '@/components/Footer.vue';
 import CancelDialog from '../../components/mypages/CancelDialog.vue';
 
-import { useTicketStore } from "@/stores/tickets.js";
+import { ticketListStore } from "@/stores/ticketList.js";
 
 export default defineComponent({
     name: 'MyTicketList',
@@ -35,7 +35,7 @@ export default defineComponent({
     },
     data() {
         return {
-            ticketStore: useTicketStore(),
+            ticketStore: ticketListStore(),
             isCancelDialogVisible: false,
             token: localStorage.getItem("accessToken"),
             nextCursor: null,
@@ -95,16 +95,16 @@ export default defineComponent({
                 this.fetchTickets(this.nextCursor);
             }
         },
-        async fetchTickets(cursor = null) {
+        async fetchTickets(cursor = null, reset = false) {
             if (this.isLoading) return;
             this.isLoading = true;
-            const newTickets = await this.ticketStore.fetchTickets(cursor);
+            const newTickets = await this.ticketStore.fetchTickets(cursor, reset);
             this.nextCursor = this.ticketStore.getNextCursor();
             this.isLoading = false;
         },
     },
     mounted() {
-        this.fetchTickets();
+        this.fetchTickets(null, true);
         this.setupObserver();
     },
     beforeUnmount() {
@@ -127,6 +127,7 @@ body {
     scrollbar-width: none;  /* Firefox */
     -ms-overflow-style: none;
 }
+
 .ticketContainer::-webkit-scrollbar {
     display: none;
 }
