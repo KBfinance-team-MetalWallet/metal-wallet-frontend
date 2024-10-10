@@ -29,8 +29,9 @@ export default defineComponent({
 .cancelDialog {
     position: fixed;
     bottom:66px;
-    left: 34.58%;
-    width: 376px;
+    left: 50%;
+	transform: translateX(-50%);
+    width: 374px;
     height: 106px;
     text-align: center;
     font-size: 13px;
@@ -52,18 +53,19 @@ export default defineComponent({
     right: 0;
     bottom: 0;
     left: 0;
+    
 }
 
 .dialogBackgroundOverlay {
     position: absolute;
     height: 100%;
-    width: 100%;
+    width: 372px;
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
     border-radius: 15px 15px 0 0;
-    background-color: #fff;
+    background-color: #f5cdcd;
 }
 
 .dialogMessage {
@@ -120,10 +122,10 @@ export default defineComponent({
 .horizontalDivider {
     position: absolute;
     top: 59.5px;
-    left: -0.5px;
+    left: 0.5px;
     border-top: 1px solid rgba(110, 110, 110, 0.44);
     box-sizing: border-box;
-    width: 377px;
+    width: 372px;
     height: 1px;
 }
 
