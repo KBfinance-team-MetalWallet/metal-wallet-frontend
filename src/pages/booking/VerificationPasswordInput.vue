@@ -16,47 +16,25 @@
     <div :class="$style.dividerwrapper">
       <svg :class="$style.icon" xmlns="http://www.w3.org/2000/svg">
         <g>
-          <circle
-            v-for="(circleColor, index) in circles"
-            :key="index"
-            :cx="15.5 + index * 43"
-            cy="15.5"
-            r="15.5"
-            :fill="circleColor"
-          />
+          <circle v-for="(circleColor, index) in circles" :key="index" :cx="15.5 + index * 43" cy="15.5" r="15.5"
+            :fill="circleColor" />
         </g>
       </svg>
       <div :class="$style.divider"></div>
     </div>
 
     <div :class="$style.keypad">
-      <div
-        v-for="(row, rowIndex) in keypadRows"
-        :key="rowIndex"
-        :class="$style.keypadRow"
-      >
-        <div
-          v-for="(key, keyIndex) in row"
-          :key="keyIndex"
-          :class="$style.key"
-          @click="handleKeyPress(key)"
-        >
+      <div v-for="(row, rowIndex) in keypadRows" :key="rowIndex" :class="$style.keypadRow">
+        <div v-for="(key, keyIndex) in row" :key="keyIndex" :class="$style.key" @click="handleKeyPress(key)">
           <!-- 0을 제외한 숫자 렌더링 -->
-          <div
-            v-if="key !== null && key !== 'delete'"
-            :class="$style.numberRect"
-          ></div>
+          <div v-if="key !== null && key !== 'delete'" :class="$style.numberRect"></div>
           <div v-if="key !== null && key !== 'delete'" :class="$style.number">
             {{ key }}
           </div>
 
           <!-- deleteIcon 렌더링 -->
-          <img
-            v-if="key === 'delete'"
-            :class="$style.deleteIcon"
-            alt="delete icon"
-            src="@/assets/login/deleteIcon.svg"
-          />
+          <img v-if="key === 'delete'" :class="$style.deleteIcon" alt="delete icon"
+            src="@/assets/login/deleteIcon.svg" />
 
           <!-- 빈 공간 렌더링 -->
           <div v-if="key === null" :class="$style.emptySpace"></div>
@@ -67,122 +45,120 @@
 </template>
 
 <script lang="js">
- import axios from "axios";
- import { defineComponent } from "vue";
+import axios from "axios";
+import { defineComponent } from "vue";
 
- export default defineComponent({
-name: "VerificationPasswordInput",
-data() {
-  return {
-	enteredPassword: [],
-	maxPasswordLength: 6,
-	firstInput: true,
-	firstPin: "",
-	keypadRows: [
-	  [1, 2, 3],
-	  [4, 5, 6],
-	  [7, 8, 9],
-	  [null, 0, "delete"],
-	],
-  };
-},
-computed: {
-  circles() {
-	return Array.from(
-	  { length: this.maxPasswordLength },
-	  (_, index) => {
-		return this.enteredPassword.length > index ? "#C54966" : "#D9D9D9";
-	  }
-	);
+export default defineComponent({
+  name: "VerificationPasswordInput",
+  data() {
+    return {
+      enteredPassword: [],
+      maxPasswordLength: 6,
+      firstInput: true,
+      firstPin: "",
+      keypadRows: [
+        [1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 9],
+        [null, 0, "delete"],
+      ],
+    };
   },
-  seatIds() {
-   try {
-     return JSON.parse(this.$route.query.seats || '[]');
-   } catch (error) {
-     console.error('Error parsing seatIds:', error);
-     return [];
-   }
- },
-},
-methods: {
-  handleKeyPress(key) {
-	if (
-	  typeof key === "number" &&
-	  this.enteredPassword.length < this.maxPasswordLength
-	) {
-	  this.enteredPassword.push(key);
-	  if (this.enteredPassword.length === this.maxPasswordLength) {
-		if (this.firstInput) {
-		  this.firstPin = this.enteredPassword.join("");
-		  this.verifyPinAndBookTickets();
-		  this.enteredPassword = [];
-		}
-	  }
-	} else if (key === "delete" && this.enteredPassword.length > 0) {
-	  this.enteredPassword.pop();
-	}
+  computed: {
+    circles() {
+      return Array.from(
+        { length: this.maxPasswordLength },
+        (_, index) => {
+          return this.enteredPassword.length > index ? "#C54966" : "#D9D9D9";
+        }
+      );
+    },
+    seatIds() {
+      try {
+        return JSON.parse(this.$route.query.seats || '[]');
+      } catch (error) {
+        console.error('Error parsing seatIds:', error);
+        return [];
+      }
+    },
   },
-  getDeviceInfo() {
-	return navigator.userAgent;
-  },
-  async verifyPinAndBookTickets() {
-	const pinNumber = this.firstPin;
-	const deviceInfo = this.getDeviceInfo();
-	const token = localStorage.getItem("accessToken");
+  methods: {
+    handleKeyPress(key) {
+      if (
+        typeof key === "number" &&
+        this.enteredPassword.length < this.maxPasswordLength
+      ) {
+        this.enteredPassword.push(key);
+        if (this.enteredPassword.length === this.maxPasswordLength) {
+          if (this.firstInput) {
+            this.firstPin = this.enteredPassword.join("");
+            this.verifyPinAndBookTickets();
+            this.enteredPassword = [];
+          }
+        }
+      } else if (key === "delete" && this.enteredPassword.length > 0) {
+        this.enteredPassword.pop();
+      }
+    },
+    getDeviceInfo() {
+      return navigator.userAgent;
+    },
+    async verifyPinAndBookTickets() {
+      const pinNumber = this.firstPin;
+      const deviceInfo = this.getDeviceInfo();
+      const token = localStorage.getItem("accessToken");
 
-	try {
-	  const response = await axios.post(
-		"http://localhost:8080/api/members/pin-number-verification",
-		{ pinNumber, deviceInfo },
-		{
-		  headers: {
-			Authorization: `Bearer ${token}`,
-		  },
-		}
-	  );
+      try {
+        const response = await axios.post(
+          "http://localhost:8080/api/members/pin-number-verification",
+          { pinNumber, deviceInfo },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
-	  console.log("Verification successful:", response.data);
-	  await this.bookTickets();
-	  this.$router.push({ path: "/booking/payment-success" });
-	} catch (error) {
-	  console.error(
-		"Error during verification:",
-		error.response ? error.response.data : error.message
-	  );
-	}
-  },
-  async bookTickets() {
-	const formData = {
-	  seatId: this.seatIds,
-	  deviceId: this.deviceInfo ? this.deviceInfo : "temp",
-	};
-	const token = localStorage.getItem("accessToken");
+        console.log("Verification successful:", response.data);
+        await this.bookTickets();
+        this.$router.push({ path: "/booking/payment-success" });
+      } catch (error) {
+        console.error(
+          "Error during verification:",
+          error.response ? error.response.data : error.message
+        );
+      }
+    },
+    async bookTickets() {
+      const formData = {
+        seatId: this.seatIds,
+        deviceId: this.deviceInfo ? this.deviceInfo : "temp",
+      };
+      const token = localStorage.getItem("accessToken");
 
-	try {
-	  const response = await axios.post(
-		"http://localhost:8080/api/tickets",
-		formData,
-		{
-		  headers: {
-			Authorization: `Bearer ${token}`,
-		  },
-		}
-	  );
-	  console.log("Tickets booked successfully:", response.data);
-	} catch (error) {
-	  console.error(
-		"Error booking tickets:",
-		error.response ? error.response.data : error.message
-	  );
-	}
+      try {
+        const response = await axios.post(
+          "http://localhost:8080/api/tickets",
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        console.log("Tickets booked successfully:", response.data);
+      } catch (error) {
+        console.error(
+          "Error booking tickets:",
+          error.response ? error.response.data : error.message
+        );
+      }
+    },
   },
-},
- });
+});
 </script>
 
 <style module>
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
-
 body {
   margin: 0;
   line-height: normal;
@@ -194,7 +170,6 @@ body {
   background-color: #fafafa;
   height: 812px;
   text-align: left;
-  font-family: Roboto, sans-serif;
 }
 
 .title {
