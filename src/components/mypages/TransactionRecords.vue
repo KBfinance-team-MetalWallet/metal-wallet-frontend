@@ -69,5 +69,6 @@ export default {
 .transactionBalance {
   font-size: 12px;
   color: #aaa;
+  text-align: right;
 }
 </style>
