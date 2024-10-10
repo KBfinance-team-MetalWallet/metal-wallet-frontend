@@ -31,7 +31,7 @@
 import Footer from "@/components/Footer.vue";
 import MainHeader from "@/components/MainHeader.vue";
 import TicketCard from "@/components/ticket/TicketCard.vue";
-import { useTicketStore } from "@/stores/tickets";
+import { useTicketStore } from "@/stores/ticketsUse";
 import { defineComponent, onMounted, toRefs } from "vue";
 
 export default defineComponent({
@@ -79,7 +79,6 @@ export default defineComponent({
 	text-align: left;
 	font-size: 16px;
 	color: #c54966;
-	font-family: Roboto;
 }
 
 .changeBtn {
@@ -168,7 +167,6 @@ export default defineComponent({
 }
 
 .MyTicketsInfo {
-	border: 2px dotted rgb(255, 81, 0);
 	background-color: white;
 	display: flex;
 	flex-direction: column;
@@ -270,15 +268,13 @@ svg {
 }
 
 .MyTicketsInfo {
-	border: 2px dotted rgb(255, 81, 0);
-	background-color: white;
-	display: flex;
-	flex-direction: column;
-	justify-content: start;
-	align-items: start;
-	gap: 5px;
-	padding: 20px;
-	border-radius: 10px;
+	border-radius: 20px;
+	background: #f5f5f5;
+	position: relative;
+	padding: 1.8rem;
+	border: 2px solid #c3c6ce;
+	transition: 0.5s ease-out;
+	overflow: visible;
 }
 
 .musicalTitle {

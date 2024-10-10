@@ -1,14 +1,13 @@
 import axios from "axios";
 import { defineStore } from "pinia";
 
-export const useTicketStore = defineStore("tickets", {
+export const ticketListStore = defineStore("ticketList", {
   state: () => ({
-    currentCard: 0,
     nextCursor: null,
     tickets: [],
   }),
   actions: {
-    async fetchTickets(cursor = null) {
+    async fetchTickets(cursor = null, reset = false) {
       try {
         const token = localStorage.getItem("accessToken");
 
@@ -21,6 +20,11 @@ export const useTicketStore = defineStore("tickets", {
           },
         });
         const { result } = response.data;
+
+        if (reset) {
+          this.tickets = [];
+        }
+
         this.tickets.push(...result.data);
         this.nextCursor = result.nextCursor;
         return result.data;
@@ -30,22 +34,6 @@ export const useTicketStore = defineStore("tickets", {
     },
     getNextCursor() {
       return this.nextCursor;
-    },
-    nextCard() {
-      if (!this.tickets || this.tickets.length === 0) {
-        console.error("tickets 배열이 비어 있습니다.");
-        return;
-      }
-      this.currentCard = (this.currentCard + 1) % this.tickets.length;
-      console.log(this.currentCard);
-    },
-    prevCard() {
-      if (!this.tickets || this.tickets.length === 0) {
-        console.error("tickets 배열이 비어 있습니다.");
-        return;
-      }
-      this.currentCard =
-        (this.currentCard - 1 + this.tickets.length) % this.tickets.length;
     },
   },
 });
