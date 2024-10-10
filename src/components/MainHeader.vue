@@ -27,6 +27,8 @@
 		align-items: center;
 		width: 100%;
 		gap: 4px;
+		padding: 14px;
+		font-family: "bamin_title";
 	}
 	.solarwalletOutlineIcon {
 		width: 24px;

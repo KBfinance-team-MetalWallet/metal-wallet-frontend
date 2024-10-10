@@ -27,9 +27,9 @@ export default defineComponent({
 
 <style module>
 .cancelDialog {
-    position: absolute;
-    top: 638px;
-    left: -1px;
+    position: fixed;
+    bottom:66px;
+    left: 34.58%;
     width: 376px;
     height: 106px;
     text-align: center;
@@ -71,11 +71,15 @@ export default defineComponent({
     top: 23px;
     left: 0px;
     letter-spacing: -0.01em;
-    line-height: 150%;
     font-weight: 600;
     display: inline-block;
     width: 376px;
     height: 16px;
+    font-size: 16px;
+    font-family: "bamin_content";
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .cancelButton {
@@ -83,24 +87,34 @@ export default defineComponent({
     top: 75px;
     left: 0px;
     letter-spacing: -0.01em;
-    line-height: 150%;
-    font-weight: 500;
+    font-weight: bold;
     display: inline-block;
     width: 188px;
     height: 16px;
+    cursor: pointer;
+    font-family: "bamin_content";
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .confirmButton {
     position: absolute;
     top: 75px;
     left: 188px;
-    letter-spacing: -0.01em;
-    line-height: 150%;
-    font-weight: 500;
+    letter-spacing: -0.01em;  
+    font-weight: bold;
     color: #c54966;
     display: inline-block;
     width: 188px;
     height: 16px;
+    cursor: pointer;
+    font-family: "bamin_content";
+    font-size: 16px;
+    display: flex;
+     align-items: center;
+    justify-content: center;
 }
 
 .horizontalDivider {
