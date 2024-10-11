@@ -32,7 +32,17 @@ export default defineComponent({
     // 카메라 시작 함수
     const startCamera = async () => {
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
+        const devices = await navigator.mediaDevices.enumerateDevices();
+        const videoDevices = devices.filter(device => device.kind === 'videoinput');
+
+        // 첫 번째 비디오 입력 장치를 기본적으로 선택
+        const deviceId = videoDevices[1]?.deviceId || '';
+
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: {
+            deviceId: { exact: deviceId },
+          },
+        });
 
         if (videoElement.value) {
           videoElement.value.srcObject = stream;
@@ -47,13 +57,7 @@ export default defineComponent({
           });
         }
       } catch (err: any) {
-        if (err.name === "NotFoundError" || err.name === "DevicesNotFoundError") {
-          console.error("요청된 장치를 찾을 수 없습니다.");
-        } else if (err.name === "NotAllowedError" || err.name === "PermissionDeniedError") {
-          console.error("카메라 접근이 거부되었습니다.");
-        } else {
-          console.error("getUserMedia 에러:", err);
-        }
+        console.error("카메라 시작 오류:", err);
       }
     };
 
@@ -75,7 +79,8 @@ export default defineComponent({
 
           if (qrCode) {
             console.log("QR 코드 데이터:", qrCode.data);
-            sendScannedData(qrCode.data);
+            const encryptedTicketInfo = qrCode.data;
+            sendScannedData(encryptedTicketInfo);
             // 응답을 받을 때까지 스캔을 일시 중지
             scanning.value = false;
           }
@@ -86,28 +91,41 @@ export default defineComponent({
     };
 
     // 스캔된 QR 코드 데이터를 서버로 전송하는 함수
-    const sendScannedData = async (scannedData: string) => {
+    const sendScannedData = async (scannedData) => {
       try {
-        const response = await axios.post('/api/qr/scan', { scannedData });
-        console.log('서버 응답:', response.data);
+        const token = localStorage.getItem("accessToken");
+        if (!token) {
+          console.error("JWT 토큰이 없습니다.");
+          return;
+        }
+        const response = await axios.put(
+          'http://localhost:8080/api/tickets/use',
+          {
+            "encryptedTicketInfo": scannedData, // 이 부분에 scannedData 전달
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
-        if (response.data.valid) {
-          // 티켓이 유효하면 다음 페이지로 이동
-          router.push("/next-page"); // 원하는 경로로 대체하세요
+        if (response.status === 200) {
+          alert("티켓이 승인되었습니다.");
         } else {
-          alert("유효하지 않은 티켓입니다. 다시 시도해주세요.");
-          scanning.value = true; // 스캔 재개
+          alert(`서버 응답: ${JSON.stringify(response.data)}`);
         }
       } catch (error) {
         console.error('서버 요청 중 오류 발생:', error);
-        alert('서버와의 통신 중 문제가 발생했습니다. 다시 시도해주세요.');
-        scanning.value = true; // 오류 발생 시 스캔 재개
+        console.log(`${JSON.stringify(scannedData)}`);
+        alert('서버와의 통신 중 문제가 발생했습니다.');
       }
     };
 
     // 관리자 페이지로 이동하는 함수
     const goToAdminPage = () => {
-      router.push("/admin/admin");
+      router.push("/admin");
     };
 
     onMounted(() => {
