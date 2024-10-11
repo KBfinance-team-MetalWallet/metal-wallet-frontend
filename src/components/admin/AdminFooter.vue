@@ -37,17 +37,15 @@ export default defineComponent({
     selectTab(tab: string) {
       this.selectedTab = tab; // 선택된 탭을 업데이트
       if (tab === 'home') {
-        this.$router.push({ name: 'Admin' });
+        this.$router.push({ name: 'AdminPage' });
       } else if (tab === 'ticket') {
-        this.$router.push({ name: 'AdminTicketList' });
+        this.$router.push({ name: 'TicketList' });
       }
     },
   },
 });
 </script>
 <style module>
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap');
-
 body {
   margin: 0;
   line-height: normal;

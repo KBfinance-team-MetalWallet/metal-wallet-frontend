@@ -239,7 +239,7 @@ export default defineComponent({
 		const refreshAfterExpiry = async () => {
 			if (!canReset.value) return;
 			try {
-				const topCard = tickets[ticketStore.currentCard];
+				const topCard = ticketStore.tickets[ticketStore.currentCard];
 				if (!topCard) {
 					console.error("현재 카드 정보가 유효하지 않습니다.");
 					return;
