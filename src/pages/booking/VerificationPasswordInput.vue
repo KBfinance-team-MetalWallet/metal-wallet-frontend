@@ -123,6 +123,7 @@ export default defineComponent({
         await this.bookTickets();
         this.$router.push({ path: "/booking/payment-success" });
       } catch (error) {
+        alert("일치하지 않는 비밀번호입니다.");
         console.error(
           "Error during verification:",
           error.response ? error.response.data : error.message
