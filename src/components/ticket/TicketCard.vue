@@ -149,9 +149,13 @@ export default defineComponent({
 				}
 
 				const { id: ticketId, ticketStatus } = ticket;
+				const deviceInfo = "temp";
+
 				const response = await axios.post(
 					`http://localhost:8080/api/tickets/encrypt/${ticketId}`,
-					{},
+					{
+						deviceId: deviceInfo
+					},
 					{
 						headers: {
 							"Content-Type": "application/json",
