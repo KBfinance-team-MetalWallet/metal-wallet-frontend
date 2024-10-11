@@ -64,7 +64,7 @@ export default defineComponent({
                         Authorization: `Bearer ${this.token}`
                     }
                 });
-                await this.fetchTickets(this.nextCursor);
+                await this.fetchTickets(this.nextCursor,true);
                 alert('티켓이 취소되었습니다.');
                 this.closeCancelDialog();
             } catch (error) {
