@@ -119,7 +119,7 @@ export default defineComponent({
 		};
 
 		const flipCard = async (ticketStatus, ticket) => {
-			if (!canReset.value || ticketStatus == "CHECKED") return;
+			if (!canReset.value || ticketStatus != "BOOKED") return;
 			isFlipped.value = !isFlipped.value;
 
 			if (isFlipped.value) {
@@ -140,7 +140,12 @@ export default defineComponent({
 			}, 2000);
 		};
 
+		const isFetching = ref(false);
+
 		const fetchQrToken = async (ticket) => {
+			if (isFetching.value) return; // 이미 실행 중이면 중단
+
+			isFetching.value = true; // 실행 중 상태로 설정
 			try {
 				const token = localStorage.getItem("accessToken");
 				if (!token) {
@@ -149,9 +154,19 @@ export default defineComponent({
 				}
 
 				const { id: ticketId, ticketStatus } = ticket;
+				const ticketInfo = {
+					ticketInfo: {
+						deviceId: "temp", // 실제 사용 시 적절한 값으로 변경 필요
+						ticketId: ticketId,
+						ticketStatus: ticketStatus,
+					},
+				};
+
 				const response = await axios.post(
 					`http://localhost:8080/api/tickets/encrypt/${ticketId}`,
-					{},
+					{
+						deviceId: "temp"
+					},
 					{
 						headers: {
 							"Content-Type": "application/json",
@@ -165,21 +180,13 @@ export default defineComponent({
 				// 만료 시간 설정
 				expirationTime.value = seconds;
 
-				// 필요한 데이터만 포함하는 ticketInfo 객체 구성
-				const ticketInfo = {
-					ticketInfo: {
-						deviceId: "temp", // 실제 사용 시 적절한 값으로 변경 필요
-						ticketId: ticketId,
-						ticketStatus: ticketStatus,
-					},
-				};
-
 				// ticketInfo를 암호화
 				const encryptedTicketInfo = await encryptRSA(publicKey, ticketInfo);
-
 				updateQRCode(encryptedTicketInfo);
 			} catch (error) {
 				handleError(error);
+			} finally {
+				isFetching.value = false; // 실행 완료 후 플래그 초기화
 			}
 		};
 
@@ -210,7 +217,7 @@ export default defineComponent({
 		const updateQRCode = async (base64Encrypted) => {
 			try {
 				const url = await QRCode.toDataURL(base64Encrypted, {
-					errorCorrectionLevel: "H",
+					errorCorrectionLevel: "L",
 				});
 				qrCodeDataUrl.value = url;
 			} catch (err) {
@@ -235,7 +242,7 @@ export default defineComponent({
 		const refreshAfterExpiry = async () => {
 			if (!canReset.value) return;
 			try {
-				const topCard = tickets[ticketStore.currentCard];
+				const topCard = ticketStore.tickets[ticketStore.currentCard];
 				if (!topCard) {
 					console.error("현재 카드 정보가 유효하지 않습니다.");
 					return;
