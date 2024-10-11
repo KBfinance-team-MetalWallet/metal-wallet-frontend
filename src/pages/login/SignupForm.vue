@@ -5,7 +5,7 @@
             <div :class="$style.horizontalborderWrapper">
                 <div :class="$style.horizontalborder1">
                     <b :class="$style.label">이메일</b>
-                    <input v-model="emailPrefix" type="email" :class="$style.input" placeholder="이메일을 입력해주세요."/>
+                    <input v-model="emailPrefix" type="email" :class="$style.input" placeholder="이메일을 입력해주세요." />
                     <select v-model="selectedEmailDomain" :class="$style.select" @change="updateEmail">
                         <option value="">직접입력</option>
                         <option v-for="emailDomain in predefinedEmails" :key="emailDomain" :value="emailDomain">
@@ -16,30 +16,32 @@
             </div>
             <div :class="$style.horizontalborder1">
                 <b :class="$style.label">이름</b>
-                <input v-model="formData.name" type="text" :class="$style.input1" placeholder="이름을 입력해주세요."/>
+                <input v-model="formData.name" type="text" :class="$style.input1" placeholder="이름을 입력해주세요." />
             </div>
             <div :class="$style.horizontalborderWrapper">
                 <div :class="$style.horizontalborder1">
                     <b :class="$style.label">비밀번호</b>
-                    <input v-model="formData.password" type="password" :class="$style.input1" placeholder="비밀번호를 입력해주세요."/>
+                    <input v-model="formData.password" type="password" :class="$style.input1"
+                        placeholder="비밀번호를 입력해주세요." />
                 </div>
             </div>
             <div :class="$style.horizontalborderWrapper">
                 <div :class="$style.horizontalborder1">
                     <b :class="$style.label">비밀번호 확인</b>
-                    <input v-model="formData.confirmPassword" type="password" :class="$style.input1" placeholder="비밀번호를 다시 입력해주세요."/>
+                    <input v-model="formData.confirmPassword" type="password" :class="$style.input1"
+                        placeholder="비밀번호를 다시 입력해주세요." />
                 </div>
             </div>
             <div :class="$style.horizontalborder2">
                 <b :class="$style.label">휴대폰</b>
-                <input v-model="formData.phone" type="tel" :class="$style.input" placeholder="010 1234 5678"/>
+                <input v-model="formData.phone" type="tel" :class="$style.input" placeholder="010 1234 5678" />
                 <div :class="$style.button">
                     <div :class="$style.div3">인증번호받기</div>
                 </div>
             </div>
             <div :class="$style.horizontalborder1">
                 <b :class="$style.label">인증 번호</b>
-                <input v-model="formData.verificationCode" :class="$style.input1" placeholder="인증 번호를 입력해주세요."/>
+                <input v-model="formData.verificationCode" :class="$style.input1" placeholder="인증 번호를 입력해주세요." />
             </div>
         </div>
         <div :class="$style.smsParent">
@@ -53,7 +55,8 @@
             <p :class="$style.p">만 14세 미만 회원은 법정대리인(부모님) 동의를 받은 경우</p>
             <p :class="$style.p">만 회원가입이 가능합니다.</p>
         </div>
-        <div :class="$style.button1" :style="{ backgroundColor: isFormValid ? '#C54966' : '#CCCCCC'}" :disabled="!isFormValid" @click="handleRegister">
+        <div :class="$style.button1" :style="{ backgroundColor: isFormValid ? '#C54966' : '#CCCCCC' }"
+            :disabled="!isFormValid" @click="handleRegister">
             <b :class="$style.b1">가입완료</b>
         </div>
         <div :class="$style.parent">
@@ -71,7 +74,7 @@
 import { defineComponent } from 'vue'
 import axios from 'axios';
 import MainHeader from '../../components/MainHeader.vue';
-import {useUserStore} from '../../stores/userStore';
+import { useUserStore } from '../../stores/userStore';
 
 
 export default defineComponent({
@@ -108,19 +111,19 @@ export default defineComponent({
     },
     methods: {
         updateEmail() {
-            if(this.selectedEmailDomain) {
+            if (this.selectedEmailDomain) {
                 this.formData.email = `${this.emailPrefix}${this.selectedEmailDomain}`;
             } else {
                 this.formData.email = this.emailPrefix;
             }
         },
         async handleRegister() {
-            if(this.formData.password !== this.formData.confirmPassword) {
+            if (this.formData.password !== this.formData.confirmPassword) {
                 alert('비밀번호가 일치하지 않습니다.');
                 return;
             }
 
-            if(!this.isFormValid) {
+            if (!this.isFormValid) {
                 alert('양식을 완전히 작성해야 가입할 수 있습니다.');
                 return;
             }
@@ -171,7 +174,7 @@ export default defineComponent({
     line-height: 30px;
     font-family: "bamin_title";
     color: #C54966;
-    
+
 }
 
 .div1 {
@@ -250,10 +253,12 @@ export default defineComponent({
     border: none;
     outline: none;
 }
+
 .input::placeholder {
     font-size: 12px;
     color: #999;
-    opacity: 1; /* 투명도 */
+    opacity: 1;
+    /* 투명도 */
     font-family: "bamin_content";
 }
 
@@ -313,7 +318,8 @@ export default defineComponent({
 .input1::placeholder {
     font-size: 12px;
     color: #999;
-    opacity: 1; /* 투명도 */
+    opacity: 1;
+    /* 투명도 */
     font-family: "bamin_content";
 }
 
@@ -328,7 +334,8 @@ export default defineComponent({
     justify-content: flex-start;
     gap: 10px;
     font-size: 14.06px;
-    margin-top: 20px; /* 해당 값으로 전체를 아래로 이동 */
+    margin-top: 20px;
+    /* 해당 값으로 전체를 아래로 이동 */
 }
 
 .sms {
@@ -398,18 +405,20 @@ export default defineComponent({
 }
 
 .button1 {
-    position: absolute;
-    width: calc(100% - 25px);
-    top: 689px;
-    right: 13px;
-    left: 12px;
+    position: fixed;
+    width: 350px;
+    height: 68px;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
     border-radius: 10px;
     background-color: #ccc;
     height: 50px;
     text-align: center;
     font-size: 15px;
     color: #fff;
-    margin-top: 160px; /* 해당 값으로 전체를 아래로 이동 */
+    margin-top: 160px;
+    /* 해당 값으로 전체를 아래로 이동 */
 }
 
 .div7 {
@@ -440,12 +449,13 @@ export default defineComponent({
 .div {
     width: 100%;
     height: 100vh;
+    overflow: hidden;
+    overflow-y: auto;
     position: relative;
     background-color: #fafafa;
-    overflow: hidden;
     text-align: left;
     font-size: 16px;
-    color: #000;
+    color: #c54966;
 }
 
 .select {

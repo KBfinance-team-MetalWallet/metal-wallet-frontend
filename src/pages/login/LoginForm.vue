@@ -146,7 +146,7 @@ export default defineComponent({
     line-height: 30px;
     font-family: "bamin_title";
     color: #C54966;
-    
+
 }
 
 .div1 {
@@ -372,18 +372,19 @@ export default defineComponent({
 }
 
 .button1 {
-    position: absolute;
-    width: calc(100% - 25px);
-    top: 689px;
-    right: 13px;
-    left: 12px;
+    position: fixed;
+    width: 350px;
+    height: 68px;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
     border-radius: 10px;
     background-color: #ccc;
     height: 50px;
     text-align: center;
     font-size: 15px;
     color: #fff;
-    margin-top: 160px; /* 해당 값으로 전체를 아래로 이동 */
+    margin-top: 160px;
 }
 
 .div7 {
