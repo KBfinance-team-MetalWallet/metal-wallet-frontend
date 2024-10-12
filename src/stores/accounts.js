@@ -23,7 +23,7 @@ export const useAccountStore = defineStore("account", {
       try {
         const token = localStorage.getItem("accessToken");
 
-        const response = await axios.get("http://localhost:8080/api/accounts", {
+        const response = await axios.get(`${API_BASE_URL}/accounts`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

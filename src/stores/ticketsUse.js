@@ -12,7 +12,7 @@ export const useTicketStore = defineStore("tickets", {
 			try {
 				const token = localStorage.getItem("accessToken");
 
-				const url = `http://localhost:8080/api/tickets`;
+				const url = `${API_BASE_URL}/tickets`;
 				const response = await axios.get(url, {
 					headers: {
 						Authorization: `Bearer ${token}`,

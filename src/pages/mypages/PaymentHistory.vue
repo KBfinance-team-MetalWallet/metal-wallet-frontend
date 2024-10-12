@@ -63,7 +63,7 @@ export default defineComponent({
     async fetchAccountDetails() {
       const token = localStorage.getItem("accessToken");;
       try {
-        const response = await axios.get(`http://localhost:8080/api/accounts/${this.accountId}`, {
+        const response = await axios.get(`${API_BASE_URL}/accounts/${this.accountId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -82,7 +82,7 @@ export default defineComponent({
     async fetchTransactionRecords() {
       const token = localStorage.getItem("accessToken");;
       try {
-        const response = await axios.get(`http://localhost:8080/api/accounts/${this.accountId}/transaction-records`, {
+        const response = await axios.get(`${API_BASE_URL}/accounts/${this.accountId}/transaction-records`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

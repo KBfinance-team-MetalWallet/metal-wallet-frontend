@@ -15,7 +15,7 @@ export const useMusicalDatesStore = defineStore("musicalDatesStore", () => {
 
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/musicals/${id}/dates`
+        `${API_BASE_URL}/musicals/${id}/dates`
       );
 
       scheduleDates.value = response.data.result.scheduleDate.map(

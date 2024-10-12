@@ -106,7 +106,7 @@ export default defineComponent({
 		async fetchMusical(id) {
 			try {
 				const response = await fetch(
-					`http://localhost:8080/api/musicals/${id}`
+					`${API_BASE_URL}/musicals/${id}`
 				);
 				if (!response.ok) throw new Error("Network response was not ok");
 				const { result } = await response.json();

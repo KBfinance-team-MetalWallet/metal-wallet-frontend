@@ -152,7 +152,7 @@ export default defineComponent({
 				const deviceInfo = "temp";
 
 				const response = await axios.post(
-					`http://localhost:8080/api/tickets/encrypt/${ticketId}`,
+					`${API_BASE_URL}/tickets/encrypt/${ticketId}`,
 					{
 						deviceId: deviceInfo
 					},

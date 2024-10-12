@@ -59,7 +59,7 @@ export default defineComponent({
         },
         async confirmCancel() {
             try {
-                const response = await axios.delete(`http://localhost:8080/api/tickets/${this.selectedTicketId}`, {
+                const response = await axios.delete(`${API_BASE_URL}/tickets/${this.selectedTicketId}`, {
                     headers: {
                         Authorization: `Bearer ${this.token}`
                     }

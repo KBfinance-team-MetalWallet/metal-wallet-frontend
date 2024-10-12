@@ -31,7 +31,7 @@
         </div>
     </div>
 </template>
-<script lang="ts">
+<script lang="js">
 import { defineComponent } from 'vue'
 import { useRouter } from 'vue-router';
 import MainHeader from '../../components/MainHeader.vue';
@@ -79,7 +79,7 @@ export default defineComponent({
                 return;
             }
             try {
-                const response = await axios.post('http://localhost:8080/api/members/login', this.formData);
+                const response = await axios.post(`${API_BASE_URL}/members/login`, this.formData);
                 console.log('Login successful:', response.data);
 
                 if (response.data.accessToken) {

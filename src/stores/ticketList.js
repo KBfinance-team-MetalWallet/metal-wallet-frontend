@@ -12,8 +12,8 @@ export const ticketListStore = defineStore("ticketList", {
         const token = localStorage.getItem("accessToken");
 
         const url = cursor
-          ? `http://localhost:8080/api/tickets?cursor=${cursor}`
-          : `http://localhost:8080/api/tickets`;
+          ? `${API_BASE_URL}/tickets?cursor=${cursor}`
+          : `${API_BASE_URL}/tickets`;
         const response = await axios.get(url, {
           headers: {
             Authorization: `Bearer ${token}`,

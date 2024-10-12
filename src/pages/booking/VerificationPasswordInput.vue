@@ -110,7 +110,7 @@ export default defineComponent({
 
       try {
         const response = await axios.post(
-          "http://localhost:8080/api/members/pin-number-verification",
+          `${__API_BASE_URL__}/members/pin-number-verification`,
           { pinNumber, deviceInfo },
           {
             headers: {
@@ -139,7 +139,7 @@ export default defineComponent({
 
       try {
         const response = await axios.post(
-          "http://localhost:8080/api/tickets",
+          `${__API_BASE_URL__}/tickets`,
           formData,
           {
             headers: {

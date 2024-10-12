@@ -45,8 +45,8 @@ export default defineComponent({
       if (this.isLoading) return;
       this.isLoading = true;
       const url = cursor
-        ? `http://localhost:8080/api/musicals?cursor=${cursor}&size=${this.size}`
-        : `http://localhost:8080/api/musicals?size=${this.size}`;
+        ? `${API_BASE_URL}/musicals?cursor=${cursor}&size=${this.size}`
+        : `${API_BASE_URL}/musicals?size=${this.size}`;
 
       try {
         const response = await fetch(url);
