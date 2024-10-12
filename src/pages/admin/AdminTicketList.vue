@@ -89,14 +89,13 @@ export default defineComponent({
   text-align: left;
   font-size: 16px;
   color: #6e6e6e;
-  font-family: Roboto;
+
 }
 
 .inner {
   width: 100%;
   font-size: 13px;
   color: #000;
-  font-family: Inter;
 }
 
 .wrapper {

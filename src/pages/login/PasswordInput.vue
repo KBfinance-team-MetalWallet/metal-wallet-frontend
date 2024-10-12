@@ -43,7 +43,7 @@
 <script lang="ts">
 import axios from 'axios';
 import { defineComponent } from 'vue'
-import { useUserStore } from '../../stores/userStore';  
+import { useUserStore } from '../../stores/userStore';
 
 export default defineComponent({
     name: 'Frame',
@@ -76,7 +76,7 @@ export default defineComponent({
 
                 // PIN 번호가 6자리가 모두 입력되었을 때
                 if (this.enteredPassword.length === this.maxPasswordLength) {
-                    if(this.firstInput) {
+                    if (this.firstInput) {
                         // 첫 번째 입력 시 PIN 저장
                         this.firstPin = this.enteredPassword.join('');
                         this.firstInput = false; // 두 번째 입력 대기 상태로 변경
@@ -114,6 +114,7 @@ export default defineComponent({
             try {
                 const response = await axios.post('http://localhost:8080/api/members/register', formData);
                 console.log('Registration successful:', response.data);
+                this.$router.push('/');
             } catch (error) {
                 console.error('Error registering member:', error.response ? error.response.data : error.message);
             }
@@ -136,7 +137,6 @@ body {
     background-color: #fafafa;
     height: 812px;
     text-align: left;
-    font-family: Roboto, sans-serif;
 }
 
 .title {

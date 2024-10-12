@@ -39,9 +39,9 @@ export default {
 
 <style module>
 .transactionsFrame {
-  width: 85%;
+  width: 100%;
   position: relative;
-  margin: 0 auto;
+  /* margin: 0 auto; */
   margin-top: 10px;
   border-radius: 15px;
   background-color: white;
@@ -69,5 +69,6 @@ export default {
 .transactionBalance {
   font-size: 12px;
   color: #aaa;
+  text-align: right;
 }
 </style>

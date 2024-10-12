@@ -5,32 +5,38 @@
 			<div
 				v-for="(musical, index) in musicals"
 				:key="index"
-				:class="$style.poster1"
+				:class="[$style.poster1, index === 0 ? $style.firstPoster : '']"
 			>
-				<img
-					:class="$style.posterimageIcon"
-					:src="musical.imageUrl"
-					:alt="musical.title"
-				/>
-				<div :class="$style.details">
-					<div :class="$style.rank">{{ musical.rank }}</div>
-					<b :class="$style.musicaltitle">{{ musical.title }}</b>
-				</div>
+				<router-link :to="`/musical/${musical.id}`" :class="$style.div10">
+					<img
+						:class="$style.posterimageIcon"
+						:src="musical.imageUrl"
+						:alt="musical.title"
+					/>
+					<div :class="$style.details">
+						<div :class="$style.rank">{{ musical.rank }}</div>
+						<b :class="$style.musicaltitle">{{ musical.title }}</b>
+					</div>
+				</router-link>
 			</div>
 		</div>
-		<router-link to="/ticket" :class="$style.div10">더보기 &gt;</router-link>
+		<router-link to="/musical" :class="$style.div11">더보기 &gt;</router-link>
 	</div>
 </template>
 
 <script>
 	import { useMusicalsStore } from "@/stores/musicals.js";
-	import { computed, defineComponent } from "vue";
+	import { computed, defineComponent, onMounted } from "vue";
 
 	export default defineComponent({
 		name: "MusicalTop10",
 		setup() {
 			const musicalStore = useMusicalsStore();
 			const musicals = computed(() => musicalStore.musicals);
+
+			onMounted(async () => {
+				await musicalStore.fetchMusicals();
+			});
 
 			return {
 				musicals,
@@ -46,7 +52,6 @@
 	.musicalranking {
 		position: relative;
 		margin-top: 20px;
-		padding: 0 14px;
 	}
 
 	.div10 {
@@ -56,7 +61,17 @@
 		color: #c54966;
 		text-decoration: none;
 	}
-
+	.div11 {
+		position: relative;
+		bottom: 50px;
+		right: 10px;
+		width: 100%;
+		display: flex;
+		justify-content: end;
+		color: #c54966;
+		text-decoration: none;
+		font-size: 12px !important;
+	}
 	.poster1Parent {
 		display: flex;
 		overflow-x: auto;
@@ -65,7 +80,9 @@
 		margin-top: 10px;
 		padding-bottom: 10px;
 	}
-
+	.firstPoster {
+		margin-left: 14px;
+	}
 	.poster1 {
 		flex: 0 0 auto;
 		margin-right: 10px;
@@ -85,7 +102,7 @@
 		display: flex;
 		justify-content: space-between;
 		position: absolute;
-		bottom: 10px;
+		bottom: 0px;
 		width: 100%;
 		padding: 10px;
 		background: rgba(0, 0, 0, 0.5);
@@ -103,11 +120,11 @@
 	}
 
 	.title {
+		margin-left: 14px;
 		font-size: 16px;
 		color: #c54966;
 	}
 
-	/* 스크롤바 숨기기 */
 	.poster1Parent::-webkit-scrollbar {
 		display: none;
 	}

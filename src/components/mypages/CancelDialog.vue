@@ -6,14 +6,14 @@
             </div>
         </div>
         <div :class="$style.dialogMessage">티켓을 취소하시겠습니까?</div>
-        <div :class="$style.cancelButton">돌아가기</div>
-        <div :class="$style.confirmButton">취소하기</div>
+        <div :class="$style.cancelButton" @click="$emit('close')">돌아가기</div>
+        <div :class="$style.confirmButton" @click="$emit('confirm')">취소하기</div>
         <div :class="$style.horizontalDivider" />
         <div :class="$style.verticalDivider" />
     </div>
 </template>
 
-<script lang="ts">
+<script>
 import { defineComponent } from 'vue';
 
 export default defineComponent({
@@ -27,10 +27,11 @@ export default defineComponent({
 
 <style module>
 .cancelDialog {
-    position: absolute;
-    top: 638px;
-    left: -1px;
-    width: 376px;
+    position: fixed;
+    bottom:66px;
+    left: 50%;
+	transform: translateX(-50%);
+    width: 374px;
     height: 106px;
     text-align: center;
     font-size: 13px;
@@ -57,13 +58,13 @@ export default defineComponent({
 .dialogBackgroundOverlay {
     position: absolute;
     height: 100%;
-    width: 100%;
+    width: 372px;
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
     border-radius: 15px 15px 0 0;
-    background-color: #fff;
+    background-color: #f5cdcd;
 }
 
 .dialogMessage {
@@ -71,11 +72,15 @@ export default defineComponent({
     top: 23px;
     left: 0px;
     letter-spacing: -0.01em;
-    line-height: 150%;
     font-weight: 600;
     display: inline-block;
     width: 376px;
     height: 16px;
+    font-size: 16px;
+    font-family: "bamin_content";
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .cancelButton {
@@ -83,33 +88,43 @@ export default defineComponent({
     top: 75px;
     left: 0px;
     letter-spacing: -0.01em;
-    line-height: 150%;
-    font-weight: 500;
+    font-weight: bold;
     display: inline-block;
     width: 188px;
     height: 16px;
+    cursor: pointer;
+    font-family: "bamin_content";
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .confirmButton {
     position: absolute;
     top: 75px;
     left: 188px;
-    letter-spacing: -0.01em;
-    line-height: 150%;
-    font-weight: 500;
+    letter-spacing: -0.01em;  
+    font-weight: bold;
     color: #c54966;
     display: inline-block;
     width: 188px;
     height: 16px;
+    cursor: pointer;
+    font-family: "bamin_content";
+    font-size: 16px;
+    display: flex;
+     align-items: center;
+    justify-content: center;
 }
 
 .horizontalDivider {
     position: absolute;
     top: 59.5px;
-    left: -0.5px;
+    left: 0.5px;
     border-top: 1px solid rgba(110, 110, 110, 0.44);
     box-sizing: border-box;
-    width: 377px;
+    width: 372px;
     height: 1px;
 }
 

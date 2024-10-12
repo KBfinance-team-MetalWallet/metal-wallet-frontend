@@ -1,7 +1,6 @@
 <template>
   <div :class="$style.div">
     <MainHeader />
-    <b :class="$style.b">강철지갑</b>
 
     <div :class="$style.horizontalborder">
       <b :class="$style.label">Key : </b>
@@ -33,7 +32,7 @@ export default defineComponent({
     const musicalId = ref('');
 
     const goToCameraPage = () => {
-      router.push('/admin/camera');  // /admin/camera 경로로 라우팅
+      router.push('/admin/checkticket');  // /admin/camera 경로로 라우팅
     };
 
     return {
@@ -44,8 +43,6 @@ export default defineComponent({
 });
 </script>
 <style module>
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap');
-
 body {
   margin: 0;
   line-height: normal;
@@ -67,7 +64,6 @@ body {
   align-items: center;
   width: 286px;
   font-size: 14.18px;
-  font-family: Roboto;
   color: #000;
   padding: 5px;
   border: 1px solid #ccc;
@@ -132,7 +128,6 @@ body {
   text-align: left;
   font-size: 16px;
   color: #6e6e6e;
-  font-family: Roboto;
 }
 
 .horizontalborder {
@@ -153,7 +148,6 @@ body {
   font-size: 14.18px;
   line-height: 30px;
   display: flex;
-  font-family: Roboto;
   color: #000;
   text-align: left;
   align-items: center;

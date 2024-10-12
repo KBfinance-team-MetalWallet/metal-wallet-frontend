@@ -14,7 +14,7 @@
     <div :class="$style.div1">
 
       <div :class="$style.rectangleParent" @click="goToPaymentHistory">
-        <b :class="$style.b2" >
+        <b :class="$style.b2">
           결제 내역 확인하기
         </b>
       </div>
@@ -36,45 +36,55 @@ export default {
   data() {
     return {
       countdown: 3, // 카운트다운 초기값
+      accountId: 1, // 기본 계좌 ID 설정
+      interval: null, // interval ID를 저장할 변수
     };
   },
   methods: {
     goToPaymentHistory() {
-      this.$router.push("/mypage/payment-history");
+      // 페이지 이동 전에 타이머 정지
+      clearInterval(this.interval);
+      this.$router.push(`/payment-history/${this.accountId}`);
     },
   },
   mounted() {
     // 화면이 로딩되면 카운트다운 시작
-    const interval = setInterval(() => {
+    this.interval = setInterval(() => {
       if (this.countdown > 0) {
         this.countdown -= 1;
       } else {
-        clearInterval(interval);
-        this.$router.push("/");
+        clearInterval(this.interval); // 카운트다운 종료 시 타이머 제거
+        this.$router.push("/"); // 홈으로 이동
       }
     }, 1000); // 1초마다 실행
   },
+  beforeUnmount() {
+    // 컴포넌트가 언마운트될 때 타이머 정지
+    clearInterval(this.interval);
+  }
 };
 </script>
+
 
 <style module>
 .div {
   width: 100%;
-  height: auto;
+  height: 100vh;
   text-align: center;
   color: #6e6e6e;
-  font-family: Roboto;
   display: flex;
   flex-direction: column;
   /* 위에서 아래로 배치 */
   align-items: center;
-  padding: 20px;
 }
 
 .child {
-  display: flex;             /* 내부 요소 정렬을 위한 flex 사용 */
-  justify-content: center;   /* 가로 방향 중앙 정렬 */
-  align-items: center;       /* 세로 방향 중앙 정렬 */
+  display: flex;
+  /* 내부 요소 정렬을 위한 flex 사용 */
+  justify-content: center;
+  /* 가로 방향 중앙 정렬 */
+  align-items: center;
+  /* 세로 방향 중앙 정렬 */
   width: 85%;
   height: 174px;
   border-radius: 50px;
@@ -84,7 +94,8 @@ export default {
 }
 
 .b1 {
-  text-align: center;        /* 내부 텍스트를 가운데 정렬 */
+  text-align: center;
+  /* 내부 텍스트를 가운데 정렬 */
   font-size: 18px;
 }
 
@@ -107,7 +118,7 @@ export default {
   cursor: pointer;
 }
 
-.p1{
+.p1 {
   font-weight: bold;
   color: black;
 }
@@ -115,10 +126,10 @@ export default {
 .b2 {
   font-weight: bold;
   font-size: 18px;
-  color: black;  
+  color: black;
   cursor: pointer;
-  text-decoration : underline;
-  text-underline-position : under;
+  text-decoration: underline;
+  text-underline-position: under;
 }
 
 .imageIcon {
