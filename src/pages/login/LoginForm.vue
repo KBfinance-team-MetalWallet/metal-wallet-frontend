@@ -79,15 +79,8 @@ export default defineComponent({
                 return;
             }
             try {
-                // 헤더 추가
-                const response = await axios.post(`https://195b-121-130-103-204.ngrok-free.app/members/login`,
-                    this.formData,
-                    {
-                        headers: {
-                            'ngrok-skip-browser-warning': 'true'
-                        }
-                    }
-                );
+                // const response = await axios.post(`${API_BASE_URL}/members/login`, this.formData);
+                const response = await axios.post(`${API_BASE_URL}/members/login`, this.formData);
                 console.log('Login successful:', response.data);
 
                 if (response.data.accessToken) {
@@ -97,7 +90,8 @@ export default defineComponent({
                     console.error('Access token not found in response');
                 }
             } catch (error) {
-                console.error('Error login member:', error.response ? error.response.data : error.message);
+                //TODO: vue error는 response가 없어서 수정해야함
+                console.error('Error login member:', error.response.data);
             }
         },
         goToSignup() {
