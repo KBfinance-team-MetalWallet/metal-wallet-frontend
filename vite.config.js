@@ -14,6 +14,8 @@ export default defineConfig({
 	},
 	define: {
 		// API_BASE_URL: JSON.stringify("http://localhost:8080/api"),
-		API_BASE_URL: JSON.stringify(process.env.VITE_API_BASE_URL),
+		API_BASE_URL: JSON.stringify(
+			"https://bf87-121-130-103-204.ngrok-free.app/api"
+		),
 	},
 });
