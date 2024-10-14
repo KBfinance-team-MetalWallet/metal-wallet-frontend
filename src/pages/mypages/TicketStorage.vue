@@ -87,6 +87,11 @@ export default defineComponent({
     overflow: hidden;
 }
 
+.rectangleParent {
+    position: relative;
+    top: 0;
+}
+
 .b {
     position: absolute;
     top: 14px;
@@ -158,7 +163,7 @@ export default defineComponent({
 .groupItem {
     position: absolute;
     top: 0px;
-    left: 0px;
+    left: auto;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 15px;
     background-color: #fff;
@@ -197,16 +202,6 @@ export default defineComponent({
     top: 3px;
     left: 7px;
     font-weight: 100;
-}
-
-.rectangleGroup {
-    position: absolute;
-    top: 17px;
-    left: 179px;
-    width: 152px;
-    height: 14px;
-    font-size: 6px;
-    color: #000;
 }
 
 .b3 {
@@ -249,15 +244,6 @@ export default defineComponent({
     text-align: center;
     font-size: 15px;
     color: #fff;
-}
-
-.rectangleParent {
-    position: absolute;
-    top: 147px;
-    left: 17px;
-    width: 334px;
-    height: 164px;
-    color: #c54966;
 }
 
 .item {
@@ -366,17 +352,5 @@ export default defineComponent({
     height: 68px;
     font-size: 13px;
     color: #2b3f6c;
-}
-
-.div {
-    width: 100%;
-    position: relative;
-    background-color: #fafafa;
-    height: 812px;
-    overflow: hidden;
-    text-align: left;
-    font-size: 16px;
-    color: #6e6e6e;
-    font-family: Roboto;
 }
 </style>

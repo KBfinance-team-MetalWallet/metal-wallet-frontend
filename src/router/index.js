@@ -1,5 +1,10 @@
 import { createRouter, createWebHistory } from "vue-router";
 
+// 관리자 페이지
+import Admin from "@/pages/admin/Admin.vue";
+import AdminTicketList from "@/pages/admin/AdminTicketList.vue";
+import QRCamera from "@/pages/admin/QRCamera.vue";
+
 // 로그인 관련 페이지
 import LoginAlert from "@/components/login/LoginAlert.vue";
 import WelcomeSignup from "@/components/login/WelcomeSignup.vue";
@@ -29,133 +34,154 @@ import VerificationPasswordInput from "@/pages/booking/VerificationPasswordInput
 import { isTokenExpired } from "@/utils/auth.js";
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL), // 충돌 해결
-  routes: [
-    {
-      path: "/",
-      name: "home",
-      component: Home,
-    },
-    {
-      path: "/ticket",
-      name: "ticket",
-      component: Ticket,
-    },
-    {
-      path: "/login",
-      name: "login",
-      component: LoginForm,
-    },
-    {
-      path: "/signup", // 회원가입 경로
-      name: "signup",
-      component: Signup, // 회원가입 화면
-      children: [
-        {
-          path: "",
-          name: "signupForm",
-          component: SignupForm,
-        },
-        {
-          path: "password", // /signup/password
-          name: "login-password",
-          component: PasswordInput, // 비밀번호 입력 화면
-        },
-        {
-          path: "agreement", // /signup/agreement
-          name: "agreement",
-          component: TermsAgreement, // 약관 동의 화면
-        },
-        {
-          path: "welcome", // /signup/welcome
-          name: "welcome",
-          component: WelcomeSignup, // 환영 페이지
-        },
-        {
-          path: "alert", // /signup/alert
-          name: "alert",
-          component: LoginAlert, // 로그인 알림 페이지
-        },
-      ],
-    },
-    {
-      path: "/mypage",
-      name: "MyPage",
-      component: MyPage,
-    },
-    {
-      path: "/my-ticket-list",
-      name: "myticketlist",
-      component: MyTicketList,
-    },
-    {
-      path: "/payment-history/:accountId",
-      name: "paymentHistory",
-      component: PaymentHistory,
-      props: true, // route params를 컴포넌트의 props로 전달
-    },    
-    {
-      path: "/booking",
-      name: "booking",
-      children: [
-        {
-          // /booking/{musicalId}/dates
-          path: ":musical_id(\\d+)/dates",
-          name: "bookingDatePage",
-          component: BookingDatePage,
-        },
-        {
-          // /booking/{musicalId}/{scheduleId}/seats
-          path: ":musicalId/:scheduleId/seats",
-          name: "seats",
-          component: SeatSelectionPage,
-          props: (route) => ({
-            musicalId: route.params.musicalId,
-            scheduleId: route.params.scheduleId,
-          }),
-        },
-        {
-          path: "password",
-          name: "password",
-          component: VerificationPasswordInput,
-          props: (route) => ({
-            seats: route.params.seats, // 좌석 정보를 params로 전달
-          }),
-        },
-        {
-          path: "payment-success",
-          name: "payment-success",
-          component: PaymentSuccessPage,
-        },
-      ],
-    },
-    {
-      path: "/musical",
-      name: "MusicalList",
-      component: MusicalList,
-    },
-    {
-      path: "/musical/:id",
-      name: "MusicalDetail",
-      component: MusicalDetail,
-      props: true,
-    },
-  ],
+	history: createWebHistory(import.meta.env.BASE_URL), // 충돌 해결
+	routes: [
+		{
+			path: "/",
+			name: "home",
+			component: Home,
+		},
+		{
+			path: "/ticket",
+			name: "ticket",
+			component: Ticket,
+		},
+		{
+			path: "/login",
+			name: "login",
+			component: LoginForm,
+		},
+		{
+			path: "/signup", // 회원가입 경로
+			name: "signup",
+			component: Signup, // 회원가입 화면
+			children: [
+				{
+					path: "",
+					name: "signupForm",
+					component: SignupForm,
+				},
+				{
+					path: "password", // /signup/password
+					name: "login-password",
+					component: PasswordInput, // 비밀번호 입력 화면
+				},
+				{
+					path: "agreement", // /signup/agreement
+					name: "agreement",
+					component: TermsAgreement, // 약관 동의 화면
+				},
+				{
+					path: "welcome", // /signup/welcome
+					name: "welcome",
+					component: WelcomeSignup, // 환영 페이지
+				},
+				{
+					path: "alert", // /signup/alert
+					name: "alert",
+					component: LoginAlert, // 로그인 알림 페이지
+				},
+			],
+		},
+		{
+			path: "/admin",
+			name: "Admin",
+			children: [
+				{
+					path: "",
+					name: "AdminPage",
+					component: Admin,
+				},
+				{
+					path: "checkticket",
+					name: "CheckTicket",
+					component: QRCamera,
+				},
+				{
+					path: "ticket-list",
+					name: "TicketList",
+					component: AdminTicketList,
+				},
+			],
+		},
+		{
+			path: "/mypage",
+			name: "MyPage",
+			component: MyPage,
+		},
+		{
+			path: "/my-ticket-list",
+			name: "myticketlist",
+			component: MyTicketList,
+		},
+		{
+			path: "/payment-history/:accountId",
+			name: "paymentHistory",
+			component: PaymentHistory,
+			props: true, // route params를 컴포넌트의 props로 전달
+		},
+		{
+			path: "/booking",
+			name: "booking",
+			children: [
+				{
+					// /booking/{musicalId}/dates
+					path: ":musical_id(\\d+)/dates",
+					name: "bookingDatePage",
+					component: BookingDatePage,
+				},
+				{
+					// /booking/{musicalId}/{scheduleId}/seats
+					path: ":musicalId/:scheduleId/seats",
+					name: "seats",
+					component: SeatSelectionPage,
+					props: (route) => ({
+						musicalId: route.params.musicalId,
+						scheduleId: route.params.scheduleId,
+					}),
+				},
+				{
+					path: "password",
+					name: "password",
+					component: VerificationPasswordInput,
+					props: (route) => ({
+						seats: route.params.seats, // 좌석 정보를 params로 전달
+					}),
+				},
+				{
+					path: "payment-success",
+					name: "payment-success",
+					component: PaymentSuccessPage,
+				},
+			],
+		},
+		{
+			path: "/musical",
+			name: "MusicalList",
+			component: MusicalList,
+		},
+		{
+			path: "/musical/:id",
+			name: "MusicalDetail",
+			component: MusicalDetail,
+			props: true,
+		},
+	],
 });
 
 // Navigation Guard
 router.beforeEach((to, from, next) => {
-  const publicPages = ["/login", "/signup", "/musical"];
-  const authRequired = !publicPages.some((page) => to.path.startsWith(page));
-  const token = localStorage.getItem("accessToken");
+	const publicPages = ["/login", "/signup", "/musical"];
+	const authRequired = !publicPages.some((page) => to.path.startsWith(page));
+	const token = localStorage.getItem("accessToken");
 
-  if (authRequired && (!token || isTokenExpired(token))) {
-    localStorage.removeItem("accessToken");
-    alert("로그인이 필요한 서비스입니다. 로그인 페이지로 이동합니다.");
-    next({ name: "login" });
-  } else {
-    next();
-  }
+	if (authRequired && (!token || isTokenExpired(token))) {
+		localStorage.removeItem("accessToken");
+		alert("로그인이 필요한 서비스입니다. 로그인 페이지로 이동합니다.");
+		next({ name: "login" });
+	} else {
+		next();
+	}
 });
 
 export default router;

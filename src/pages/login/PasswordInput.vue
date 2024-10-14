@@ -24,15 +24,10 @@
         <div :class="$style.keypad">
             <div v-for="(row, rowIndex) in keypadRows" :key="rowIndex" :class="$style.keypadRow">
                 <div v-for="(key, keyIndex) in row" :key="keyIndex" :class="$style.key" @click="handleKeyPress(key)">
-                    <!-- 0을 제외한 숫자 렌더링 -->
                     <div v-if="key !== null && key !== 'delete'" :class="$style.numberRect"></div>
                     <div v-if="key !== null && key !== 'delete'" :class="$style.number">{{ key }}</div>
-
-                    <!-- deleteIcon 렌더링 -->
                     <img v-if="key === 'delete'" :class="$style.deleteIcon" alt="delete icon"
                         src="@/assets/login/deleteIcon.svg" />
-
-                    <!-- 빈 공간 렌더링 -->
                     <div v-if="key === null" :class="$style.emptySpace"></div>
                 </div>
             </div>
@@ -40,16 +35,16 @@
     </div>
 </template>
 
-<script lang="ts">
+<script>
 import axios from 'axios';
 import { defineComponent } from 'vue'
-import { useUserStore } from '../../stores/userStore';  
+import { useUserStore } from '../../stores/userStore';
 
 export default defineComponent({
     name: 'Frame',
     data() {
         return {
-            enteredPassword: [] as number[], // 입력된 비밀번호를 저장하는 배열
+            enteredPassword: [], // 입력된 비밀번호를 저장하는 배열
             maxPasswordLength: 6, // 최대 비밀번호 자리수
             firstInput: true, // 첫 번째 입력 여부
             firstPin: '', // 첫 번째 PIN 저장
@@ -63,32 +58,28 @@ export default defineComponent({
     },
     computed: {
         circles() {
-            // 비밀번호 자리수에 맞춰 색상을 결정
             return Array.from({ length: this.maxPasswordLength }, (_, index) => {
                 return this.enteredPassword.length > index ? '#C54966' : '#D9D9D9'
             });
         }
     },
     methods: {
-        handleKeyPress(key: number | string | null) {
+        handleKeyPress(key) {
             if (typeof key === 'number' && this.enteredPassword.length < this.maxPasswordLength) {
                 this.enteredPassword.push(key);
 
-                // PIN 번호가 6자리가 모두 입력되었을 때
                 if (this.enteredPassword.length === this.maxPasswordLength) {
-                    if(this.firstInput) {
-                        // 첫 번째 입력 시 PIN 저장
+                    if (this.firstInput) {
                         this.firstPin = this.enteredPassword.join('');
-                        this.firstInput = false; // 두 번째 입력 대기 상태로 변경
-                        this.enteredPassword = []; // 이전 비밀번호 초기화
+                        this.firstInput = false;
+                        this.enteredPassword = [];
                     } else {
-                        // 두 번째 입력
                         const secondPin = this.enteredPassword.join('');
                         if (this.firstPin === secondPin) {
-                            this.register(); // PIN이 일치할 시 API 호출
+                            this.register();
                         } else {
                             alert("두 비밀번호가 일치하지 않습니다.");
-                            this.enteredPassword = []; // 입력 초기화
+                            this.enteredPassword = [];
                         }
                     }
                 }
@@ -97,22 +88,20 @@ export default defineComponent({
             }
         },
         async register() {
-            // Pinia에서 사용자 정보 가져오기
             const userStore = useUserStore();
-            const { name, password, email, phone } = userStore; // Pinia 스토어에서 값 가져오기
+            const { name, password, email, phone } = userStore;
             const pinNumber = this.firstPin;
 
-            // API 호출
             const formData = {
                 name,
                 password,
                 email,
                 phone,
-                pinNumber // PIN 번호를 포함하여 데이터 전송
+                pinNumber
             };
 
             try {
-                const response = await axios.post('http://localhost:8080/api/members/register', formData);
+                const response = await axios.post(`${API_BASE_URL}/members/register`, formData);
                 console.log('Registration successful:', response.data);
                 this.$router.push('/');
             } catch (error) {
@@ -137,7 +126,6 @@ body {
     background-color: #fafafa;
     height: 812px;
     text-align: left;
-    font-family: Roboto, sans-serif;
 }
 
 .title {

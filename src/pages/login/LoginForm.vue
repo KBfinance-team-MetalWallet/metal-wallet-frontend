@@ -21,7 +21,7 @@
                         placeholder="비밀번호를 입력해주세요." />
                 </div>
                 <div :class="$style.signupButton" @click="goToSignup">
-                    <b>회원가입&gt;</b>
+                    <b>회원가입&nbsp;&gt;</b>
                 </div>
             </div>
         </div>
@@ -31,11 +31,10 @@
         </div>
     </div>
 </template>
-<script lang="ts">
+<script lang="js">
 import { defineComponent } from 'vue'
 import { useRouter } from 'vue-router';
 import MainHeader from '../../components/MainHeader.vue';
-import Signup from "@/pages/login/Signup.vue";
 import axios from 'axios';
 
 export default defineComponent({
@@ -80,7 +79,7 @@ export default defineComponent({
                 return;
             }
             try {
-                const response = await axios.post('http://localhost:8080/api/members/login', this.formData);
+                const response = await axios.post(`${API_BASE_URL}/members/login`, this.formData);
                 console.log('Login successful:', response.data);
 
                 if (response.data.accessToken) {
@@ -118,8 +117,7 @@ export default defineComponent({
 <style module>
 .signupButton {
     position: relative;
-    top: 4px;
-    left: 4px;
+    top: 20%;
     text-align: right;
     color: #3498db;
     cursor: pointer;
@@ -146,6 +144,9 @@ export default defineComponent({
     top: 10px;
     left: 5px;
     line-height: 30px;
+    font-family: "bamin_title";
+    color: #C54966;
+
 }
 
 .div1 {
@@ -229,6 +230,7 @@ export default defineComponent({
     font-size: 12px;
     color: #999;
     opacity: 1;
+    font-family: "bamin_content";
 }
 
 .div3 {
@@ -287,6 +289,7 @@ export default defineComponent({
     font-size: 12px;
     color: #999;
     opacity: 1;
+    font-family: "bamin_content";
 }
 
 .groupParent {
@@ -363,22 +366,25 @@ export default defineComponent({
 
 .b1 {
     position: absolute;
-    top: 15.5px;
-    left: calc(50% - 28px);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .button1 {
-    position: absolute;
-    width: calc(100% - 25px);
-    top: 689px;
-    right: 13px;
-    left: 12px;
+    position: fixed;
+    width: 350px;
+    height: 68px;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
     border-radius: 10px;
     background-color: #ccc;
     height: 50px;
     text-align: center;
     font-size: 15px;
     color: #fff;
+    margin-top: 160px;
 }
 
 .div7 {
@@ -409,14 +415,14 @@ export default defineComponent({
 
 .div {
     width: 100%;
+    height: 100vh;
     position: relative;
     background-color: #fafafa;
-    height: 812px;
     overflow: hidden;
     text-align: left;
     font-size: 16px;
     color: #000;
-    font-family: Roboto;
+    font-family: "bamin_title";
 }
 
 .select {
@@ -430,5 +436,6 @@ export default defineComponent({
     background-color: #fff;
     outline: none;
     font-size: 15px;
+    font-family: "bamin_content";
 }
 </style>

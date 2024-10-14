@@ -18,7 +18,7 @@
 					<img v-if="ticket.ticketStatus == 'CHECKED'" class="usedMark" src="@/assets/ticket/used_image.png" />
 				</div>
 				<!-- 카드 뒷면 -->
-				<div class="back qr_side">
+				<div class="back">
 					<!-- 카운트다운 타이머 -->
 					<p class="QRCount">
 						{{ formattedCountdown }}
@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import { useTicketStore } from "@/stores/tickets";
+import { useTicketStore } from "@/stores/ticketsUse";
 import axios from "axios";
 import forge from "node-forge";
 import { computed, defineComponent, onUnmounted, ref } from "vue";
@@ -60,7 +60,6 @@ export default defineComponent({
 
 	setup(props) {
 		const ticketStore = useTicketStore();
-		const tickets = props.tickets;
 		const touchStartX = ref(0);
 		const touchEndX = ref(0);
 		const isFlipped = ref(false);
@@ -88,7 +87,7 @@ export default defineComponent({
 					clearInterval(timer);
 					timer = null;
 					invalidateQrCode();
-					fetchQrToken(currentTicket.value); // 새로운 QR 코드 요청
+					fetchQrToken(currentTicket.value);
 				}
 			}, 1000);
 		};
@@ -150,9 +149,13 @@ export default defineComponent({
 				}
 
 				const { id: ticketId, ticketStatus } = ticket;
+				const deviceInfo = "temp";
+
 				const response = await axios.post(
-					`http://localhost:8080/api/tickets/encrypt/${ticketId}`,
-					{},
+					`${API_BASE_URL}/tickets/encrypt/${ticketId}`,
+					{
+						deviceId: deviceInfo
+					},
 					{
 						headers: {
 							"Content-Type": "application/json",
@@ -236,7 +239,7 @@ export default defineComponent({
 		const refreshAfterExpiry = async () => {
 			if (!canReset.value) return;
 			try {
-				const topCard = tickets[ticketStore.currentCard];
+				const topCard = ticketStore.tickets[ticketStore.currentCard];
 				if (!topCard) {
 					console.error("현재 카드 정보가 유효하지 않습니다.");
 					return;
@@ -295,10 +298,6 @@ export default defineComponent({
 </script>
 
 <style scoped>
-/* ... 기존 스타일 그대로 유지 ... */
-</style>
-
-<style scoped>
 :focus {
 	outline: none;
 }
@@ -310,7 +309,6 @@ export default defineComponent({
 	align-items: center;
 	width: 100%;
 	position: relative;
-	padding-left: 70px;
 	height: 350px;
 	perspective: 1000px;
 	overflow: hidden;
@@ -348,7 +346,16 @@ export default defineComponent({
 	backface-visibility: hidden;
 	top: 0;
 	left: 0;
-	/* z-index: 2; */
+}
+
+@keyframes rotBGimg {
+	from {
+		transform: rotate(0deg);
+	}
+
+	to {
+		transform: rotate(360deg);
+	}
 }
 
 /* 카드 뒷면 스타일 */
@@ -364,11 +371,31 @@ export default defineComponent({
 	top: 0;
 	left: 0;
 	z-index: 1;
+	overflow: hidden;
 	transform: rotateY(180deg);
 	background-color: white;
-	border: 1px dotted grey;
 	border-radius: 24px;
 }
+
+.back::before {
+	content: '';
+	position: absolute;
+	width: 150px;
+	background-image: linear-gradient(180deg, rgb(255, 157, 157), rgb(255, 152, 152));
+	height: 130%;
+	animation: rotBGimg 3s linear infinite;
+	transition: all 0.2s linear;
+}
+
+.back::after {
+	content: '';
+	position: absolute;
+	background: white;
+	;
+	inset: 5px;
+	border-radius: 24px;
+}
+
 
 /* 사용된 카드 표시 스타일 */
 .usedMark {
@@ -434,6 +461,7 @@ export default defineComponent({
 /* QR 코드 이미지 스타일 */
 .QRImg {
 	position: absolute;
+	z-index: 2;
 	width: 150px;
 	height: 150px;
 	margin-top: 50px;

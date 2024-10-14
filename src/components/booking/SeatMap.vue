@@ -176,7 +176,7 @@ OOXOOOOOOOOOOOOOOOXOO
       const scheduleId = this.scheduleId;
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/musicals/schedules/${scheduleId}/seats`
+          `${API_BASE_URL}/musicals/schedules/${scheduleId}/seats`
         );
 
         if (response && response.data && Array.isArray(response.data.result)) {

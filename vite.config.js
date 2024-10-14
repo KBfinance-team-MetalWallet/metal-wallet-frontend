@@ -12,4 +12,7 @@ export default defineConfig({
 			"@": fileURLToPath(new URL("./src", import.meta.url)),
 		},
 	},
+	define: {
+        API_BASE_URL: JSON.stringify("http://localhost:8080/api"),
+    },
 });

@@ -85,7 +85,7 @@ export const useSeatAvailabilityStore = defineStore("seatAvailability", () => {
 
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/musicals/${musicalId}/seats-availability?date=${dateStr}`
+        `${API_BASE_URL}/musicals/${musicalId}/seats-availability?date=${dateStr}`
       );
 
       if (response.data.resultCode === 200) {
@@ -114,7 +114,7 @@ export const useSeatAvailabilityStore = defineStore("seatAvailability", () => {
     try {
       // API 호출
       const response = await axios.get(
-        `http://localhost:8080/api/musicals/schedules/${scheduleId}/seats`
+        `${API_BASE_URL}/musicals/schedules/${scheduleId}/seats`
       );
 
       if (response.data.result) {

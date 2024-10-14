@@ -1,24 +1,26 @@
 <template>
-	<div :class="$style.ticketWrapper">
+	<div :class="$style.div">
 		<MainHeader />
-		<!-- 포스터 영역 -->
-		<div :class="$style.ticketposter">
-			<div :class="$style.ticketposterChild" />
-			<div :class="$style.ticketposterlayer">
-				<!-- Ticket 포스터 -->
-				<TicketCard :tickets="tickets" :currentCard="currentCard" @update:currentCard="updateCurrentCard" />
+		<div :class="$style.ticketWrapper">
+			<!-- 포스터 영역 -->
+			<div :class="$style.ticketposter">
+				<div :class="$style.ticketposterChild" />
+				<div :class="$style.ticketposterlayer">
+					<!-- Ticket 포스터 -->
+					<TicketCard :tickets="tickets" :currentCard="currentCard" @update:currentCard="updateCurrentCard" />
 
+				</div>
 			</div>
-		</div>
 
-		<!-- 현재 뮤지컬 티켓의 상세 정보 표시 -->
-		<div :class="$style.r16Container" v-if="tickets && tickets.length > 0 && tickets[currentCard]">
-			<div :class="$style.MyTicketsInfo">
-				<p :class="$style.musicalTitle">
-					{{ tickets[currentCard].title }} - {{ tickets[currentCard].place }}
-				</p>
-				<p :class="$style.showDate">{{ tickets[currentCard].scheduleDate }} {{ tickets[currentCard].startTime }}</p>
-				<p :class="$style.seatInfo">{{ tickets[currentCard].grade }} {{ tickets[currentCard].seatNo }} 석</p>
+			<!-- 현재 뮤지컬 티켓의 상세 정보 표시 -->
+			<div :class="$style.r16Container" v-if="tickets && tickets.length > 0 && tickets[currentCard]">
+				<div :class="$style.MyTicketsInfo">
+					<p :class="$style.musicalTitle">
+						{{ tickets[currentCard].title }} - {{ tickets[currentCard].place }}
+					</p>
+					<p :class="$style.showDate">{{ tickets[currentCard].scheduleDate }} {{ tickets[currentCard].startTime }}</p>
+					<p :class="$style.seatInfo">{{ tickets[currentCard].grade }} {{ tickets[currentCard].seatNo }} 석</p>
+				</div>
 			</div>
 		</div>
 		<Footer />
@@ -29,7 +31,7 @@
 import Footer from "@/components/Footer.vue";
 import MainHeader from "@/components/MainHeader.vue";
 import TicketCard from "@/components/ticket/TicketCard.vue";
-import { useTicketStore } from "@/stores/tickets";
+import { useTicketStore } from "@/stores/ticketsUse";
 import { defineComponent, onMounted, toRefs } from "vue";
 
 export default defineComponent({
@@ -66,7 +68,18 @@ export default defineComponent({
 
 <style module>
 @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap");
+
+.div {
+	width: 100%;
+	height: 100vh;
+	overflow: hidden;
+	overflow-y: auto;
+	position: relative;
+	background-color: #fafafa;
+	text-align: left;
+	font-size: 16px;
+	color: #c54966;
+}
 
 .changeBtn {
 	margin-top: 40px;
@@ -154,7 +167,6 @@ export default defineComponent({
 }
 
 .MyTicketsInfo {
-	border: 2px dotted rgb(255, 81, 0);
 	background-color: white;
 	display: flex;
 	flex-direction: column;
@@ -256,15 +268,13 @@ svg {
 }
 
 .MyTicketsInfo {
-	border: 2px dotted rgb(255, 81, 0);
-	background-color: white;
-	display: flex;
-	flex-direction: column;
-	justify-content: start;
-	align-items: start;
-	gap: 5px;
-	padding: 20px;
-	border-radius: 10px;
+	border-radius: 20px;
+	background: #f5f5f5;
+	position: relative;
+	padding: 1.8rem;
+	border: 2px solid #c3c6ce;
+	transition: 0.5s ease-out;
+	overflow: visible;
 }
 
 .musicalTitle {

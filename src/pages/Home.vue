@@ -11,7 +11,6 @@
 				<SlidePoster />
 			</div>
 		</div>
-		<!-- Footer -->
 		<Footer />
 	</div>
 </template>
@@ -45,39 +44,33 @@
 	});
 </script>
 <style module>
-	@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
-
-	body {
-		margin: 0;
-		line-height: normal;
-		overflow-x: hidden; /* Prevent horizontal scrolling on the body */
-	}
-
 	.div {
 		width: 100%;
+		height: 100vh;
+		overflow: hidden;
+		overflow-y: auto;
 		position: relative;
 		background-color: #fafafa;
-		min-height: 100vh;
 		text-align: left;
 		font-size: 16px;
 		color: #c54966;
-		font-family: Roboto;
+		font-family: "bamin_content";
 	}
 
 	.groupParent {
-		width: 100%;
-		height: 100vh;
-		overflow-y: auto;
-		overflow-x: hidden;
 		display: flex;
 		flex-direction: column;
-		position: relative;
-		text-align: left;
-		font-size: 14px;
-		color: #000;
-		font-family: Inter;
-		background-size: cover;
-		background-position: center;
-		background-repeat: no-repeat;
+		flex: 1;
+		overflow-y: auto;
+	}
+	.div::-webkit-scrollbar {
+		display: none;
+	}
+	.container {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 100%;
+		height: auto;
 	}
 </style>
