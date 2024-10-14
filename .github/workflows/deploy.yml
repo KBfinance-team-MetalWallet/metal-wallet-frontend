@@ -32,6 +32,9 @@ jobs: # Workflow가 수행할 작업 목록
       - name: List project files before build
         run: ls -al
 
+      - name: 환경변수 로드 및 .env 파일 생성
+        run: echo ${{ secrets.ENV }} > .env
+
       - name: Build project # npm run build 명령어를 통해 프로젝트 빌드
         run: npm run build
 
