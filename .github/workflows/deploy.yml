@@ -6,19 +6,26 @@ on: # main 브랜치에 push 되었을 때 Workflow가 동작
     branches:
       - deploy/ljr
 
-jobs: # Workflow가 수행할 작업 목록
-  build: # Workflow의 첫 번째 Job은 build
-    name: Build # Job 이름
-    runs-on: ubuntu-latest # Runner의 VM OS 종류 및 버전
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
 
-    steps: # 해당 Job이 수행할 세부 단계(Step)
-      - name: Checkout repo # Step의 이름
+    steps:
+      - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Setup Node # VM에 Node.js 설치
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: "20"
+
+      # 캐시 및 기존 node_modules 폴더 삭제
+      - name: Clean npm cache and remove node_modules
+        run: |
+          npm cache clean --force
+          rm -rf node_modules
+          rm -rf dist
 
       # 패키지 설치
       - name: Install dependencies
@@ -35,7 +42,8 @@ jobs: # Workflow가 수행할 작업 목록
       - name: 환경변수 로드 및 .env 파일 생성
         run: echo ${{ secrets.ENV }} > .env
 
-      - name: Build project # npm run build 명령어를 통해 프로젝트 빌드
+      # 빌드 수행
+      - name: Build project
         run: npm run build
 
       # 빌드 후 dist 폴더 구조 출력
