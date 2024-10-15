@@ -118,8 +118,13 @@ export default defineComponent({
         }
       } catch (error) {
         console.error('서버 요청 중 오류 발생:', error);
-        console.log(`${JSON.stringify(scannedData)}`);
-        alert('서버와의 통신 중 문제가 발생했습니다.');
+
+        // 백엔드 에러 응답 처리
+        if (error.response && error.response.data && error.response.data.resultMsg) {
+          alert(`에러 발생: ${error.response.data.resultMsg}`);
+        } else {
+          alert('서버와의 통신 중 문제가 발생했습니다.');
+        }
       }
     };
 

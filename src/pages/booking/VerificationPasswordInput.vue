@@ -149,6 +149,12 @@ export default defineComponent({
         );
         console.log("Tickets booked successfully:", response.data);
       } catch (error) {
+        // 백엔드 에러 응답 처리
+        if (error.response && error.response.data && error.response.data.resultMsg) {
+          alert(`에러 발생: ${error.response.data.resultMsg}`);
+        } else {
+          alert('서버와의 통신 중 문제가 발생했습니다.');
+        }
         console.error(
           "Error booking tickets:",
           error.response ? error.response.data : error.message
