@@ -391,7 +391,7 @@ export default defineComponent({
 
 .div5 {
     position: absolute;
-    top: 610px;
+    top: 640px;
     left: 12px;
     font-size: 14px;
     line-height: 22px;
