@@ -114,6 +114,7 @@ export default defineComponent({
                 console.log('Registration successful:', response.data);
                 this.$router.push('/');
             } catch (error) {
+
                 if (error.response) {
                     const { status, data } = error.response;
 
@@ -138,10 +139,11 @@ export default defineComponent({
                             alert(`계좌를 찾을 수 없습니다. (에러 코드: ${data.code})`);
                             break;
                         default:
-                            alert(`에러가 발생했습니다: ${data.message} (에러 코드: ${data.code})`);
+                            alert(`에러가 발생했습니다: ${data.resultMsg} (에러 코드: ${data.code})`);
                     }
                 } else {
                     // 서버 응답이 없거나, 네트워크 에러일 경우 처리
+                    console.log('Registration successful:', response.data);
                     console.error('Error registering member:', error.message);
                     alert('서버에 응답이 없습니다. 네트워크 상태를 확인하세요.');
                 }
