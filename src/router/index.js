@@ -30,6 +30,7 @@ import BookingDatePage from "@/pages/booking/BookingDatePage.vue";
 import PaymentSuccessPage from "@/pages/booking/PaymentSuccessPage.vue";
 import SeatSelectionPage from "@/pages/booking/SeatSelectionPage.vue";
 import VerificationPasswordInput from "@/pages/booking/VerificationPasswordInput.vue";
+import WaitingRoom from "@/pages/booking/WaitingRoom.vue";
 
 import { isTokenExpired } from "@/utils/auth.js";
 
@@ -154,6 +155,11 @@ const router = createRouter({
 					component: PaymentSuccessPage,
 				},
 			],
+		},
+		{
+			path: "/waiting",
+			name: "wait",
+			component: WaitingRoom,
 		},
 		{
 			path: "/musical",
