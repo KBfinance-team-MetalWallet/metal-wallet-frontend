@@ -32,6 +32,7 @@ import SeatSelectionPage from "@/pages/booking/SeatSelectionPage.vue";
 import VerificationPasswordInput from "@/pages/booking/VerificationPasswordInput.vue";
 
 import { isTokenExpired } from "@/utils/auth.js";
+import WaitingRoom from "../pages/booking/WaitingRoom.vue";
 
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL), // 충돌 해결
@@ -40,6 +41,11 @@ const router = createRouter({
 			path: "/",
 			name: "home",
 			component: Home,
+		},
+		{
+			path: "/waiting",
+			name: "wait",
+			component: WaitingRoom,
 		},
 		{
 			path: "/ticket",
