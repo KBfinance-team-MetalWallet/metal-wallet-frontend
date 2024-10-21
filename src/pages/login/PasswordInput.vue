@@ -97,18 +97,16 @@ export default defineComponent({
             }
         },
         async register() {
-            // Pinia에서 사용자 정보 가져오기
             const userStore = useUserStore();
-            const { name, password, email, phone } = userStore; // Pinia 스토어에서 값 가져오기
+            const { name, password, email, phone } = userStore;
             const pinNumber = this.firstPin;
 
-            // API 호출
             const formData = {
                 name,
                 password,
                 email,
                 phone,
-                pinNumber // PIN 번호를 포함하여 데이터 전송
+                pinNumber
             };
 
             try {
@@ -116,7 +114,37 @@ export default defineComponent({
                 console.log('Registration successful:', response.data);
                 this.$router.push('/');
             } catch (error) {
-                console.error('Error registering member:', error.response ? error.response.data : error.message);
+                if (error.response) {
+                    const { status, data } = error.response;
+
+                    // ErrorCode 에 따른 처리
+                    switch (data.code) {
+                        case 'ME001': // MEMBER_NOT_FOUND_ERROR
+                            alert(`사용자를 찾을 수 없습니다. (에러 코드: ${data.code})`);
+                            break;
+                        case 'ME002': // MEMBER_STATUS_INVALID
+                            alert(`사용자의 ID가 유효하지 않습니다. (에러 코드: ${data.code})`);
+                            break;
+                        case 'ME004': // PIN_NUMBER_NOT_MATCH
+                            alert(`일치하지 않는 핀 번호입니다. (에러 코드: ${data.code})`);
+                            break;
+                        case 'QR004': // QR_CODE_NOT_FOUND
+                            alert(`QR 코드가 존재하지 않습니다. (에러 코드: ${data.code})`);
+                            break;
+                        case 'TI003': // TICKET_EXCHANGE_NOT_FOUND_ERROR
+                            alert(`교환하기 위한 티켓을 찾을 수 없습니다. (에러 코드: ${data.code})`);
+                            break;
+                        case 'AC001': // ACCOUNT_NOT_FOUND_ERROR
+                            alert(`계좌를 찾을 수 없습니다. (에러 코드: ${data.code})`);
+                            break;
+                        default:
+                            alert(`에러가 발생했습니다: ${data.message} (에러 코드: ${data.code})`);
+                    }
+                } else {
+                    // 서버 응답이 없거나, 네트워크 에러일 경우 처리
+                    console.error('Error registering member:', error.message);
+                    alert('서버에 응답이 없습니다. 네트워크 상태를 확인하세요.');
+                }
             }
         }
     }

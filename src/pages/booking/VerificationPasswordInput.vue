@@ -123,7 +123,12 @@ export default defineComponent({
         await this.bookTickets();
         this.$router.push({ path: "/booking/payment-success" });
       } catch (error) {
-        alert("일치하지 않는 비밀번호입니다.");
+        // 에러 응답 처리
+        if (error.response && error.response.data && error.response.data.code) {
+          alert(`에러 발생: ${error.response.data.message} (에러 코드: ${error.response.data.code})`);
+        } else {
+          alert("일치하지 않는 비밀번호입니다.");
+        }
         console.error(
           "Error during verification:",
           error.response ? error.response.data : error.message
@@ -151,7 +156,7 @@ export default defineComponent({
       } catch (error) {
         // 백엔드 에러 응답 처리
         if (error.response && error.response.data && error.response.data.resultMsg) {
-          alert(`에러 발생: ${error.response.data.resultMsg}`);
+          alert(`에러 발생: ${error.response.data.resultMsg} (에러 코드: ${error.response.data.code})`);
         } else {
           alert('서버와의 통신 중 문제가 발생했습니다.');
         }
