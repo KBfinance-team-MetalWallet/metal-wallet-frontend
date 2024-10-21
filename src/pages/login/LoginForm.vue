@@ -86,11 +86,20 @@ export default defineComponent({
                     localStorage.setItem('accessToken', response.data.accessToken);
                     this.router.push({ name: 'home' });
                 } else {
-                    console.error('Access token not found in response');
+                    console.error('Access token 을 받지 못했습니다.');
                 }
             } catch (error) {
-                //TODO: vue error는 response가 없어서 수정해야함
-                console.error('Error login member:', error.response.data);
+                if (!error.response) {
+                    // 서버 응답이 없을 때
+                    alert('서버 응답이 없습니다. 네트워크를 확인하거나 나중에 다시 시도해주세요.');
+                } else if (error.response.status === 404 && error.response.data.code === 'ME001') {
+                    // MEMBER_NOT_FOUND_ERROR 처리
+                    alert('사용자를 찾을 수 없습니다. 오류코드 : ' + error.response.data.code);
+                } else {
+                    // 다른 에러 처리
+                    console.error('Error login member:', error.response.data);
+                    alert('로그인 중 오류가 발생했습니다.');
+                }
             }
         },
         goToSignup() {
