@@ -69,7 +69,12 @@ https://github.com/user-attachments/assets/2dbc7313-d3e2-4354-a525-b7d1d3fe8de2
 
 - RSA 암호화
   - [Spring 과 Vue 의 암호화 복호화 로직 맞추기](https://groovy-gong-c2f.notion.site/RSA-Vue-Spring-14894635e7168016884bc037bf837c24?pvs=4)
--
+- 테스트 코드 작성
+  - [Test DB 설정](https://www.notion.so/KB-6da70d62d36a4eb398d491f65e1fc16e?p=14894635e71680a8bb49eb63a6dd8408&pm=s)
+  - [[Repository] No ServletContext set 에러](https://www.notion.so/Repository-No-ServletContext-set-14894635e7168055a264c1e2cfe446f1)
+  - [[Controller] @AuthenticationPrincipal에 대한 관리](https://www.notion.so/Controller-AuthenticationPrincipal-14894635e7168009ad90ee988dc84dd8)
+- JPA
+  - [N+1 문제 해결](https://www.notion.so/N-1-14894635e71680bbb34cf16f302d2e19) 
 
 <br />
 
