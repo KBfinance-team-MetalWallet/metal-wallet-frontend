@@ -10,9 +10,14 @@
 
 #### 🚩 프로젝트 기간 : `2024.09.05 ~ 2024.10.16`
 
+
+
 </div>
 
 ### 시연화면
+https://github.com/user-attachments/assets/2dbc7313-d3e2-4354-a525-b7d1d3fe8de2
+
+
 
 ## 🗂️ APIs
 
