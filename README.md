@@ -1,21 +1,24 @@
 <div align="center">
+  
 
 # 👜 프로젝트 소개
+
+![image](https://github.com/user-attachments/assets/231b923a-57cf-41cb-8f35-dcff1b5bc287)
+
+</div>
 
 ### 암표방지 + 전자지갑 = 💪🏼강철지갑
 
 '강철지갑'은 사용자가 QR로 결제하고 계좌를 확인할 뿐만 아니라, 티켓을 예매하고 안전하게 사용할 수 있는 플랫폼을 제공하는 서비스입니다.
 
-<div align="left">
-
-#### 🚩 프로젝트 기간 : `2024.09.05 ~ 2024.10.16`
-
-
-
-</div>
 
 ### 시연화면
+
 https://github.com/user-attachments/assets/2dbc7313-d3e2-4354-a525-b7d1d3fe8de2
+
+### ERD
+
+![image](https://github.com/user-attachments/assets/b04c5bc8-7bf2-4891-bfd3-e6433a54a827)
 
 
 
@@ -55,6 +58,8 @@ https://github.com/user-attachments/assets/2dbc7313-d3e2-4354-a525-b7d1d3fe8de2
 <br />
 
 ## 🛠️ 프로젝트 아키텍쳐
+
+<img width="741" alt="image" src="https://github.com/user-attachments/assets/025ca040-616f-4a0c-a316-aeb89c77884f">
 
 <br />
 
